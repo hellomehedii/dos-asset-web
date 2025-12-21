@@ -6,21 +6,25 @@ import AboutIntro from "@/components/AboutIntro";
 import WhyChooseUs from "@/components/WhyChooseUs";
 import LatestBlogs from "@/components/LatestBlogs";
 import Footer from "@/components/Footer";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
+import { usePageSeo } from "@/hooks/usePageSeo";
 
 const Index = () => {
+  const { data: settings } = useSiteSettings();
+  const { data: seo } = usePageSeo("home");
+
   return (
     <>
       <Helmet>
-        <title>Horizon Real Estate | Premium Property Development in Bangladesh</title>
-        <meta
-          name="description"
-          content="Horizon Real Estate - Your trusted partner in premium residential and commercial property development since 1998. Explore our portfolio of quality projects in Dhaka and beyond."
-        />
-        <meta
-          name="keywords"
-          content="real estate, property, Dhaka, Bangladesh, luxury apartments, residential, commercial, Horizon"
-        />
-        <link rel="canonical" href="https://horizonrealestate.com" />
+        <title>{seo?.meta_title || seo?.page_title || "Home"} | {settings?.site_name}</title>
+        {seo?.meta_description ? (
+          <meta name="description" content={seo.meta_description} />
+        ) : (
+          <meta name="description" content="Horizon Real Estate - Your trusted partner in premium residential and commercial property development since 1998. Explore our portfolio of quality projects in Dhaka and beyond." />
+        )}
+        {seo?.meta_keywords && <meta name="keywords" content={seo.meta_keywords} />}
+        {settings?.favicon_url && <link rel="icon" href={settings.favicon_url} />}
+        <link rel="canonical" href={window.location.origin} />
       </Helmet>
 
       <main>

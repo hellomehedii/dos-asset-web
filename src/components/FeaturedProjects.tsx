@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
 
 const statusColors: Record<string, string> = {
   upcoming: "bg-primary text-primary-foreground",
@@ -32,6 +33,8 @@ const FeaturedProjects = () => {
     },
   });
 
+  const { data: settings } = useSiteSettings();
+
   return (
     <section className="section-padding bg-secondary">
       <div className="container-custom">
@@ -58,22 +61,30 @@ const FeaturedProjects = () => {
               style={{ animationDelay: `${index * 0.1}s` }}
             >
               {/* Image */}
-              <div className="relative h-64 overflow-hidden">
+              <div className="aspect-[3/4] overflow-hidden relative">
                 <img
                   src={project.featured_image || "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&auto=format&fit=crop"}
                   alt={project.name}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-navy/60 to-transparent" />
-                <Badge className={`absolute top-4 left-4 ${statusColors[project.status]}`}>
-                  {statusLabels[project.status]}
-                </Badge>
-              </div>
-
-              {/* Content */}
-              <div className="p-6">
-                <h3 className="text-xl font-serif font-bold text-foreground mb-2 group-hover:text-primary transition-colors">
-                  {project.name}
+                {(() => {
+                  const primary = settings?.primary_color || '#009bfe';
+                  const hexToRgb = (hex: string) => {
+                    const h = hex.replace('#','');
+                    const bigint = parseInt(h, 16);
+                    const r = (bigint >> 16) & 255;
+                    const g = (bigint >> 8) & 255;
+                    const b = bigint & 255;
+                    return `${r},${g},${b}`;
+                  };
+                  const badgeStyle: any = project.status === 'ongoing' ? { backgroundColor: `rgba(${hexToRgb(primary)},0.09)`, color: primary } : project.status === 'upcoming' ? { backgroundColor: 'rgba(250,204,21,0.12)', color: '#b45309' } : { backgroundColor: '#ecfdf5', color: '#166534' };
+                  return (
+                    <Badge style={badgeStyle} className="absolute top-4 left-4">
+                      {statusLabels[project.status]}
+                    </Badge>
+                  );
+                })()}
                 </h3>
                 <div className="flex items-center gap-2 text-muted-foreground mb-4">
                   <MapPin className="w-4 h-4 text-accent" />

@@ -92,14 +92,16 @@ const Navbar = () => {
                 <Building2 className="w-6 h-6 text-primary-foreground" />
               </div>
             )}
-            <div className="flex flex-col leading-tight">
-              <span className={`text-xl font-serif font-bold ${brandTextClass}`}>
-                {settings?.site_name || "Horizon"}
-              </span>
-              <span className={`text-xs tracking-wider uppercase ${mutedBrandTextClass}`}>
-                {settings?.site_tagline || "Real Estate"}
-              </span>
-            </div>
+            {settings?.show_brand_text ? (
+              <div className="flex flex-col leading-tight">
+                <span className={`text-xl font-serif font-bold ${brandTextClass}`}>
+                  {settings?.site_name || "Horizon"}
+                </span>
+                <span className={`text-xs tracking-wider uppercase ${mutedBrandTextClass}`}>
+                  {settings?.site_tagline || "Real Estate"}
+                </span>
+              </div>
+            ) : null}
           </Link>
 
           {/* Desktop Navigation */}

@@ -6,6 +6,8 @@ export interface SiteSettings {
   site_name: string;
   site_tagline: string | null;
   logo_url: string | null;
+  favicon_url?: string | null;
+  show_brand_text?: boolean | null;
   primary_color: string | null;
   phone: string | null;
   email: string | null;
@@ -13,7 +15,7 @@ export interface SiteSettings {
   google_analytics_id: string | null;
   meta_pixel_id: string | null;
   footer_text: string | null;
-}
+} 
 
 export interface SocialLink {
   id: string;

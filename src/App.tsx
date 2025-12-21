@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import RealtimeInvalidation from "@/components/RealtimeInvalidation";
+import WhatsappButton from "@/components/WhatsappButton";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
@@ -47,6 +48,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <RealtimeInvalidation />
+        <WhatsappButton />
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />

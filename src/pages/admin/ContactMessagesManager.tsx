@@ -1,10 +1,12 @@
+import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useToast } from "@/hooks/use-toast";
-import { Trash2, Mail, MailOpen, MessageSquare } from "lucide-react";
+import { Trash2, Mail, MailOpen, MessageSquare, Eye } from "lucide-react";
 import { format } from "date-fns";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 const ContactMessagesManager = () => {
   const { toast } = useToast();
@@ -50,6 +52,16 @@ const ContactMessagesManager = () => {
   });
 
   const unreadCount = messages?.filter((m) => !m.is_read).length || 0;
+  const [openMsg, setOpenMsg] = useState(false);
+  const [selectedMsg, setSelectedMsg] = useState<any>(null);
+
+  const openMessage = (msg: any) => {
+    setSelectedMsg(msg);
+    setOpenMsg(true);
+    if (!msg.is_read) {
+      markReadMutation.mutate({ id: msg.id, is_read: true });
+    }
+  };
 
   return (
     <div>
@@ -83,7 +95,7 @@ const ContactMessagesManager = () => {
                 <TableHead>Subject</TableHead>
                 <TableHead>Message</TableHead>
                 <TableHead>Date</TableHead>
-                <TableHead className="w-24">Actions</TableHead>
+                <TableHead className="w-40">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -112,14 +124,19 @@ const ContactMessagesManager = () => {
                     {format(new Date(msg.created_at), "MMM d, yyyy")}
                   </TableCell>
                   <TableCell>
-                    <Button 
-                      size="icon" 
-                      variant="ghost" 
-                      className="text-destructive"
-                      onClick={() => deleteMutation.mutate(msg.id)}
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
+                    <div className="flex items-center gap-2">
+                      <Button size="icon" variant="ghost" onClick={() => openMessage(msg)} title="View message">
+                        <Eye className="w-4 h-4" />
+                      </Button>
+                      <Button 
+                        size="icon" 
+                        variant="ghost" 
+                        className="text-destructive"
+                        onClick={() => deleteMutation.mutate(msg.id)}
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
                   </TableCell>
                 </TableRow>
               ))}
@@ -127,6 +144,38 @@ const ContactMessagesManager = () => {
           </Table>
         </div>
       )}
+
+      <Dialog open={openMsg} onOpenChange={setOpenMsg}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle>Message Details</DialogTitle>
+          </DialogHeader>
+          {selectedMsg && (
+            <div>
+              <div className="mb-4">
+                <p className="text-sm text-muted-foreground">From</p>
+                <p className="font-medium">{selectedMsg.name} &lt;{selectedMsg.email}&gt;</p>
+                <p className="text-sm text-muted-foreground">{selectedMsg.subject || "-"}</p>
+              </div>
+              <div className="mb-4">
+                <p className="text-sm text-muted-foreground">Message</p>
+                <p className="whitespace-pre-wrap">{selectedMsg.message}</p>
+              </div>
+              <div className="flex justify-between items-center mt-6">
+                <p className="text-sm text-muted-foreground">Received: {format(new Date(selectedMsg.created_at), "PPP p")}</p>
+                <div className="flex gap-2">
+                  <Button onClick={() => { markReadMutation.mutate({ id: selectedMsg.id, is_read: !selectedMsg.is_read }); setOpenMsg(false); }}>
+                    {selectedMsg.is_read ? "Mark as Unread" : "Mark as Read"}
+                  </Button>
+                  <Button variant="destructive" onClick={() => { deleteMutation.mutate(selectedMsg.id); setOpenMsg(false); }}>
+                    Delete
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

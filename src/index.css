@@ -134,6 +134,10 @@
     box-shadow: var(--shadow-card-hover);
   }
 
+  /* Use runtime brand color for hover and accents when provided via inline --brand */
+  .dynamic-primary .project-name { transition: color .25s ease; }
+  .dynamic-primary:hover .project-name { color: var(--brand); }
+
   .section-padding {
     @apply py-20 md:py-28;
   }

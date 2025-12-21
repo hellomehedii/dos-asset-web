@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import ImageUpload from "@/components/ImageUpload";
 import { Save, Settings } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
 
 const SiteSettings = () => {
   const { toast } = useToast();
@@ -23,11 +24,13 @@ const SiteSettings = () => {
 
   const [logoUrl, setLogoUrl] = useState("");
   const [faviconUrl, setFaviconUrl] = useState("");
+  const [showBrandText, setShowBrandText] = useState<boolean>(false);
 
   useEffect(() => {
     if (settings) {
       setLogoUrl(settings.logo_url || "");
       setFaviconUrl((settings as any).favicon_url || "");
+      setShowBrandText(!!(settings as any).show_brand_text);
     }
   }, [settings]);
 
@@ -38,6 +41,7 @@ const SiteSettings = () => {
         site_tagline: formData.get("site_tagline") as string,
         logo_url: logoUrl,
         favicon_url: faviconUrl,
+        show_brand_text: showBrandText,
         phone: formData.get("phone") as string,
         email: formData.get("email") as string,
         address: formData.get("address") as string,
@@ -89,6 +93,10 @@ const SiteSettings = () => {
             </div>
           </div>
 
+          <div className="flex items-center gap-3 mt-4">
+            <label className="font-medium">Display site name & tagline</label>
+            <div className="ml-auto">
+              <Switch checked={showBrandText} onCheckedChange={(val) => setShowBrandText(!!val)} />
           <div className="grid md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-foreground mb-2">Site Name</label>

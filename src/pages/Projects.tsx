@@ -6,6 +6,8 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { MapPin, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
+import { usePageSeo } from "@/hooks/usePageSeo";
 
 const statusMap: Record<string, string> = {
   upcoming: "upcoming",
@@ -36,15 +38,20 @@ const Projects = () => {
     },
   });
 
+  const { data: settings } = useSiteSettings();
+
   const pageTitle = status 
     ? `${statusLabels[dbStatus || ""] || "All"} Projects` 
     : "All Projects";
 
+  const { data: seo } = usePageSeo("projects");
+
   return (
     <>
       <Helmet>
-        <title>{pageTitle} | Horizon Real Estate</title>
-        <meta name="description" content={`Explore our ${pageTitle.toLowerCase()} - premium residential and commercial developments.`} />
+        <title>{seo?.meta_title || `${pageTitle} | Horizon Real Estate`}</title>
+        <meta name="description" content={seo?.meta_description || `Explore our ${pageTitle.toLowerCase()} - premium residential and commercial developments.`} />
+        {seo?.meta_keywords && <meta name="keywords" content={seo.meta_keywords} />}
       </Helmet>
 
       <Navbar />
@@ -87,8 +94,8 @@ const Projects = () => {
             ) : (
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {projects?.map((project) => (
-                  <Link key={project.id} to={`/project/${project.slug}`} className="card-project group">
-                    <div className="aspect-[4/3] bg-secondary overflow-hidden">
+                  <Link key={project.id} to={`/project/${project.slug}`} className={`card-project group dynamic-primary`} style={{ ['--brand' as any]: settings?.primary_color || '#009bfe' }}>
+                          <div className="aspect-[3/4] bg-secondary overflow-hidden">
                       {project.featured_image ? (
                         <img 
                           src={project.featured_image} 
@@ -102,14 +109,27 @@ const Projects = () => {
                       )}
                     </div>
                     <div className="p-6">
-                      <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium mb-3 ${
-                        project.status === "upcoming" ? "bg-primary/10 text-primary" :
-                        project.status === "ongoing" ? "bg-accent/10 text-accent" :
-                        "bg-green-100 text-green-700"
-                      }`}>
-                        {statusLabels[project.status]}
-                      </span>
-                      <h3 className="text-xl font-serif font-bold mb-2 text-foreground group-hover:text-primary transition-colors">
+                      {(() => {
+                        const isOngoing = project.status === "ongoing";
+                        const isUpcoming = project.status === "upcoming";
+                        const isHanded = project.status === "handed_over";
+                        const primary = settings?.primary_color || "#009bfe";
+                        const hexToRgb = (hex: string) => {
+                          const h = hex.replace('#','');
+                          const bigint = parseInt(h, 16);
+                          const r = (bigint >> 16) & 255;
+                          const g = (bigint >> 8) & 255;
+                          const b = bigint & 255;
+                          return `${r},${g},${b}`;
+                        };
+                        const badgeStyle: any = isOngoing ? { backgroundColor: `rgba(${hexToRgb(primary)},0.09)`, color: primary } : isUpcoming ? { backgroundColor: 'rgba(250,204,21,0.12)', color: '#b45309' } : { backgroundColor: '#ecfdf5', color: '#166534' };
+                        return (
+                          <span style={badgeStyle} className="inline-block px-3 py-1 rounded-full text-xs font-medium mb-3">
+                            {statusLabels[project.status]}
+                          </span>
+                        );
+                      })()}
+                      <h3 className="text-xl font-serif font-bold mb-2 text-foreground project-name transition-colors">
                         {project.name}
                       </h3>
                       <p className="flex items-center gap-2 text-muted-foreground text-sm">
