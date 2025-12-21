@@ -63,22 +63,25 @@ const Projects = () => {
             <div className="flex gap-4 flex-wrap">
               {/** Button styles: active uses filled color, inactive uses outline with status color */}
               <Link to="/projects">
-                <Button
-                  variant={!status ? "default" : "outline"}
-                  className={!status ? "bg-primary text-primary-foreground" : "text-white border-white/30 hover:bg-white/10"}
-                >
-                  All
-                </Button>
-              </Link>
+  <Button
+    className={
+      !status
+        ? "bg-primary text-primary-foreground hover:bg-primary/90"
+        : "bg-transparent text-white border border-white/30 hover:bg-white/10"
+    }
+  >
+    All
+  </Button>
+</Link>
 
               <Link to="/projects/upcoming">
                 <Button
                   variant={status === "upcoming" ? "default" : "outline"}
                   className={
                     status === "upcoming"
-                      ? "bg-amber-400 text-black"
-                      : "text-amber-400 border-amber-400/30 hover:bg-amber-400/10"
-                  }
+                      ? "bg-primary text-primary-foreground hover:bg-primary/90"
+        : "bg-transparent text-white border border-white/30 hover:bg-white/10"
+    }
                 >
                   Upcoming
                 </Button>
@@ -89,9 +92,9 @@ const Projects = () => {
                   variant={status === "ongoing" ? "default" : "outline"}
                   className={
                     status === "ongoing"
-                      ? "bg-accent text-accent-foreground"
-                      : "text-accent border-accent/30 hover:bg-accent/10"
-                  }
+                     ? "bg-primary text-primary-foreground hover:bg-primary/90"
+        : "bg-transparent text-white border border-white/30 hover:bg-white/10"
+    }
                 >
                   On Going
                 </Button>
@@ -102,9 +105,9 @@ const Projects = () => {
                   variant={status === "completed" ? "default" : "outline"}
                   className={
                     status === "completed"
-                      ? "bg-green-500 text-white"
-                      : "text-green-400 border-green-400/30 hover:bg-green-400/10"
-                  }
+                     ? "bg-primary text-primary-foreground hover:bg-primary/90"
+        : "bg-transparent text-white border border-white/30 hover:bg-white/10"
+    }
                 >
                   Handed Over
                 </Button>
