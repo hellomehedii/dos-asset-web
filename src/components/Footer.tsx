@@ -17,7 +17,7 @@ const Footer = () => {
   return (
     <footer className="bg-navy text-white">
       {/* Contact Info Bar */}
-      <div className="border-b border-white/10">
+      {/* <div className="border-b border-white/10">
         <div className="container-custom py-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="flex items-center gap-4">
@@ -53,7 +53,7 @@ const Footer = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Bottom Bar - Copyright left, Social right */}
       <div className="container-custom py-6">
