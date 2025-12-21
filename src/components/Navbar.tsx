@@ -48,8 +48,6 @@ const Navbar = () => {
           { name: "Handed Over", path: "/projects/completed" },
         ],
       },
-      { name: "Blog", path: "/blog" },
-      { name: "Contact Us", path: "/contact" },
     ],
     []
   );
@@ -160,7 +158,7 @@ const Navbar = () => {
               </a>
             )}
             <Link to="/contact">
-              <Button className="btn-hero-primary text-sm py-2 px-5">Get in Touch</Button>
+              <Button className="btn-hero-primary text-sm py-2 px-5">Contact Us</Button>
             </Link>
           </div>
 
@@ -215,7 +213,7 @@ const Navbar = () => {
               ))}
               <div className="px-4 pt-4 border-t border-border">
                 <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)}>
-                  <Button className="w-full btn-hero-primary">Get in Touch</Button>
+                <Button className="w-full btn-hero-primary">Contact Us</Button>
                 </Link>
               </div>
             </div>

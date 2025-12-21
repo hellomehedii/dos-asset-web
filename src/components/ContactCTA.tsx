@@ -16,7 +16,7 @@ const ContactCTA = () => {
             {/* Content */}
             <div className="text-primary-foreground">
               <span className="text-accent font-semibold uppercase tracking-wider text-sm">
-                Get in Touch
+                Contact Us
               </span>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold mt-3 mb-6">
                 Ready to Find Your <span className="text-accent">Dream Home?</span>
