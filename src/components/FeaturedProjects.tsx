@@ -7,8 +7,8 @@ import { supabase } from "@/integrations/supabase/client";
 
 const statusColors: Record<string, string> = {
   upcoming: "bg-primary text-primary-foreground",
-  ongoing: "bg-green-500 text-white",
-  handed_over: "bg-yellow-500 text-white",
+  ongoing: "bg-sky-500 text-white",
+  handed_over: "bg-green-500 text-white",
 };
 
 const statusLabels: Record<string, string> = {
@@ -36,17 +36,19 @@ const FeaturedProjects = () => {
   return (
     <section className="section-padding bg-secondary">
       <div className="container-custom">
-        {/* Header */}
+        {/* Section Header */}
         <div className="text-center mb-14">
-          <span className="text-accent font-semibold uppercase tracking-wider text-sm">
-            Our Portfolio
-          </span>
-          <h2 className="text-4xl font-serif font-bold mt-3">
+          <h2 className="text-4xl font-serif font-bold">
             Featured Projects
           </h2>
+
+          <p className="text-muted-foreground max-w-2xl mx-auto mt-4">
+            Explore our collection of premium residential and commercial
+            developments designed to exceed expectations.
+          </p>
         </div>
 
-        {/* Grid */}
+        {/* Projects Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projects?.map((project) => (
             <div
@@ -78,7 +80,7 @@ const FeaturedProjects = () => {
                   <h3 className="text-xl font-serif font-bold text-foreground">
                     {project.name}
                   </h3>
-                  <p className="flex items-center gap-2 text-muted-foreground text-sm mt-1">
+                  <p className="flex items-center gap-2 text-muted-foreground text-sm mt-2">
                     <MapPin className="w-4 h-4 text-primary" />
                     {project.location}
                   </p>

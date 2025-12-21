@@ -206,18 +206,35 @@ const ProjectDetail = () => {
             </div>
 
             {/* Gallery */}
-            {gallery.length > 0 && (
-              <div className="mt-16">
-                <h2 className="text-2xl font-serif font-bold mb-8 text-foreground">Gallery</h2>
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {gallery.map((image: string, index: number) => (
-                    <div key={index} className="aspect-[4/3] bg-secondary rounded-xl overflow-hidden">
-                      <img src={image} alt={`${project.name} gallery ${index + 1}`} className="w-full h-full object-cover" />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
+{Array.isArray(gallery) && gallery.length > 0 && (
+  <div className="mt-16">
+    <h2 className="text-2xl font-serif font-bold mb-8 text-foreground">
+      Gallery
+    </h2>
+
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {gallery
+        .filter((img) => typeof img === "string" && img.trim() !== "")
+        .map((image, index) => (
+          <div
+            key={index}
+            className="bg-secondary rounded-xl overflow-hidden p-2 flex items-center justify-center"
+          >
+            <img
+              src={String(image)} // Explicitly cast 'image' to string
+              alt={`Gallery image ${index + 1}`}
+              className="w-full h-auto object-contain rounded-lg"
+              loading="lazy"
+              onError={(e) => {
+                e.currentTarget.src = "/placeholder.png";
+              }}
+            />
+          </div>
+        ))}
+    </div>
+  </div>
+)}
+
           </div>
         </section>
       </main>
