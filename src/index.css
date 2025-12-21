@@ -1,0 +1,187 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 220 20% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 20% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 20% 15%;
+
+    --primary: 198 100% 50%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 15% 96%;
+    --secondary-foreground: 220 20% 15%;
+
+    --muted: 220 15% 96%;
+    --muted-foreground: 220 10% 45%;
+
+    --accent: 198 100% 50%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 15% 90%;
+    --input: 220 15% 90%;
+    --ring: 198 100% 50%;
+
+    --radius: 0.5rem;
+
+    /* Custom Brand Colors */
+    --gold: 198 100% 50%;
+    --gold-light: 198 100% 62%;
+    --navy: 0 0% 8%;
+    --navy-light: 0 0% 16%;
+
+    /* Gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(0 0% 0% / 0.85), hsl(0 0% 10% / 0.7));
+    --gradient-gold: linear-gradient(135deg, hsl(198 100% 50%), hsl(198 100% 62%));
+    --gradient-primary: linear-gradient(135deg, hsl(198 100% 50%), hsl(198 100% 62%));
+
+    /* Shadows */
+    --shadow-card: 0 4px 20px hsl(220 20% 15% / 0.08);
+    --shadow-card-hover: 0 8px 30px hsl(220 20% 15% / 0.15);
+    --shadow-button: 0 4px 15px hsl(198 100% 50% / 0.3);
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 220 20% 8%;
+    --foreground: 0 0% 98%;
+
+    --card: 220 20% 12%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 220 20% 12%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 195 100% 50%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 20% 18%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 220 20% 18%;
+    --muted-foreground: 220 10% 60%;
+
+    --accent: 43 93% 54%;
+    --accent-foreground: 0 0% 10%;
+
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 220 20% 20%;
+    --input: 220 20% 20%;
+    --ring: 195 100% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary text-primary-foreground px-6 py-3 rounded-full font-medium transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5;
+  }
+
+  .btn-outline-gold {
+    @apply border-2 border-accent text-accent px-6 py-3 rounded-full font-medium transition-all duration-300 hover:bg-accent hover:text-accent-foreground;
+  }
+
+  .btn-hero-primary {
+    @apply bg-accent text-accent-foreground px-8 py-4 rounded-full font-semibold transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 inline-flex items-center gap-2;
+  }
+
+  .btn-hero-secondary {
+    @apply border-2 border-white/30 text-white px-8 py-4 rounded-full font-semibold transition-all duration-300 hover:bg-white/10 hover:border-white/50;
+  }
+
+  .card-project {
+    @apply bg-card rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-2;
+    box-shadow: var(--shadow-card);
+  }
+
+  .card-project:hover {
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  .section-padding {
+    @apply py-20 md:py-28;
+  }
+
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .text-gradient-gold {
+    @apply bg-clip-text text-transparent;
+    background-image: var(--gradient-gold);
+  }
+
+  .navbar-transparent {
+    @apply bg-transparent border-b border-white/10;
+  }
+
+  .navbar-solid {
+    @apply bg-navy/95 backdrop-blur-md border-b border-white/10;
+  }
+}
+
+@layer utilities {
+  .animate-fade-up {
+    animation: fadeUp 0.6s ease-out forwards;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+  }
+
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
