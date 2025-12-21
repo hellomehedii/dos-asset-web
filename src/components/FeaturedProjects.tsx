@@ -85,7 +85,6 @@ const FeaturedProjects = () => {
                     </Badge>
                   );
                 })()}
-                </h3>
                 <div className="flex items-center gap-2 text-muted-foreground mb-4">
                   <MapPin className="w-4 h-4 text-accent" />
                   <span className="text-sm">{project.location}</span>

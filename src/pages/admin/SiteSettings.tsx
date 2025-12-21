@@ -97,6 +97,8 @@ const SiteSettings = () => {
             <label className="font-medium">Display site name & tagline</label>
             <div className="ml-auto">
               <Switch checked={showBrandText} onCheckedChange={(val) => setShowBrandText(!!val)} />
+            </div>
+          </div>
           <div className="grid md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-foreground mb-2">Site Name</label>
