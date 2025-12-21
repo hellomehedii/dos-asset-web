@@ -52,7 +52,7 @@ const BlogDetail = () => {
   return (
     <>
       <Helmet>
-        <title>{post.meta_title || post.title} | Horizon Real Estate</title>
+        <title>{`${post.meta_title || post.title} | Horizon Real Estate`}</title>
         <meta name="description" content={post.meta_description || post.excerpt || `Read ${post.title} on Horizon Real Estate blog`} />
       </Helmet>
 

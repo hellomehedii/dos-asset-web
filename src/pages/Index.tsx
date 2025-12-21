@@ -16,7 +16,7 @@ const Index = () => {
   return (
     <>
       <Helmet>
-        <title>{seo?.meta_title || seo?.page_title || "Home"} | {settings?.site_name}</title>
+        <title>{`${seo?.meta_title || seo?.page_title || "Home"} | ${settings?.site_name || "Horizon"}`}</title>
         {seo?.meta_description ? (
           <meta name="description" content={seo.meta_description} />
         ) : (
