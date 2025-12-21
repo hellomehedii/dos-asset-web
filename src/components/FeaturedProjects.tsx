@@ -4,12 +4,11 @@ import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { useSiteSettings } from "@/hooks/useSiteSettings";
 
 const statusColors: Record<string, string> = {
   upcoming: "bg-primary text-primary-foreground",
-  ongoing: "bg-accent text-accent-foreground",
-  handed_over: "bg-green-500 text-white",
+  ongoing: "bg-green-500 text-white",
+  handed_over: "bg-yellow-500 text-white",
 };
 
 const statusLabels: Record<string, string> = {
@@ -26,84 +25,77 @@ const FeaturedProjects = () => {
         .from("projects")
         .select("*")
         .eq("is_featured", true)
-        .order("display_order")
+        .order("display_order", { ascending: true })
         .limit(6);
+
       if (error) throw error;
       return data;
     },
   });
 
-  const { data: settings } = useSiteSettings();
-
   return (
     <section className="section-padding bg-secondary">
       <div className="container-custom">
-        {/* Section Header */}
-        <div className="text-center mb-16">
+        {/* Header */}
+        <div className="text-center mb-14">
           <span className="text-accent font-semibold uppercase tracking-wider text-sm">
             Our Portfolio
           </span>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-foreground mt-3 mb-4">
+          <h2 className="text-4xl font-serif font-bold mt-3">
             Featured Projects
           </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Explore our collection of premium residential and commercial developments
-            designed to exceed expectations.
-          </p>
         </div>
 
-        {/* Projects Grid */}
+        {/* Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects?.map((project, index) => (
+          {projects?.map((project) => (
             <div
               key={project.id}
-              className="card-project group animate-fade-up"
-              style={{ animationDelay: `${index * 0.1}s` }}
+              className="bg-white rounded-2xl shadow-md hover:shadow-xl transition overflow-hidden"
             >
               {/* Image */}
-              <div className="aspect-[3/4] overflow-hidden relative">
+              <div className="relative aspect-[3/4]">
                 <img
-                  src={project.featured_image || "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&auto=format&fit=crop"}
+                  src={
+                    project.featured_image ||
+                    "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&auto=format&fit=crop"
+                  }
                   alt={project.name}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-navy/60 to-transparent" />
-                {/* Status badge (colored based on status) */}
-                <Badge className={`absolute top-4 left-4 ${statusColors[project.status] || "bg-gray-200 text-gray-800"}`}>
+
+                {/* Status Badge */}
+                <Badge
+                  className={`absolute top-4 left-4 ${statusColors[project.status]}`}
+                >
                   {statusLabels[project.status]}
                 </Badge>
+              </div>
 
-                {/* Project info overlay */}
-                <div className="absolute left-4 right-4 bottom-4 flex flex-col gap-3">
-                  <div>
-                    <h3 className="text-xl font-serif font-bold text-white leading-tight">{project.name}</h3>
-                    <p className="flex items-center gap-2 text-white/80 text-sm">
-                      <MapPin className="w-4 h-4 text-white/80" />
-                      <span>{project.location}</span>
-                    </p>
-                  </div>
-                  <div className="mt-2">
-                    <Link to={`/project/${project.slug}`}>
-                      <Button variant="outline" className="w-full border-white/30 text-white hover:bg-white/10">
-                        View Details
-                        <ArrowRight className="w-4 h-4 ml-2" />
-                      </Button>
-                    </Link>
-                  </div>
+              {/* Content */}
+              <div className="p-6 space-y-4">
+                <div>
+                  <h3 className="text-xl font-serif font-bold text-foreground">
+                    {project.name}
+                  </h3>
+                  <p className="flex items-center gap-2 text-muted-foreground text-sm mt-1">
+                    <MapPin className="w-4 h-4 text-primary" />
+                    {project.location}
+                  </p>
                 </div>
+
+                <Link to={`/project/${project.slug}`}>
+                  <Button
+                    variant="outline"
+                    className="w-full border-primary text-primary hover:bg-primary hover:text-white mt-3"
+                  >
+                    View Details
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </Button>
+                </Link>
               </div>
             </div>
           ))}
-        </div>
-
-        {/* View All Button */}
-        <div className="text-center mt-12">
-          <Link to="/projects">
-            <Button className="btn-primary">
-              View All Projects
-              <ArrowRight className="w-5 h-5 ml-2" />
-            </Button>
-          </Link>
         </div>
       </div>
     </section>
