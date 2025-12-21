@@ -68,33 +68,29 @@ const FeaturedProjects = () => {
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-navy/60 to-transparent" />
-                {(() => {
-                  const primary = settings?.primary_color || '#009bfe';
-                  const hexToRgb = (hex: string) => {
-                    const h = hex.replace('#','');
-                    const bigint = parseInt(h, 16);
-                    const r = (bigint >> 16) & 255;
-                    const g = (bigint >> 8) & 255;
-                    const b = bigint & 255;
-                    return `${r},${g},${b}`;
-                  };
-                  const badgeStyle: any = project.status === 'ongoing' ? { backgroundColor: `rgba(${hexToRgb(primary)},0.09)`, color: primary } : project.status === 'upcoming' ? { backgroundColor: 'rgba(250,204,21,0.12)', color: '#b45309' } : { backgroundColor: '#ecfdf5', color: '#166534' };
-                  return (
-                    <Badge style={badgeStyle} className="absolute top-4 left-4">
-                      {statusLabels[project.status]}
-                    </Badge>
-                  );
-                })()}
-                <div className="flex items-center gap-2 text-muted-foreground mb-4">
-                  <MapPin className="w-4 h-4 text-accent" />
-                  <span className="text-sm">{project.location}</span>
+                {/* Status badge (colored based on status) */}
+                <Badge className={`absolute top-4 left-4 ${statusColors[project.status] || "bg-gray-200 text-gray-800"}`}>
+                  {statusLabels[project.status]}
+                </Badge>
+
+                {/* Project info overlay */}
+                <div className="absolute left-4 right-4 bottom-4 flex flex-col gap-3">
+                  <div>
+                    <h3 className="text-xl font-serif font-bold text-white leading-tight">{project.name}</h3>
+                    <p className="flex items-center gap-2 text-white/80 text-sm">
+                      <MapPin className="w-4 h-4 text-white/80" />
+                      <span>{project.location}</span>
+                    </p>
+                  </div>
+                  <div className="mt-2">
+                    <Link to={`/project/${project.slug}`}>
+                      <Button variant="outline" className="w-full border-white/30 text-white hover:bg-white/10">
+                        View Details
+                        <ArrowRight className="w-4 h-4 ml-2" />
+                      </Button>
+                    </Link>
+                  </div>
                 </div>
-                <Link to={`/project/${project.slug}`}>
-                  <Button variant="outline" className="w-full group/btn border-primary text-primary hover:bg-primary hover:text-primary-foreground">
-                    View Details
-                    <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover/btn:translate-x-1" />
-                  </Button>
-                </Link>
               </div>
             </div>
           ))}

@@ -61,23 +61,51 @@ const Projects = () => {
           <div className="container-custom">
             <h1 className="text-4xl md:text-5xl font-serif font-bold mb-6">{pageTitle}</h1>
             <div className="flex gap-4 flex-wrap">
+              {/** Button styles: active uses filled color, inactive uses outline with status color */}
               <Link to="/projects">
-                <Button variant={!status ? "default" : "outline"} className={!status ? "" : "text-white border-white/30 hover:bg-white/10"}>
+                <Button
+                  variant={!status ? "default" : "outline"}
+                  className={!status ? "bg-primary text-primary-foreground" : "text-white border-white/30 hover:bg-white/10"}
+                >
                   All
                 </Button>
               </Link>
+
               <Link to="/projects/upcoming">
-                <Button variant={status === "upcoming" ? "default" : "outline"} className={status === "upcoming" ? "" : "text-white border-white/30 hover:bg-white/10"}>
+                <Button
+                  variant={status === "upcoming" ? "default" : "outline"}
+                  className={
+                    status === "upcoming"
+                      ? "bg-amber-400 text-black"
+                      : "text-amber-400 border-amber-400/30 hover:bg-amber-400/10"
+                  }
+                >
                   Upcoming
                 </Button>
               </Link>
+
               <Link to="/projects/ongoing">
-                <Button variant={status === "ongoing" ? "default" : "outline"} className={status === "ongoing" ? "" : "text-white border-white/30 hover:bg-white/10"}>
+                <Button
+                  variant={status === "ongoing" ? "default" : "outline"}
+                  className={
+                    status === "ongoing"
+                      ? "bg-accent text-accent-foreground"
+                      : "text-accent border-accent/30 hover:bg-accent/10"
+                  }
+                >
                   On Going
                 </Button>
               </Link>
+
               <Link to="/projects/completed">
-                <Button variant={status === "completed" ? "default" : "outline"} className={status === "completed" ? "" : "text-white border-white/30 hover:bg-white/10"}>
+                <Button
+                  variant={status === "completed" ? "default" : "outline"}
+                  className={
+                    status === "completed"
+                      ? "bg-green-500 text-white"
+                      : "text-green-400 border-green-400/30 hover:bg-green-400/10"
+                  }
+                >
                   Handed Over
                 </Button>
               </Link>
