@@ -99,6 +99,16 @@ const FeaturedProjects = () => {
             </div>
           ))}
         </div>
+
+        {/* View All Button */}
+        <div className="text-center mt-12">
+          <Link to="/projects">
+            <Button className="btn-primary">
+              View All Projects
+              <ArrowRight className="w-5 h-5 ml-2" />
+            </Button>
+          </Link>
+        </div>
       </div>
     </section>
   );
