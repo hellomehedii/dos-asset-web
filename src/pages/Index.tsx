@@ -16,15 +16,22 @@ const Index = () => {
   return (
     <>
       <Helmet>
-        <title>{`${seo?.meta_title || seo?.page_title || "Home"} | ${settings?.site_name || "Horizon"}`}</title>
-        {seo?.meta_description ? (
+        {/* Page title only from Page SEO */}
+        {seo?.page_title && <title>{seo.page_title}</title>}
+
+        {/* Meta from Page SEO */}
+        {seo?.meta_description && (
           <meta name="description" content={seo.meta_description} />
-        ) : (
-          <meta name="description" content="Horizon Real Estate - Your trusted partner in premium residential and commercial property development since 1998. Explore our portfolio of quality projects in Dhaka and beyond." />
         )}
-        {seo?.meta_keywords && <meta name="keywords" content={seo.meta_keywords} />}
-        {settings?.favicon_url && <link rel="icon" href={settings.favicon_url} />}
-        <link rel="canonical" href={window.location.origin} />
+
+        {seo?.meta_keywords && (
+          <meta name="keywords" content={seo.meta_keywords} />
+        )}
+
+        {/* Favicon from Site Settings */}
+        {settings?.favicon_url && (
+          <link rel="icon" href={settings.favicon_url} />
+        )}
       </Helmet>
 
       <main>

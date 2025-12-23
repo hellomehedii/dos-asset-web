@@ -33,7 +33,7 @@ const Navbar = () => {
       { name: "Home", path: "/" },
       {
         name: "About Us",
-        path: "/about",
+        
         dropdown: [
           { name: "Our Story", path: "/about/story" },
           { name: "Management", path: "/about/management" },
@@ -41,7 +41,6 @@ const Navbar = () => {
       },
       {
         name: "Projects",
-        path: "/projects",
         dropdown: [
           { name: "Upcoming", path: "/projects/upcoming" },
           { name: "On Going", path: "/projects/ongoing" },

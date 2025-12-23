@@ -9,7 +9,6 @@ import WhatsappButton from "@/components/WhatsappButton";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
-import About from "./pages/About";
 import OurStory from "./pages/about/OurStory";
 import Management from "./pages/about/Management";
 import Projects from "./pages/Projects";
@@ -53,7 +52,6 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
-            <Route path="/about" element={<About />} />
             <Route path="/about/story" element={<OurStory />} />
             <Route path="/about/management" element={<Management />} />
             <Route path="/projects" element={<Projects />} />

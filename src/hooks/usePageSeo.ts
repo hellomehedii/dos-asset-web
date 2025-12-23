@@ -7,7 +7,7 @@ export const usePageSeo = (pageSlug: string) => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("page_seo")
-        .select("*")
+        .select("meta_title, meta_description, meta_keywords, page_title")
         .eq("page_slug", pageSlug)
         .single();
       if (error) throw error;
