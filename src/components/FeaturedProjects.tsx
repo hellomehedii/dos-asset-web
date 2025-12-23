@@ -7,7 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 const statusColors: Record<string, string> = {
   upcoming: "bg-primary text-primary-foreground",
-  ongoing: "bg-sky-500 text-white",
+  ongoing: "bg-yellow-500 text-white",
   handed_over: "bg-green-500 text-white",
 };
 
