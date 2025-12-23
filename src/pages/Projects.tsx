@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { MapPin, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 import { usePageSeo } from "@/hooks/usePageSeo";
 
@@ -19,6 +20,12 @@ const statusLabels: Record<string, string> = {
   upcoming: "Upcoming",
   ongoing: "On Going",
   handed_over: "Handed Over",
+};
+
+const statusColors: Record<string, string> = {
+  upcoming: "bg-primary text-primary-foreground",
+  ongoing: "bg-sky-500 text-white",
+  handed_over: "bg-green-500 text-white",
 };
 
 const Projects = () => {
@@ -125,50 +132,41 @@ const Projects = () => {
             ) : (
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {projects?.map((project) => (
-                  <Link key={project.id} to={`/project/${project.slug}`} className={`card-project group dynamic-primary`} style={{ ['--brand' as any]: settings?.primary_color || '#009bfe' }}>
-                          <div className="aspect-[3/4] bg-secondary overflow-hidden">
-                      {project.featured_image ? (
-                        <img 
-                          src={project.featured_image} 
-                          alt={project.name} 
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center text-muted-foreground">
-                          Project Image
-                        </div>
-                      )}
+                  <div key={project.id} className="bg-white rounded-2xl shadow-md hover:shadow-xl transition overflow-hidden">
+                    <div className="relative aspect-[3/4]">
+                      <img
+                        src={project.featured_image || "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&auto=format&fit=crop"}
+                        alt={project.name}
+                        className="w-full h-full object-cover"
+                      />
+
+                      <Badge className={`absolute top-4 left-4 ${statusColors[project.status]}`}>
+                        {statusLabels[project.status]}
+                      </Badge>
                     </div>
-                    <div className="p-6">
-                      {(() => {
-                        const isOngoing = project.status === "ongoing";
-                        const isUpcoming = project.status === "upcoming";
-                        const isHanded = project.status === "handed_over";
-                        const primary = settings?.primary_color || "#009bfe";
-                        const hexToRgb = (hex: string) => {
-                          const h = hex.replace('#','');
-                          const bigint = parseInt(h, 16);
-                          const r = (bigint >> 16) & 255;
-                          const g = (bigint >> 8) & 255;
-                          const b = bigint & 255;
-                          return `${r},${g},${b}`;
-                        };
-                        const badgeStyle: any = isOngoing ? { backgroundColor: `rgba(${hexToRgb(primary)},0.09)`, color: primary } : isUpcoming ? { backgroundColor: 'rgba(250,204,21,0.12)', color: '#b45309' } : { backgroundColor: '#ecfdf5', color: '#166534' };
-                        return (
-                          <span style={badgeStyle} className="inline-block px-3 py-1 rounded-full text-xs font-medium mb-3">
-                            {statusLabels[project.status]}
-                          </span>
-                        );
-                      })()}
-                      <h3 className="text-xl font-serif font-bold mb-2 text-foreground project-name transition-colors">
-                        {project.name}
-                      </h3>
-                      <p className="flex items-center gap-2 text-muted-foreground text-sm">
-                        <MapPin className="w-4 h-4" />
-                        {project.location}
-                      </p>
+
+                    <div className="p-6 space-y-4">
+                      <div>
+                        <h3 className="text-xl font-serif font-bold text-foreground">
+                          {project.name}
+                        </h3>
+                        <p className="flex items-center gap-2 text-muted-foreground text-sm mt-2">
+                          <MapPin className="w-4 h-4 text-primary" />
+                          {project.location}
+                        </p>
+                      </div>
+
+                      <Link to={`/project/${project.slug}`}>
+                        <Button
+                          variant="outline"
+                          className="w-full border-primary text-primary hover:bg-primary hover:text-white mt-3"
+                        >
+                          View Details
+                          <ArrowRight className="w-4 h-4 ml-2" />
+                        </Button>
+                      </Link>
                     </div>
-                  </Link>
+                  </div>
                 ))}
               </div>
             )}
