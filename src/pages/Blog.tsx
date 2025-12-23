@@ -8,20 +8,21 @@ import { Calendar, ArrowRight } from "lucide-react";
 import { format } from "date-fns";
 
 const Blog = () => {
-  /* ================= SEO ================= */
+  /* ================= PAGE SEO ================= */
   const { data: seo } = useQuery({
     queryKey: ["page-seo", "blog"],
     queryFn: async () => {
       const { data } = await supabase
         .from("page_seo")
-        .select("title, description")
+        .select("page_title, meta_title, meta_description, og_image")
         .eq("page_slug", "blog")
         .single();
+
       return data;
     },
   });
 
-  /* ================= SETTINGS ================= */
+  /* ================= SITE SETTINGS ================= */
   const { data: settings } = useQuery({
     queryKey: ["site-settings"],
     queryFn: async () => {
@@ -46,20 +47,28 @@ const Blog = () => {
     },
   });
 
-  /* ================= FALLBACK TEXT ================= */
+  /* ================= FALLBACK ================= */
   const pageTitle =
-    seo?.title || "Blog";
+    seo?.meta_title || seo?.page_title || "Blog";
 
   const pageDescription =
-    seo?.description ||
-    "Latest articles, updates and insights.";
+    seo?.meta_description || "Latest articles, updates and insights.";
 
   return (
     <>
-      {/* ========= SEO ========= */}
+      {/* ================= SEO ================= */}
       <Helmet>
         <title>{pageTitle}</title>
         <meta name="description" content={pageDescription} />
+
+        {/* OG */}
+        <meta property="og:title" content={pageTitle} />
+        <meta property="og:description" content={pageDescription} />
+        {seo?.og_image && (
+          <meta property="og:image" content={seo.og_image} />
+        )}
+
+        {/* FAVICON */}
         {settings?.favicon_url && (
           <link rel="icon" href={settings.favicon_url} />
         )}
@@ -68,20 +77,19 @@ const Blog = () => {
       <Navbar />
 
       <main className="pt-20">
-        {/* ========= HERO ========= */}
+        {/* ================= HERO ================= */}
         <section className="bg-navy text-white py-20">
           <div className="container-custom">
             <h1 className="text-4xl md:text-5xl font-serif font-bold mb-6">
-              {pageTitle}
+              {seo?.page_title || "Blog"}
             </h1>
-
             <p className="text-xl text-white/80 max-w-2xl">
               {pageDescription}
             </p>
           </div>
         </section>
 
-        {/* ========= BLOG LIST ========= */}
+        {/* ================= BLOG LIST ================= */}
         <section className="section-padding">
           <div className="container-custom">
             {isLoading ? (

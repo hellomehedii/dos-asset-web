@@ -11,6 +11,7 @@ import DOMPurify from "dompurify";
 const BlogDetail = () => {
   const { slug } = useParams();
 
+  /* ================= BLOG POST ================= */
   const { data: post, isLoading } = useQuery({
     queryKey: ["blog-post", slug],
     queryFn: async () => {
@@ -19,10 +20,23 @@ const BlogDetail = () => {
         .select("*")
         .eq("slug", slug)
         .single();
+
       if (error) throw error;
       return data;
     },
     enabled: !!slug,
+  });
+
+  /* ================= SITE SETTINGS ================= */
+  const { data: settings } = useQuery({
+    queryKey: ["site-settings"],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("site_settings")
+        .select("site_title, favicon_url")
+        .single();
+      return data;
+    },
   });
 
   if (isLoading) {
@@ -49,18 +63,44 @@ const BlogDetail = () => {
     );
   }
 
+  /* ================= SEO VALUES ================= */
+  const pageTitle = post.meta_title || post.title;
+
+  const fullTitle = settings?.site_title
+    ? `${pageTitle} | ${settings.site_title}`
+    : pageTitle;
+
+  const pageDescription =
+    post.meta_description ||
+    post.excerpt ||
+    `Read ${post.title}`;
+
   return (
     <>
+      {/* ================= SEO ================= */}
       <Helmet>
-        <title>{`${post.meta_title || post.title} | Horizon Real Estate`}</title>
-        <meta name="description" content={post.meta_description || post.excerpt || `Read ${post.title} on Horizon Real Estate blog`} />
+        <title>{fullTitle}</title>
+        <meta name="description" content={pageDescription} />
+
+        {/* Open Graph */}
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content={pageTitle} />
+        <meta property="og:description" content={pageDescription} />
+        {post.og_image && (
+          <meta property="og:image" content={post.og_image} />
+        )}
+
+        {/* Favicon */}
+        {settings?.favicon_url && (
+          <link rel="icon" href={settings.favicon_url} />
+        )}
       </Helmet>
 
       <Navbar />
-      
+
       <main className="pt-20">
         <article>
-          {/* Hero */}
+          {/* ================= HERO ================= */}
           <section className="bg-navy text-white py-20">
             <div className="container-custom max-w-4xl">
               {post.published_at && (
@@ -69,27 +109,40 @@ const BlogDetail = () => {
                   {format(new Date(post.published_at), "MMMM d, yyyy")}
                 </p>
               )}
-              <h1 className="text-4xl md:text-5xl font-serif font-bold">{post.title}</h1>
+
+              <h1 className="text-4xl md:text-5xl font-serif font-bold">
+                {post.title}
+              </h1>
             </div>
           </section>
 
-          {/* Featured Image */}
+          {/* ================= FEATURED IMAGE ================= */}
           {post.featured_image && (
             <div className="container-custom max-w-4xl -mt-8">
               <div className="aspect-video rounded-2xl overflow-hidden shadow-xl">
-                <img src={post.featured_image} alt={post.title} className="w-full h-full object-cover" />
+                <img
+                  src={post.featured_image}
+                  alt={post.title}
+                  className="w-full h-full object-cover"
+                />
               </div>
             </div>
           )}
 
-          {/* Content */}
+          {/* ================= CONTENT ================= */}
           <section className="section-padding">
             <div className="container-custom max-w-4xl">
               <div className="prose prose-lg max-w-none text-foreground">
                 {post.content ? (
-                  <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content) }} />
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: DOMPurify.sanitize(post.content),
+                    }}
+                  />
                 ) : (
-                  <p className="text-muted-foreground">No content available</p>
+                  <p className="text-muted-foreground">
+                    No content available
+                  </p>
                 )}
               </div>
             </div>
