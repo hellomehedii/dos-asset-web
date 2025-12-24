@@ -3,13 +3,35 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { usePageSeo } from "@/hooks/usePageSeo";
+
 
 const OurStory = () => {
-  // 🔹 Dynamic SEO (page_slug = "our-story")
-  const { data: seo } = usePageSeo("our-story");
+  /* ================= PAGE SEO ================= */
+  const { data: seo, isLoading: seoLoading } = useQuery({
+    queryKey: ["page-seo", "our-story"],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("page_seo")
+        .select("page_title, meta_title, meta_description, og_image")
+        .eq("page_slug", "our-story")
+        .single();
+      return data;
+    },
+  });
 
-  // 🔹 About page content
+  /* ================= SITE SETTINGS ================= */
+  const { data: settings, isLoading: settingsLoading } = useQuery({
+    queryKey: ["site-settings"],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("site_settings")
+        .select("favicon_url")
+        .single();
+      return data;
+    },
+  });
+
+  /* ================= ABOUT CONTENT ================= */
   const { data: aboutContent } = useQuery({
     queryKey: ["about-content"],
     queryFn: async () => {
@@ -17,41 +39,36 @@ const OurStory = () => {
         .from("about_content")
         .select("*")
         .order("display_order");
-
       if (error) throw error;
       return data;
     },
   });
 
-  const ourStory = aboutContent?.find(
-    (c: any) => c.section_type === "our_story"
-  );
-  const mission = aboutContent?.find(
-    (c: any) => c.section_type === "mission"
-  );
-  const vision = aboutContent?.find(
-    (c: any) => c.section_type === "vision"
-  );
+  const ourStory = aboutContent?.find((c: any) => c.section_type === "our_story");
+  const mission = aboutContent?.find((c: any) => c.section_type === "mission");
+  const vision = aboutContent?.find((c: any) => c.section_type === "vision");
+
+  /* ================= LOADING STATE ================= */
+  if (seoLoading || settingsLoading) return <div>Loading...</div>;
+
+  /* ================= DYNAMIC PAGE TITLE & DESCRIPTION ================= */
+  const pageTitle = seo?.meta_title || seo?.page_title; // fallback removed
+  const pageDescription = seo?.meta_description;       // fallback removed
 
   return (
     <>
       {/* ✅ Dynamic SEO */}
       <Helmet>
-        <title>
-          {seo?.meta_title || "Our Story | Horizon Real Estate"}
-        </title>
+        {pageTitle && <title>{pageTitle}</title>}
+        {pageDescription && <meta name="description" content={pageDescription} />}
 
-        <meta
-          name="description"
-          content={
-            seo?.meta_description ||
-            "Learn about Horizon Real Estate's journey since 1998 - our story, mission and vision."
-          }
-        />
+        {/* OG */}
+        {pageTitle && <meta property="og:title" content={pageTitle} />}
+        {pageDescription && <meta property="og:description" content={pageDescription} />}
+        {seo?.og_image && <meta property="og:image" content={seo.og_image} />}
 
-        {seo?.meta_keywords && (
-          <meta name="keywords" content={seo.meta_keywords} />
-        )}
+        {/* FAVICON */}
+        {settings?.favicon_url && <link rel="icon" href={settings.favicon_url} />}
       </Helmet>
 
       <Navbar />
@@ -61,7 +78,7 @@ const OurStory = () => {
         <section className="bg-navy text-white py-20">
           <div className="container-custom">
             <h1 className="text-4xl md:text-5xl font-serif font-bold mb-6">
-              {seo?.page_title || "Our Story"}
+              {seo?.page_title}
             </h1>
             <p className="text-xl text-white/80 max-w-2xl">
               Building dreams and creating landmarks since 1998.
@@ -75,22 +92,13 @@ const OurStory = () => {
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div>
                 <h2 className="text-3xl font-serif font-bold mb-6 text-foreground">
-                  {ourStory?.title || "Our Story"}
+                  {ourStory?.title}
                 </h2>
 
                 <div className="text-muted-foreground space-y-4">
-                  {ourStory?.content
-                    ? ourStory.content.split("\n").map(
-                        (paragraph: string, index: number) => (
-                          <p key={index}>{paragraph}</p>
-                        )
-                      )
-                    : (
-                      <p>
-                        Founded in 2025, Horizon Real Estate has been at the
-                        forefront of premium property development in Bangladesh.
-                      </p>
-                    )}
+                  {ourStory?.content?.split("\n").map((paragraph: string, index: number) => (
+                    <p key={index}>{paragraph}</p>
+                  ))}
                 </div>
               </div>
 
@@ -136,12 +144,9 @@ const OurStory = () => {
 
               <div>
                 <h3 className="text-2xl font-serif font-bold mb-4 text-foreground">
-                  {mission?.title || "Our Mission"}
+                  {mission?.title}
                 </h3>
-                <p className="text-muted-foreground">
-                  {mission?.content ||
-                    "To deliver exceptional real estate solutions that exceed customer expectations while maintaining the highest standards of quality, integrity, and innovation in every project we undertake."}
-                </p>
+                <p className="text-muted-foreground">{mission?.content}</p>
               </div>
             </div>
 
@@ -149,12 +154,9 @@ const OurStory = () => {
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div>
                 <h3 className="text-2xl font-serif font-bold mb-4 text-foreground">
-                  {vision?.title || "Our Vision"}
+                  {vision?.title}
                 </h3>
-                <p className="text-muted-foreground">
-                  {vision?.content ||
-                    "To be the most trusted and respected real estate developer in Bangladesh, known for creating sustainable communities and iconic landmarks that enhance the quality of life for generations to come."}
-                </p>
+                <p className="text-muted-foreground">{vision?.content}</p>
               </div>
 
               <div className="bg-card rounded-2xl aspect-video overflow-hidden">
