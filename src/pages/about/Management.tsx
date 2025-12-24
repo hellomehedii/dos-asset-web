@@ -206,11 +206,11 @@ const Management = () => {
 
       <main className="pt-20">
         {/* Hero Section */}
-        <section className="relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-b from-primary/10 via-background to-background" />
+        <section className="relative overflow-hidden ">
+          <div className="absolute inset-0 bg-primary" />
           <div className="container-custom relative py-16 md:py-20">
-            <h1 className="text-4xl md:text-5xl font-serif font-bold text-foreground">Management Team</h1>
-            <p className="mt-5 text-lg md:text-xl text-muted-foreground max-w-2xl">
+            <h1 className="text-4xl md:text-5xl font-serif font-bold  text-white">Management Team</h1>
+            <p className="mt-5 text-lg md:text-xl  text-white max-w-2xl">
               The people behind our projects—focused on quality, delivery, and long-term trust.
             </p>
           </div>

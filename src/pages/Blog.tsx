@@ -78,7 +78,7 @@ const Blog = () => {
 
       <main className="pt-20">
         {/* ================= HERO ================= */}
-        <section className="bg-navy text-white py-20">
+        <section className="bg-primary text-white py-20">
           <div className="container-custom">
             <h1 className="text-4xl md:text-5xl font-serif font-bold mb-6">
               {seo?.page_title || "Blog"}

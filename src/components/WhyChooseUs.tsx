@@ -43,7 +43,7 @@ const WhyChooseUs = () => {
             Our Commitment
           </span>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold mt-3 mb-4">
-            Why Choose <span className="text-accent">Horizon</span>
+            Why Choose <span className="text-accent">DADL ?</span>
           </h2>
           <p className="text-white/70 max-w-2xl mx-auto">
             We go beyond building structures – we create lasting relationships

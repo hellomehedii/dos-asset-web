@@ -88,13 +88,13 @@ const OurStory = () => {
 
       <main className="pt-20">
         {/* Hero Section */}
-        <section className="bg-navy text-white py-20">
+        <section className="bg-primary text-white py-20">
           <div className="container-custom">
             <h1 className="text-4xl md:text-5xl font-serif font-bold mb-6">
               {seo?.page_title || "Our Story"}
             </h1>
             <p className="text-xl text-white/80 max-w-2xl">
-              Building dreams and creating landmarks since 1998.
+              Building dreams and creating landmarks since 2025.
             </p>
           </div>
         </section>

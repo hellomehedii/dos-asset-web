@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 
 const AboutIntro = () => {
   const highlights = [
-    "Over 25 years of industry experience",
+    "Over 16 years of industry experience",
     "150+ successful projects delivered",
     "Premium quality construction standards",
     "Customer-centric approach",
@@ -28,7 +28,7 @@ const AboutIntro = () => {
             <div className="absolute -bottom-6 -right-6 bg-card p-6 rounded-2xl shadow-xl max-w-xs hidden md:block">
               <div className="flex items-center gap-4">
                 <div className="w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center">
-                  <span className="text-2xl font-bold text-accent">25+</span>
+                  <span className="text-2xl font-bold text-accent">16+</span>
                 </div>
                 <div>
                   <p className="font-semibold text-foreground">Years of Trust</p>
@@ -41,13 +41,13 @@ const AboutIntro = () => {
           {/* Content Side */}
           <div className="animate-fade-up" style={{ animationDelay: "0.2s" }}>
             <span className="text-accent font-semibold uppercase tracking-wider text-sm">
-              About Horizon
+              About DOS ASSET DEVELOPMENT
             </span>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-foreground mt-3 mb-6">
               Building Dreams, Creating <span className="text-primary">Landmarks</span>
             </h2>
             <p className="text-muted-foreground mb-6 text-lg">
-              Since 1998, Horizon Real Estate has been at the forefront of premium
+              Since 2025,  <b className="text-foreground"> DOS ASSET DEVELOPMENT LTD </b>  Real Estate has been at the forefront of premium
               property development in Bangladesh. We combine innovative design with
               exceptional craftsmanship to create spaces that inspire and endure.
             </p>

@@ -31,7 +31,7 @@ const Footer = () => {
               </div>
             )}
             <p className="text-white/60 text-sm">
-              © {new Date().getFullYear()} {settings?.site_name || "Horizon"}. All rights reserved.
+              © {new Date().getFullYear()} {settings?.site_name || "DADL"}. All rights reserved.
             </p>
           </div>
           <div className="flex gap-3">

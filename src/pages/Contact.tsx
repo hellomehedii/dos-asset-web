@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { useQuery } from "@tanstack/react-query";
 
 const Contact = () => {
   const { data: settings } = useSiteSettings();
@@ -22,10 +23,27 @@ const Contact = () => {
     message: "",
   });
 
+  // ================= PAGE SEO =================
+  const { data: seo, isLoading: seoLoading } = useQuery({
+    queryKey: ["page-seo", "contact"],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("page_seo")
+        .select("page_title, meta_title, meta_description, og_image, canonical_url")
+        .eq("page_slug", "contact")
+        .single();
+      return data;
+    },
+  });
+
+  const pageTitle = seo?.meta_title || seo?.page_title || "Contact Us";
+  const pageDescription = seo?.meta_description || "Get in touch with us. We're here to help with all your property needs.";
+  const canonicalUrl = seo?.canonical_url || window.location.href;
+  const ogImage = seo?.og_image || "";
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
     try {
       const { error } = await supabase.from("contact_messages").insert({
         name: formData.name,
@@ -34,13 +52,13 @@ const Contact = () => {
         subject: formData.subject,
         message: formData.message,
       });
-      
       if (error) throw error;
-      
+
       toast({
         title: "Message sent!",
         description: "We'll get back to you as soon as possible.",
       });
+
       setFormData({ name: "", phone: "", email: "", subject: "", message: "" });
     } catch (error: any) {
       toast({
@@ -53,22 +71,34 @@ const Contact = () => {
     }
   };
 
+  if (seoLoading) return <div className="text-center py-12">Loading...</div>;
+
   return (
     <>
+      {/* ================= SEO ================= */}
       <Helmet>
-        <title>Contact Us | Horizon Real Estate</title>
-        <meta name="description" content="Get in touch with Horizon Real Estate. We're here to help with all your property needs." />
+        <title>{pageTitle}</title>
+        <meta name="description" content={pageDescription} />
+        <link rel="canonical" href={canonicalUrl} />
+
+        {/* Open Graph */}
+        <meta property="og:title" content={pageTitle} />
+        <meta property="og:description" content={pageDescription} />
+        {ogImage && <meta property="og:image" content={ogImage} />}
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:type" content="website" />
+
+        {/* Favicon */}
+        {settings?.favicon_url && <link rel="icon" href={settings.favicon_url} />}
       </Helmet>
 
       <Navbar />
-      
+
       <main className="pt-20">
-        <section className="bg-navy text-white py-20">
+        <section className="bg-primary text-white py-20">
           <div className="container-custom">
-            <h1 className="text-4xl md:text-5xl font-serif font-bold mb-6">Contact Us</h1>
-            <p className="text-xl text-white/80 max-w-2xl">
-              Have a question or want to learn more about our projects? We'd love to hear from you.
-            </p>
+            <h1 className="text-4xl md:text-5xl font-serif font-bold mb-6">{seo?.page_title || "Contact Us"}</h1>
+            <p className="text-xl text-white/80 max-w-2xl">{pageDescription}</p>
           </div>
         </section>
 
@@ -78,7 +108,7 @@ const Contact = () => {
               {/* Contact Info */}
               <div>
                 <h2 className="text-2xl font-serif font-bold mb-8 text-foreground">Get in Touch</h2>
-                
+
                 <div className="space-y-6">
                   <div className="flex items-start gap-4">
                     <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
@@ -89,7 +119,7 @@ const Contact = () => {
                       <p className="text-muted-foreground">{settings?.address || "House 45, Road 12, Sector 7, Uttara, Dhaka 1230"}</p>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-start gap-4">
                     <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
                       <Phone className="w-6 h-6 text-primary" />
@@ -101,7 +131,7 @@ const Contact = () => {
                       </a>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-start gap-4">
                     <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
                       <Mail className="w-6 h-6 text-primary" />
@@ -124,62 +154,62 @@ const Contact = () => {
               {/* Contact Form */}
               <div>
                 <h2 className="text-2xl font-serif font-bold mb-8 text-foreground">Send a Message</h2>
-                
+
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-foreground mb-2">Name</label>
-                      <Input 
-                        placeholder="Your name" 
-                        required 
+                      <Input
+                        placeholder="Your name"
+                        required
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-foreground mb-2">Phone</label>
-                      <Input 
-                        type="tel" 
-                        placeholder="Your phone" 
-                        required 
+                      <Input
+                        type="tel"
+                        placeholder="Your phone"
+                        required
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                       />
                     </div>
                   </div>
-                  
+
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-2">Email</label>
-                    <Input 
-                      type="email" 
-                      placeholder="your@email.com" 
-                      required 
+                    <Input
+                      type="email"
+                      placeholder="your@email.com"
+                      required
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     />
                   </div>
-                  
+
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-2">Subject</label>
-                    <Input 
-                      placeholder="How can we help?" 
-                      required 
+                    <Input
+                      placeholder="How can we help?"
+                      required
                       value={formData.subject}
                       onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                     />
                   </div>
-                  
+
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-2">Message</label>
-                    <Textarea 
-                      placeholder="Your message..." 
-                      rows={5} 
-                      required 
+                    <Textarea
+                      placeholder="Your message..."
+                      rows={5}
+                      required
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     />
                   </div>
-                  
+
                   <Button type="submit" className="w-full" disabled={isSubmitting}>
                     {isSubmitting ? "Sending..." : "Send Message"}
                     <Send className="w-4 h-4 ml-2" />
