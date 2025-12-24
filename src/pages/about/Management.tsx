@@ -21,17 +21,35 @@ type TeamMember = {
 const SocialLinks = ({ member }: { member: TeamMember }) => (
   <div className="flex items-center justify-center gap-2 mt-4">
     {member.social_facebook && (
-      <a href={member.social_facebook} target="_blank" rel="noopener noreferrer" className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border bg-background/60 text-muted-foreground transition-colors hover:bg-primary hover:text-primary-foreground" aria-label={`${member.name} on Facebook`}>
+      <a
+        href={member.social_facebook}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border bg-background/60 text-muted-foreground transition-colors hover:bg-primary hover:text-primary-foreground"
+        aria-label={`${member.name} on Facebook`}
+      >
         <Facebook className="h-4 w-4" />
       </a>
     )}
     {member.social_linkedin && (
-      <a href={member.social_linkedin} target="_blank" rel="noopener noreferrer" className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border bg-background/60 text-muted-foreground transition-colors hover:bg-primary hover:text-primary-foreground" aria-label={`${member.name} on LinkedIn`}>
+      <a
+        href={member.social_linkedin}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border bg-background/60 text-muted-foreground transition-colors hover:bg-primary hover:text-primary-foreground"
+        aria-label={`${member.name} on LinkedIn`}
+      >
         <Linkedin className="h-4 w-4" />
       </a>
     )}
     {member.social_twitter && (
-      <a href={member.social_twitter} target="_blank" rel="noopener noreferrer" className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border bg-background/60 text-muted-foreground transition-colors hover:bg-primary hover:text-primary-foreground" aria-label={`${member.name} on Twitter`}>
+      <a
+        href={member.social_twitter}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border bg-background/60 text-muted-foreground transition-colors hover:bg-primary hover:text-primary-foreground"
+        aria-label={`${member.name} on Twitter`}
+      >
         <Twitter className="h-4 w-4" />
       </a>
     )}
@@ -45,11 +63,18 @@ const MemberCard = ({ member }: { member: TeamMember }) => {
     <article className="group overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
       <div className="relative aspect-square bg-secondary">
         {member.image ? (
-          <img src={member.image} alt={`${member.name} - ${member.designation}`} className="h-full w-full object-cover" loading="lazy" />
+          <img
+            src={member.image}
+            alt={`${member.name} - ${member.designation}`}
+            className="h-full w-full object-cover"
+            loading="lazy"
+          />
         ) : (
           <div className="flex h-full w-full items-center justify-center">
             <div className="h-20 w-20 rounded-full bg-background/70 ring-1 ring-border flex items-center justify-center">
-              <span className="text-2xl font-serif font-semibold text-foreground">{initials}</span>
+              <span className="text-2xl font-serif font-semibold text-foreground">
+                {initials}
+              </span>
             </div>
           </div>
         )}
@@ -57,7 +82,9 @@ const MemberCard = ({ member }: { member: TeamMember }) => {
       </div>
 
       <div className="p-5 text-center">
-        <h3 className="font-serif text-lg font-semibold text-foreground leading-snug">{member.name}</h3>
+        <h3 className="font-serif text-lg font-semibold text-foreground leading-snug">
+          {member.name}
+        </h3>
         <p className="mt-1 text-sm font-medium text-primary">{member.designation}</p>
         <SocialLinks member={member} />
       </div>
@@ -65,7 +92,19 @@ const MemberCard = ({ member }: { member: TeamMember }) => {
   );
 };
 
-const TeamSection = ({ eyebrow, title, description, members, tone = "default" }: { eyebrow: string; title: string; description?: string; members: TeamMember[]; tone?: "default" | "muted"; }) => {
+const TeamSection = ({
+  eyebrow,
+  title,
+  description,
+  members,
+  tone = "default",
+}: {
+  eyebrow: string;
+  title: string;
+  description?: string;
+  members: TeamMember[];
+  tone?: "default" | "muted";
+}) => {
   if (members.length === 0) return null;
 
   return (
@@ -92,7 +131,11 @@ const Management = () => {
   const { data: teamMembers, isLoading: isTeamLoading } = useQuery({
     queryKey: ["team-members-all"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("management_team").select("*").eq("is_active", true).order("display_order");
+      const { data, error } = await supabase
+        .from("management_team")
+        .select("*")
+        .eq("is_active", true)
+        .order("display_order");
       if (error) throw error;
       return data as TeamMember[];
     },
@@ -102,8 +145,21 @@ const Management = () => {
   const { data: seoData } = useQuery({
     queryKey: ["page-seo-management"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("page_seo").select("*").eq("page_slug", "about/management").single();
+      const { data, error } = await supabase
+        .from("page_seo")
+        .select("*")
+        .match({ page_slug: "about/management" })
+        .single();
       if (error) throw error;
+      return data;
+    },
+  });
+
+  // Fetch site settings (favicon)
+  const { data: settings } = useQuery({
+    queryKey: ["site-settings"],
+    queryFn: async () => {
+      const { data } = await supabase.from("site_settings").select("favicon_url").single();
       return data;
     },
   });
@@ -114,19 +170,42 @@ const Management = () => {
 
   return (
     <>
+      {/* ================= SEO ================= */}
       <Helmet>
-        <title>{seoData?.page_title || "Management "}</title>
-        <meta name="description" content={seoData?.meta_description || "Meet Horizon's management team: board of directors, senior leaders, and team members."} />
-        {seoData?.og_image && <link rel="icon" type="image/png" href={seoData.og_image} />}
+        {/* Page Title */}
+        <title>{seoData?.page_title || "Management Team"}</title>
+
+        {/* Meta Description */}
+        <meta
+          name="description"
+          content={
+            seoData?.meta_description ||
+            "Meet Horizon's management team: board of directors, senior leaders, and team members."
+          }
+        />
+
+        {/* Open Graph Tags */}
+        <meta property="og:title" content={seoData?.page_title || "Management Team"} />
+        <meta
+          property="og:description"
+          content={
+            seoData?.meta_description ||
+            "Meet Horizon's management team: board of directors, senior leaders, and team members."
+          }
+        />
+        {seoData?.og_image && <meta property="og:image" content={seoData.og_image} />}
+
+        {/* Favicon from site settings */}
+        {settings?.favicon_url && <link rel="icon" href={settings.favicon_url} />}
+
+        {/* Canonical URL */}
         <link rel="canonical" href={seoData ? `/${seoData.page_slug}` : "/about/management"} />
       </Helmet>
-
-
-
 
       <Navbar />
 
       <main className="pt-20">
+        {/* Hero Section */}
         <section className="relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-primary/10 via-background to-background" />
           <div className="container-custom relative py-16 md:py-20">
@@ -137,16 +216,36 @@ const Management = () => {
           </div>
         </section>
 
+        {/* Team Sections */}
         {isTeamLoading ? (
           <section className="section-padding">
-            <div className="container-custom text-center text-muted-foreground">Loading team...</div>
+            <div className="container-custom text-center text-muted-foreground">
+              Loading team...
+            </div>
           </section>
         ) : (
           <>
-            <TeamSection eyebrow="Leadership" title="Board of Directors" description="Strategic guidance and governance for long-term growth." members={boardMembers} />
-            <TeamSection eyebrow="Operations" title="Senior Management" description="Experienced leaders who execute with speed and precision." members={seniorManagement} tone="muted" />
-            <TeamSection eyebrow="People" title="The Team" description="A dedicated group delivering great homes and better experiences." members={team} />
+            <TeamSection
+              eyebrow="Leadership"
+              title="Board of Directors"
+              description="Strategic guidance and governance for long-term growth."
+              members={boardMembers}
+            />
+            <TeamSection
+              eyebrow="Operations"
+              title="Senior Management"
+              description="Experienced leaders who execute with speed and precision."
+              members={seniorManagement}
+              tone="muted"
+            />
+            <TeamSection
+              eyebrow="People"
+              title="The Team"
+              description="A dedicated group delivering great homes and better experiences."
+              members={team}
+            />
 
+            {/* Info Box */}
             <section className="pb-16">
               <div className="container-custom">
                 <div className="mx-auto max-w-3xl rounded-2xl border border-border bg-card p-8 text-center">
