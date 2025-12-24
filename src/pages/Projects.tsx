@@ -186,7 +186,7 @@ const Projects = () => {
                       </div>
 
                       <Link to={`/project/${project.slug}`}>
-                        <Button className="w-full border-primary text-primary hover:bg-primary hover:text-white mt-3">
+                        <Button variant="outline"  className="w-full border-primary text-primary hover:bg-primary hover:text-white mt-3">
                           View Details
                           <ArrowRight className="w-4 h-4 ml-2" />
                         </Button>
