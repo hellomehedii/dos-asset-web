@@ -4,7 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { MapPin, Ruler, Compass, Building, Home, Bath, Wind } from "lucide-react";
+import { MapPin, Ruler, Compass, Building, Home, Handshake , Landmark } from "lucide-react";
 
 const ProjectDetail = () => {
   const { slug } = useParams();
@@ -165,35 +165,31 @@ const ProjectDetail = () => {
                     </div>
                   )}
                   
-                  {project.toilets && (
+
+                     {project.verandas && (
                     <div className="flex items-center gap-4 p-4 bg-secondary rounded-xl">
-                      <Bath className="w-6 h-6 text-primary" />
+                      <Landmark className="w-6 h-6 text-primary" />
                       <div>
-                        <p className="text-sm text-muted-foreground">Toilets</p>
-                        <p className="font-medium text-foreground">{project.toilets}</p>
-                      </div>
-                    </div>
-                  )}
-                  
-                  {project.verandas && (
-                    <div className="flex items-center gap-4 p-4 bg-secondary rounded-xl">
-                      <Wind className="w-6 h-6 text-primary" />
-                      <div>
-                        <p className="text-sm text-muted-foreground">Verandas</p>
+                        <p className="text-sm text-muted-foreground">Belcony</p>
                         <p className="font-medium text-foreground">{project.verandas}</p>
                       </div>
                     </div>
                   )}
-                  
-                  {project.address && (
+
+
+                  {project.HandOver && (
                     <div className="flex items-center gap-4 p-4 bg-secondary rounded-xl">
-                      <MapPin className="w-6 h-6 text-primary" />
+                      <Handshake  className="w-6 h-6 text-primary" />
                       <div>
-                        <p className="text-sm text-muted-foreground">Address</p>
-                        <p className="font-medium text-foreground">{project.address}</p>
+                        <p className="text-sm text-muted-foreground">Hand Over</p>
+                        <p className="font-medium text-foreground">{project.HandOver}</p>
                       </div>
                     </div>
                   )}
+                  
+               
+                  
+                
                 </div>
 
                 {project.description && (

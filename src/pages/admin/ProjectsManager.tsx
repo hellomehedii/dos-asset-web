@@ -106,7 +106,7 @@ const ProjectsManager = () => {
       plan: formData.get("plan") as string,
       unit_size: formData.get("unit_size") as string,
       room_details: formData.get("room_details") as string,
-      toilets: parseInt(formData.get("toilets") as string) || null,
+      HandOver: parseInt(formData.get("HandOver") as string) || null,
       verandas: parseInt(formData.get("verandas") as string) || null,
       address: formData.get("address") as string,
       is_featured: formData.get("is_featured") === "true",
@@ -218,11 +218,11 @@ const ProjectsManager = () => {
                     <Input id="room_details" name="room_details" placeholder="e.g., 3 Bed, 4 Bed" defaultValue={editingProject?.room_details || ""} />
                   </div>
                   <div>
-                    <Label htmlFor="toilets">Toilets</Label>
-                    <Input id="toilets" name="toilets" type="number" defaultValue={editingProject?.toilets || ""} />
+                    <Label htmlFor="HandOver">Hand Over</Label>
+                    <Input id="HandOver" name="HandOver" type="number" defaultValue={editingProject?.HandOver || ""} />
                   </div>
                   <div>
-                    <Label htmlFor="verandas">Verandas</Label>
+                    <Label htmlFor="verandas">Belcony</Label>
                     <Input id="verandas" name="verandas" type="number" defaultValue={editingProject?.verandas || ""} />
                   </div>
                   <div>

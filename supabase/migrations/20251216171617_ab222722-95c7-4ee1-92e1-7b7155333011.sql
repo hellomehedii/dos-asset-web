@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS public.projects (
     num_apartments INTEGER,
     unit_size TEXT,
     room_details TEXT,
-    toilets INTEGER,
+    HandOver INTEGER,
     verandas INTEGER,
     address TEXT,
     gallery JSONB DEFAULT '[]'::jsonb,
