@@ -3,11 +3,12 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-
+import { usePageSeo } from "@/hooks/usePageSeo";
 
 const OurStory = () => {
-  /* ================= PAGE SEO ================= */
-  const { data: seo, isLoading: seoLoading } = useQuery({
+  
+   /* ================= PAGE SEO ================= */
+  const { data: seo } = useQuery({
     queryKey: ["page-seo", "our-story"],
     queryFn: async () => {
       const { data } = await supabase
@@ -15,12 +16,27 @@ const OurStory = () => {
         .select("page_title, meta_title, meta_description, og_image")
         .eq("page_slug", "our-story")
         .single();
+
       return data;
     },
   });
 
+
+  // 🔹 About page content
+  const { data: aboutContent } = useQuery({
+    queryKey: ["about-content"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("about_content")
+        .select("*")
+        .order("display_order");
+
+      if (error) throw error;
+      return data;
+    },
+  });
   /* ================= SITE SETTINGS ================= */
-  const { data: settings, isLoading: settingsLoading } = useQuery({
+  const { data: settings } = useQuery({
     queryKey: ["site-settings"],
     queryFn: async () => {
       const { data } = await supabase
@@ -31,44 +47,41 @@ const OurStory = () => {
     },
   });
 
-  /* ================= ABOUT CONTENT ================= */
-  const { data: aboutContent } = useQuery({
-    queryKey: ["about-content"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("about_content")
-        .select("*")
-        .order("display_order");
-      if (error) throw error;
-      return data;
-    },
-  });
 
-  const ourStory = aboutContent?.find((c: any) => c.section_type === "our_story");
-  const mission = aboutContent?.find((c: any) => c.section_type === "mission");
-  const vision = aboutContent?.find((c: any) => c.section_type === "vision");
+  const ourStory = aboutContent?.find(
+    (c: any) => c.section_type === "our_story"
+  );
+  const mission = aboutContent?.find(
+    (c: any) => c.section_type === "mission"
+  );
+  const vision = aboutContent?.find(
+    (c: any) => c.section_type === "vision"
+  );
+  /* ================= FALLBACK ================= */
+  const pageTitle =
+    seo?.meta_title || seo?.page_title || "Our Story";
 
-  /* ================= LOADING STATE ================= */
-  if (seoLoading || settingsLoading) return <div>Loading...</div>;
-
-  /* ================= DYNAMIC PAGE TITLE & DESCRIPTION ================= */
-  const pageTitle = seo?.meta_title || seo?.page_title; // fallback removed
-  const pageDescription = seo?.meta_description;       // fallback removed
+  const pageDescription =
+    seo?.meta_description || "Latest articles, updates and insights.";
 
   return (
     <>
       {/* ✅ Dynamic SEO */}
       <Helmet>
-        {pageTitle && <title>{pageTitle}</title>}
-        {pageDescription && <meta name="description" content={pageDescription} />}
+        <title>{pageTitle}</title>
+        <meta name="description" content={pageDescription} />
 
         {/* OG */}
-        {pageTitle && <meta property="og:title" content={pageTitle} />}
-        {pageDescription && <meta property="og:description" content={pageDescription} />}
-        {seo?.og_image && <meta property="og:image" content={seo.og_image} />}
+        <meta property="og:title" content={pageTitle} />
+        <meta property="og:description" content={pageDescription} />
+        {seo?.og_image && (
+          <meta property="og:image" content={seo.og_image} />
+        )}
 
         {/* FAVICON */}
-        {settings?.favicon_url && <link rel="icon" href={settings.favicon_url} />}
+        {settings?.favicon_url && (
+          <link rel="icon" href={settings.favicon_url} />
+        )}
       </Helmet>
 
       <Navbar />
@@ -78,7 +91,7 @@ const OurStory = () => {
         <section className="bg-navy text-white py-20">
           <div className="container-custom">
             <h1 className="text-4xl md:text-5xl font-serif font-bold mb-6">
-              {seo?.page_title}
+              {seo?.page_title || "Our Story"}
             </h1>
             <p className="text-xl text-white/80 max-w-2xl">
               Building dreams and creating landmarks since 1998.
@@ -92,13 +105,22 @@ const OurStory = () => {
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div>
                 <h2 className="text-3xl font-serif font-bold mb-6 text-foreground">
-                  {ourStory?.title}
+                  {ourStory?.title || "Our Story"}
                 </h2>
 
                 <div className="text-muted-foreground space-y-4">
-                  {ourStory?.content?.split("\n").map((paragraph: string, index: number) => (
-                    <p key={index}>{paragraph}</p>
-                  ))}
+                  {ourStory?.content
+                    ? ourStory.content.split("\n").map(
+                        (paragraph: string, index: number) => (
+                          <p key={index}>{paragraph}</p>
+                        )
+                      )
+                    : (
+                      <p>
+                        Founded in 2025, Horizon Real Estate has been at the
+                        forefront of premium property development in Bangladesh.
+                      </p>
+                    )}
                 </div>
               </div>
 
@@ -144,9 +166,12 @@ const OurStory = () => {
 
               <div>
                 <h3 className="text-2xl font-serif font-bold mb-4 text-foreground">
-                  {mission?.title}
+                  {mission?.title || "Our Mission"}
                 </h3>
-                <p className="text-muted-foreground">{mission?.content}</p>
+                <p className="text-muted-foreground">
+                  {mission?.content ||
+                    "To deliver exceptional real estate solutions that exceed customer expectations while maintaining the highest standards of quality, integrity, and innovation in every project we undertake."}
+                </p>
               </div>
             </div>
 
@@ -154,9 +179,12 @@ const OurStory = () => {
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div>
                 <h3 className="text-2xl font-serif font-bold mb-4 text-foreground">
-                  {vision?.title}
+                  {vision?.title || "Our Vision"}
                 </h3>
-                <p className="text-muted-foreground">{vision?.content}</p>
+                <p className="text-muted-foreground">
+                  {vision?.content ||
+                    "To be the most trusted and respected real estate developer in Bangladesh, known for creating sustainable communities and iconic landmarks that enhance the quality of life for generations to come."}
+                </p>
               </div>
 
               <div className="bg-card rounded-2xl aspect-video overflow-hidden">
