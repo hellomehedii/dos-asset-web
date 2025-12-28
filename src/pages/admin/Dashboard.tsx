@@ -77,7 +77,7 @@ const Dashboard = () => {
       <header className="lg:hidden flex items-center justify-between p-4 bg-card border-b">
         <div className="flex items-center gap-2">
           <Building2 className="w-6 h-6 text-primary" />
-          <span className="font-semibold">CMS Dashboard</span>
+          <span className="font-semibold"> Dashboard</span>
         </div>
         <Sheet>
           <SheetTrigger asChild>
@@ -108,7 +108,7 @@ const Dashboard = () => {
         <aside className="hidden lg:flex flex-col w-64 min-h-screen bg-card border-r p-4">
           <div className="flex items-center gap-2 mb-8">
             <Building2 className="w-8 h-8 text-primary" />
-            <span className="font-semibold text-lg">CMS Dashboard</span>
+            <span className="font-semibold text-lg"> Dashboard</span>
           </div>
           <NavContent />
           <div className="mt-auto pt-4 border-t">
