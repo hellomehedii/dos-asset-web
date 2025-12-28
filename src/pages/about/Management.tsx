@@ -180,7 +180,7 @@ const Management = () => {
           name="description"
           content={
             seoData?.meta_description ||
-            "Meet Horizon's management team: board of directors, senior leaders, and team members."
+            "Meet DADL's management team: board of directors, senior leaders, and team members."
           }
         />
 
@@ -190,7 +190,7 @@ const Management = () => {
           property="og:description"
           content={
             seoData?.meta_description ||
-            "Meet Horizon's management team: board of directors, senior leaders, and team members."
+            "Meet DADL's management team: board of directors, senior leaders, and team members."
           }
         />
         {seoData?.og_image && <meta property="og:image" content={seoData.og_image} />}

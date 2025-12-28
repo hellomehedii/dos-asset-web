@@ -117,7 +117,7 @@ const OurStory = () => {
                       )
                     : (
                       <p>
-                        Founded in 2025, Horizon Real Estate has been at the
+                        Founded in 2025, DADL Real Estate has been at the
                         forefront of premium property development in Bangladesh.
                       </p>
                     )}

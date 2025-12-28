@@ -58,8 +58,8 @@ const ProjectDetail = () => {
   return (
     <>
       <Helmet>
-        <title>{`${project.name} | Horizon Real Estate`}</title>
-        <meta name="description" content={project.description || `${project.name} - A premium project by Horizon Real Estate located in ${project.location}`} />
+        <title>{`${project.name} | DADL Real Estate`}</title>
+        <meta name="description" content={project.description || `${project.name} - A premium project by DADL Real Estate located in ${project.location}`} />
       </Helmet>
 
       <Navbar />

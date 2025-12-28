@@ -41,7 +41,7 @@ const ContactCTA = () => {
                 </a>
 
                 <a
-                  href="mailto:info@horizonrealestate.com"
+                  href="mailto:info@dos.com"
                   className="flex items-center gap-4 text-primary-foreground/90 hover:text-primary-foreground transition-colors group"
                 >
                   <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-colors">
@@ -49,7 +49,7 @@ const ContactCTA = () => {
                   </div>
                   <div>
                     <p className="text-sm text-primary-foreground/70">Email Us</p>
-                    <p className="font-semibold">info@horizonrealestate.com</p>
+                    <p className="font-semibold">info@dos.com</p>
                   </div>
                 </a>
 

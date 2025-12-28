@@ -139,7 +139,7 @@ const Contact = () => {
                     <div>
                       <h3 className="font-semibold text-foreground mb-1">Email</h3>
                       <a href={`mailto:${settings?.email}`} className="text-muted-foreground hover:text-primary transition-colors">
-                        {settings?.email || "info@horizonrealestate.com"}
+                        {settings?.email || "info@dos.com"}
                       </a>
                     </div>
                   </div>

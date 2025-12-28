@@ -79,7 +79,7 @@ INSERT INTO public.hero_content (id) VALUES (gen_random_uuid());
 
 -- Insert default about content
 INSERT INTO public.about_content (section_type, title, content, display_order) VALUES
-('our_story', 'Our Story', 'Founded in 1998, Horizon Real Estate has been at the forefront of premium property development in Bangladesh. Our journey began with a simple vision: to create living spaces that combine quality, innovation, and sustainability. Over the years, we have successfully delivered numerous residential and commercial projects that have transformed the urban landscape of Dhaka and beyond.', 1),
+('our_story', 'Our Story', 'Founded in 1998, DADL Real Estate has been at the forefront of premium property development in Bangladesh. Our journey began with a simple vision: to create living spaces that combine quality, innovation, and sustainability. Over the years, we have successfully delivered numerous residential and commercial projects that have transformed the urban landscape of Dhaka and beyond.', 1),
 ('mission', 'Our Mission', 'To deliver exceptional real estate solutions that exceed customer expectations while maintaining the highest standards of quality, integrity, and innovation in every project we undertake.', 2),
 ('vision', 'Our Vision', 'To be the most trusted and respected real estate developer in Bangladesh, known for creating sustainable communities and iconic landmarks that enhance the quality of life for generations to come.', 3);
 

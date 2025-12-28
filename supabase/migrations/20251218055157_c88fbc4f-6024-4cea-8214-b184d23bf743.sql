@@ -2,12 +2,12 @@
 -- Site settings table for global site configuration
 CREATE TABLE public.site_settings (
   id UUID NOT NULL DEFAULT gen_random_uuid() PRIMARY KEY,
-  site_name TEXT NOT NULL DEFAULT 'Horizon',
+  site_name TEXT NOT NULL DEFAULT 'DADL',
   site_tagline TEXT DEFAULT 'Real Estate',
   logo_url TEXT,
   primary_color TEXT DEFAULT '#009bfe',
   phone TEXT DEFAULT '+880 1234 567 890',
-  email TEXT DEFAULT 'info@horizonrealestate.com',
+  email TEXT DEFAULT 'info@dos.com',
   address TEXT DEFAULT 'House 45, Road 12, Sector 7, Uttara, Dhaka 1230',
   google_analytics_id TEXT,
   meta_pixel_id TEXT,
