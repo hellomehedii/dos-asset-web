@@ -161,7 +161,7 @@ const Navbar = () => {
               </a>
             )}
             <Link to="/contact">
-              <Button className="btn-hero-primary text-sm py-2 px-5">Contact </Button>
+              <Button className="btn-hero-primary text-sm py-2 px-5">Contact Us</Button>
             </Link>
           </div>
 
