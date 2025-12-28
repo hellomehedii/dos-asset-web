@@ -147,7 +147,15 @@ const Contact = () => {
 
                 {/* Map placeholder */}
                 <div className="mt-8 aspect-video bg-secondary rounded-2xl flex items-center justify-center">
-                  <span className="text-muted-foreground">Google Map</span>
+               <iframe
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3303.1030157153177!2d90.4211973!3d23.816904599999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c70025dc8e03%3A0xc575c374545b28b7!2sDOS%20Asset%20Development!5e1!3m2!1sen!2sbd!4v1766909732291!5m2!1sen!2sbd"
+      width="600"
+      height="320"
+      style={{ border: 20, borderRadius: '12px' }}
+      allowFullScreen
+      loading="lazy"
+      referrerPolicy="no-referrer-when-downgrade"
+    />
                 </div>
               </div>
 
