@@ -47,7 +47,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <RealtimeInvalidation />
-        <WhatsappButton />
+        
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
