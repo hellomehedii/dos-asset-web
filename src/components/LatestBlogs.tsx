@@ -29,7 +29,7 @@ const LatestBlogs = () => {
             Our Blog
           </span>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-foreground mt-3 mb-4">
-            Latest News & Insights
+            Latest News and Insights
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
             Stay informed with the latest trends, tips, and updates from the
