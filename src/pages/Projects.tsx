@@ -67,7 +67,7 @@ const Projects = () => {
     <>
       {/* ================== SEO / HEAD ================== */}
       <Helmet>
-        <title>{`${pageTitle} | DADL Projects`}</title>
+        <title>{`${pageTitle}`}</title>
         <meta name="description" content={pageDescription} />
         {settings?.favicon_url && <link rel="icon" href={settings.favicon_url} />}
         <meta property="og:title" content={pageTitle} />
