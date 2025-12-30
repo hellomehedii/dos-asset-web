@@ -23,13 +23,15 @@ const Contact = () => {
     message: "",
   });
 
-  // ================= PAGE SEO =================
-  const { data: seo, isLoading: seoLoading } = useQuery({
+  /* ================= SEO ================= */
+  const { data: seo, isLoading } = useQuery({
     queryKey: ["page-seo", "contact"],
     queryFn: async () => {
       const { data } = await supabase
         .from("page_seo")
-        .select("page_title, meta_title, meta_description, og_image, canonical_url")
+        .select(
+          "page_title, meta_title, meta_description, og_image, canonical_url"
+        )
         .eq("page_slug", "contact")
         .single();
       return data;
@@ -37,33 +39,37 @@ const Contact = () => {
   });
 
   const pageTitle = seo?.meta_title || seo?.page_title || "Contact Us";
-  const pageDescription = seo?.meta_description || "Get in touch with us. We're here to help with all your property needs.";
+  const pageDescription =
+    seo?.meta_description ||
+    "Get in touch with us. We're here to help with all your property needs.";
   const canonicalUrl = seo?.canonical_url || window.location.href;
-  const ogImage = seo?.og_image || "";
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
+
     try {
-      const { error } = await supabase.from("contact_messages").insert({
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        subject: formData.subject,
-        message: formData.message,
-      });
+      const { error } = await supabase
+        .from("contact_messages")
+        .insert(formData);
       if (error) throw error;
 
       toast({
         title: "Message sent!",
-        description: "We'll get back to you as soon as possible.",
+        description: "We'll get back to you shortly.",
       });
 
-      setFormData({ name: "", phone: "", email: "", subject: "", message: "" });
+      setFormData({
+        name: "",
+        phone: "",
+        email: "",
+        subject: "",
+        message: "",
+      });
     } catch (error: any) {
       toast({
         title: "Error",
-        description: error.message || "Failed to send message. Please try again.",
+        description: error.message,
         variant: "destructive",
       });
     } finally {
@@ -71,177 +77,168 @@ const Contact = () => {
     }
   };
 
-  if (seoLoading) return <div className="text-center py-12">Loading...</div>;
+  if (isLoading) return <div className="py-20 text-center">Loading...</div>;
 
   return (
     <>
-      {/* ================= SEO ================= */}
       <Helmet>
         <title>{pageTitle}</title>
         <meta name="description" content={pageDescription} />
         <link rel="canonical" href={canonicalUrl} />
-
-        {/* Open Graph */}
-        <meta property="og:title" content={pageTitle} />
-        <meta property="og:description" content={pageDescription} />
-        {ogImage && <meta property="og:image" content={ogImage} />}
-        <meta property="og:url" content={canonicalUrl} />
-        <meta property="og:type" content="website" />
-
-        {/* Favicon */}
-        {settings?.favicon_url && <link rel="icon" href={settings.favicon_url} />}
       </Helmet>
 
       <Navbar />
 
       <main className="pt-20">
-        <section className="bg-primary text-white py-20">
-          <div className="container-custom">
-            <h1 className="text-4xl md:text-5xl font-serif font-bold mb-6">{seo?.page_title || "Contact Us"}</h1>
-            <p className="text-xl text-white/80 max-w-2xl">{pageDescription}</p>
+        {/* ================= HERO ================= */}
+        <section className="bg-primary text-white py-14 md:py-20">
+          <div className="container-custom px-4">
+            <h1 className="text-3xl md:text-5xl font-serif font-bold mb-4">
+              {seo?.page_title || "Contact Us"}
+            </h1>
+            <p className="text-base md:text-xl text-white/80 max-w-2xl">
+              {pageDescription}
+            </p>
           </div>
         </section>
 
+        {/* ================= CONTENT ================= */}
         <section className="section-padding">
-          <div className="container-custom">
-            <div className="grid lg:grid-cols-2 gap-12">
-              {/* Contact Info */}
-              <div>
-                <h2 className="text-2xl font-serif font-bold mb-8 text-foreground">Contact Information</h2>
+          <div className="container-custom px-4">
+            <div className="grid gap-10 lg:grid-cols-2">
+              {/* ================= INFO ================= */}
+              <div className="space-y-8">
+                <h2 className="text-2xl font-serif font-bold">
+                  Contact Information
+                </h2>
+
                 <div className="space-y-6">
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-                      <MapPin className="w-6 h-6 text-primary" />
+                  {[
+                    {
+                      icon: MapPin,
+                      title: "Office Address",
+                      value: settings?.address || "Dhaka, Bangladesh",
+                    },
+                    {
+                      icon: Phone,
+                      title: "Phone",
+                      value: settings?.phone || "+880",
+                      link: `tel:${settings?.phone}`,
+                    },
+                    {
+                      icon: Mail,
+                      title: "Email",
+                      value: settings?.email || "info@example.com",
+                      link: `mailto:${settings?.email}`,
+                    },
+                    {
+                      icon: Clock,
+                      title: "Working Hours",
+                      value: "Saturday – Thursday : 10 AM – 6 PM",
+                    },
+                  ].map((item, i) => (
+                    <div key={i} className="flex gap-4">
+                      <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center">
+                        <item.icon className="w-5 h-5 text-primary" />
+                      </div>
+                      <div>
+                        <h4 className="font-semibold">{item.title}</h4>
+                        {item.link ? (
+                          <a
+                            href={item.link}
+                            className="text-muted-foreground hover:text-primary"
+                          >
+                            {item.value}
+                          </a>
+                        ) : (
+                          <p className="text-muted-foreground">{item.value}</p>
+                        )}
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="font-semibold text-foreground mb-1"> Our Office Address</h3>
-                      <p className="text-muted-foreground">{settings?.address || "Dhaka 1230"}</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-                      <Phone className="w-6 h-6 text-primary" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-foreground mb-1">Phone</h3>
-                      <a href={`tel:${settings?.phone}`} className="text-muted-foreground hover:text-primary transition-colors">
-                        {settings?.phone || "+888"}
-                      </a>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-                      <Mail className="w-6 h-6 text-primary" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-foreground mb-1">Email</h3>
-                      <a href={`mailto:${settings?.email}`} className="text-muted-foreground hover:text-primary transition-colors">
-                        {settings?.email || "info@dos.com"}
-                      </a>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-                      <Clock className="w-6 h-6 text-primary" />
-                    </div>
-
-                    <div>
-                      <h3 className="font-semibold text-foreground mb-1">
-                        Working Hours
-                      </h3>
-                      <p className="text-muted-foreground">
-                        Saturday – Thursday : 10:00 AM – 6:00 PM
-                      </p>
-                    </div>
-                  </div>
-
+                  ))}
                 </div>
 
-                {/* Map placeholder */}
-                <div className="mt-8 aspect-video bg-secondary rounded-2xl flex items-center justify-center">
-                  <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3303.1030157153177!2d90.4211973!3d23.816904599999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c70025dc8e03%3A0xc575c374545b28b7!2sDOS%20Asset%20Development!5e1!3m2!1sen!2sbd!4v1766909732291!5m2!1sen!2sbd"
-                    width="600"
-                    height="320"
-                    style={{ border: 20, borderRadius: '12px' }}
-                    allowFullScreen
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                  />
-                </div>
+                {/* MAP */}
+               <div className="w-full aspect-video rounded-xl overflow-hidden border border-border">
+  <iframe
+    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d105699.29664438682!2d90.26876270771024!3d23.81690442623615!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c70025dc8e03%3A0xc575c374545b28b7!2sDOS%20Asset%20Development!5e1!3m2!1sen!2sbd!4v1767081138713!5m2!1sen!2sbd"
+    className="w-full h-full"
+    style={{ border: 0 }}
+    allowFullScreen
+    loading="lazy"
+    referrerPolicy="no-referrer-when-downgrade"
+  />
+</div>
+
               </div>
 
-              {/* Contact Form */}
-              <div className="bg-white dark:bg-stone-950
-  rounded-lg md:rounded-xl
-  p-5 sm:p-6 md:p-8
-  border border-primary/30 md:border-primary
-  dark:border-primary-400
-  shadow-lg md:shadow-xl
-  transition-shadow">
-                <h2 className="text-2xl font-serif font-bold mb-8 text-foreground">Send a Message</h2>
+              {/* ================= FORM ================= */}
+              <div
+                className="
+                bg-white dark:bg-stone-950
+                rounded-xl
+                p-5 sm:p-6 md:p-8
+                border border-primary/30
+                dark:border-primary-400
+                shadow-lg md:shadow-xl
+              "
+              >
+                <h2 className="text-2xl font-serif font-bold mb-6">
+                  Send a Message
+                </h2>
 
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-foreground mb-2">Name</label>
-                      <Input
-                        placeholder="Your name"
-                        required
-                        value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-foreground mb-2">Phone</label>
-                      <Input
-                        type="tel"
-                        placeholder="Your phone"
-                        required
-                        value={formData.phone}
-                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-foreground mb-2">Email</label>
+                <form onSubmit={handleSubmit} className="space-y-5">
+                  <div className="grid sm:grid-cols-2 gap-4">
                     <Input
-                      type="email"
-                      placeholder="your@email.com"
+                      placeholder="Name"
                       required
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      value={formData.name}
+                      onChange={(e) =>
+                        setFormData({ ...formData, name: e.target.value })
+                      }
                     />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-foreground mb-2">Subject</label>
                     <Input
-                      placeholder="How can we help?"
+                      placeholder="Phone"
                       required
-                      value={formData.subject}
-                      onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                      value={formData.phone}
+                      onChange={(e) =>
+                        setFormData({ ...formData, phone: e.target.value })
+                      }
                     />
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-foreground mb-2">Message</label>
-                    <Textarea
-                      placeholder="Your message..."
-                      rows={5}
-                      required
-                      value={formData.message}
-                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    />
-                  </div>
+                  <Input
+                    type="email"
+                    placeholder="Email"
+                    required
+                    value={formData.email}
+                    onChange={(e) =>
+                      setFormData({ ...formData, email: e.target.value })
+                    }
+                  />
 
-                  <Button type="submit" className="w-full" disabled={isSubmitting}>
+                  <Input
+                    placeholder="Subject"
+                    required
+                    value={formData.subject}
+                    onChange={(e) =>
+                      setFormData({ ...formData, subject: e.target.value })
+                    }
+                  />
+
+                  <Textarea
+                    placeholder="Your message..."
+                    rows={17}
+                    required
+                    value={formData.message}
+                    onChange={(e) =>
+                      setFormData({ ...formData, message: e.target.value })
+                    }
+                  />
+
+                  <Button className="w-full" disabled={isSubmitting}>
                     {isSubmitting ? "Sending..." : "Send Message"}
-                    <Send className="w-4 h-4 ml-2" />
+                    <Send className="ml-2 w-4 h-4" />
                   </Button>
                 </form>
               </div>
