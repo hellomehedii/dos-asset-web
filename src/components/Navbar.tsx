@@ -180,7 +180,7 @@ const Navbar = () => {
             className="lg:hidden p-2"
             onClick={() => setIsMobileMenuOpen(true)}
           >
-            <Menu className="w-6 h-6" />
+            <Menu className="w-6 h-6  text-primary" />
           </button>
         </nav>
       </div>
