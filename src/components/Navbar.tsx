@@ -71,7 +71,6 @@ const Navbar = () => {
     ? "text-background/80 hover:text-background"
     : "text-muted-foreground hover:text-foreground";
 
-  // Toggle mobile dropdown
   const handleMobileDropdown = (name: string) => {
     setOpenDropdown((prev) => (prev === name ? null : name));
   };
@@ -199,18 +198,35 @@ const Navbar = () => {
               <div className="py-3 space-y-1">
                 {navLinks.map((link) => (
                   <div key={link.name}>
-                    <button
-                      onClick={() => link.dropdown ? handleMobileDropdown(link.name) : setIsMobileMenuOpen(false)}
-                      className={`w-full text-left flex justify-between items-center px-4 py-3 transition-colors ${
-                        isActive(link.path)
-                          ? "text-primary bg-secondary"
-                          : "text-foreground hover:bg-secondary"
-                      }`}
-                    >
-                      {link.name}
-                      {link.dropdown && <ChevronDown className={`w-4 h-4 transition-transform ${openDropdown === link.name ? "rotate-180" : "rotate-0"}`} />}
-                    </button>
+                    {link.dropdown ? (
+                      <button
+                        onClick={() => handleMobileDropdown(link.name)}
+                        className={`w-full text-left flex justify-between items-center px-4 py-3 transition-colors ${
+                          isActive(link.path)
+                            ? "text-primary bg-secondary"
+                            : "text-foreground hover:bg-secondary"
+                        }`}
+                      >
+                        {link.name}
+                        <ChevronDown
+                          className={`w-4 h-4 transition-transform ${openDropdown === link.name ? "rotate-180" : "rotate-0"}`}
+                        />
+                      </button>
+                    ) : (
+                      <Link
+                        to={link.path}
+                        className={`block px-4 py-3 transition-colors ${
+                          isActive(link.path)
+                            ? "text-primary bg-secondary"
+                            : "text-foreground hover:bg-secondary"
+                        }`}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        {link.name}
+                      </Link>
+                    )}
 
+                    {/* Dropdown submenu */}
                     {link.dropdown && (
                       <AnimatePresence>
                         {openDropdown === link.name && (
@@ -243,7 +259,7 @@ const Navbar = () => {
 
                 <div className="px-4 pt-4 border-t border-border">
                   <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)}>
-                    <Button className="w-full btn-hero-primary">Contact </Button>
+                    <Button className="w-full btn-hero-primary">Contact</Button>
                   </Link>
                 </div>
               </div>
