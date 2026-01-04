@@ -3,8 +3,8 @@ import { Button } from "@/components/ui/button";
 
 const AboutIntro = () => {
   const highlights = [
-    "Over 16 years of industry experience",
-    "150+ successful projects delivered",
+    "Over 16+ years of industry experience",
+    "20+ successful projects delivered",
     "Premium quality construction standards",
     "Customer-centric approach",
   ];
