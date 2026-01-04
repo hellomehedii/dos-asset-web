@@ -145,7 +145,7 @@ const OurStory = () => {
         <section className="section-padding bg-secondary">
           <div className="container-custom">
             <h2 className="text-3xl font-serif font-bold text-center mb-12 text-foreground">
-              Mission & Vision
+              Mission and Vision
             </h2>
 
             {/* Mission */}
