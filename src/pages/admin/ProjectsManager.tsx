@@ -111,6 +111,9 @@ const ProjectsManager = () => {
       address: formData.get("address") as string,
       is_featured: formData.get("is_featured") === "true",
       display_order: parseInt(formData.get("display_order") as string) || 0,
+      google_map_embed: formData.get("google_map_embed") as string || null,
+      latitude: formData.get("latitude") ? parseFloat(formData.get("latitude") as string) : null,
+      longitude: formData.get("longitude") ? parseFloat(formData.get("longitude") as string) : null,
     };
 
     if (editingProject) {
@@ -124,6 +127,8 @@ const ProjectsManager = () => {
     setEditingProject(project);
     setFeaturedImage(project.featured_image || "");
     setGalleryImages((project.gallery as string[]) || []);
+    // ensure new fields are captured if present
+    // (editingProject will be used to populate inputs when dialog opens)
     setOpen(true);
   };
 
@@ -233,6 +238,27 @@ const ProjectsManager = () => {
                 <div>
                   <Label htmlFor="address">Full Address</Label>
                   <Input id="address" name="address" defaultValue={editingProject?.address || ""} />
+                </div>
+              </div>
+
+              {/* Map Embed / Coordinates */}
+              <div className="space-y-4">
+                <h3 className="font-semibold text-foreground">Map / Location</h3>
+                <div className="grid gap-4 md:grid-cols-1">
+                  <div>
+                    <Label htmlFor="google_map_embed">Google Map Embed (iframe src or full &lt;iframe&gt;)</Label>
+                    <Textarea id="google_map_embed" name="google_map_embed" defaultValue={(editingProject as any)?.google_map_embed || ""} placeholder="https://www.google.com/... or full <iframe>...</iframe>" />
+                  </div>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="latitude">Latitude</Label>
+                      <Input id="latitude" name="latitude" type="number" step="any" defaultValue={(editingProject as any)?.latitude ?? ""} />
+                    </div>
+                    <div>
+                      <Label htmlFor="longitude">Longitude</Label>
+                      <Input id="longitude" name="longitude" type="number" step="any" defaultValue={(editingProject as any)?.longitude ?? ""} />
+                    </div>
+                  </div>
                 </div>
               </div>
 

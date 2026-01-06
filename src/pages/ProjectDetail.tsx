@@ -4,7 +4,16 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { MapPin, Ruler, Compass, Building, Home, Handshake , Landmark } from "lucide-react";
+import { MapPin, Ruler, Compass, Building, Home, Handshake, Landmark, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogClose,
+} from "@/components/ui/dialog";
 
 const ProjectDetail = () => {
   const { slug } = useParams();
@@ -22,6 +31,12 @@ const ProjectDetail = () => {
     },
     enabled: !!slug,
   });
+
+  // Modal state hooks must be declared unconditionally before any early returns
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [currentIndex, setCurrentIndex] = useState<number | null>(null);
+  const [showDetailsInModal, setShowDetailsInModal] = useState(false);
 
   if (isLoading) {
     return (
@@ -53,13 +68,43 @@ const ProjectDetail = () => {
     handed_over: "Handed Over",
   };
 
-  const gallery = Array.isArray(project.gallery) ? project.gallery : [];
+  const gallery = Array.isArray(project?.gallery) ? project.gallery : [];
+  const galleryFiltered = (gallery || []).filter((img) => typeof img === "string" && img.trim() !== "") as string[];
+
+  const getMapEmbedSrc = () => {
+    // Prefer explicit embed field
+    const embed = (project as any).google_map_embed;
+    if (embed && typeof embed === "string") {
+      // If it's a full iframe string, try to extract src
+      const iframeMatch = embed.match(/src=\"([^\"]+)\"/i);
+      if (iframeMatch) return iframeMatch[1];
+      // If it's a bare URL, use it directly
+      if (embed.startsWith("http")) return embed;
+    }
+
+    // Fallback to latitude/longitude
+    const lat = (project as any).latitude;
+    const lng = (project as any).longitude;
+    if (lat || lng) {
+      return `https://www.google.com/maps?q=${lat},${lng}&z=15&output=embed`;
+    }
+
+    return null;
+  };
 
   return (
     <>
       <Helmet>
         <title>{`${project.name} | DADL Real Estate`}</title>
         <meta name="description" content={project.description || `${project.name} - A premium project by DADL Real Estate located in ${project.location}`} />
+        {/* SEO / Social tags */}
+        <link rel="canonical" href={typeof window !== 'undefined' ? window.location.href : ''} />
+        <meta property="og:title" content={`${project.name} | DADL Real Estate`} />
+        <meta property="og:description" content={project.description || `${project.name} - A premium project by DADL Real Estate located in ${project.location}`} />
+        {project.featured_image && <meta property="og:image" content={project.featured_image} />}
+        <meta property="og:type" content="article" />
+        <meta name="twitter:card" content="summary_large_image" />
+        {project.featured_image && <meta name="twitter:image" content={project.featured_image} />}
       </Helmet>
 
       <Navbar />
@@ -209,27 +254,136 @@ const ProjectDetail = () => {
     </h2>
 
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {gallery
-        .filter((img) => typeof img === "string" && img.trim() !== "")
-        .map((image, index) => (
+              {galleryFiltered.map((image, index) => (
           <div
             key={index}
             className="bg-secondary rounded-xl overflow-hidden p-2 flex items-center justify-center"
           >
-            <img
-              src={String(image)} // Explicitly cast 'image' to string
-              alt={`Gallery image ${index + 1}`}
-              className="w-full h-auto object-contain rounded-lg"
-              loading="lazy"
-              onError={(e) => {
-                e.currentTarget.src = "/placeholder.png";
+            <button
+              type="button"
+              onClick={() => {
+                setSelectedImage(String(image));
+                setCurrentIndex(index);
+                setModalOpen(true);
+                setShowDetailsInModal(false);
               }}
-            />
+              className="w-full"
+            >
+              <img
+                src={String(image)} // Explicitly cast 'image' to string
+                alt={`Gallery image ${index + 1}`}
+                className="w-full h-auto object-contain rounded-lg"
+                loading="lazy"
+                onError={(e) => {
+                  e.currentTarget.src = "/placeholder.png";
+                }}
+              />
+            </button>
           </div>
         ))}
     </div>
   </div>
 )}
+
+{/* Map Embed */}
+{(() => {
+  const mapSrc = getMapEmbedSrc();
+  if (!mapSrc) return null;
+  return (
+    <div className="mt-12">
+      <h2 className="text-2xl font-serif font-bold mb-4 text-foreground">Project Google Map Location</h2>
+      <div className="rounded-xl overflow-hidden bg-secondary">
+        <iframe
+          title={`map-${project.slug}`}
+          src={mapSrc}
+          width="100%"
+          height="450"
+          loading="lazy"
+          className="border-0 w-full h-[450px]"
+          referrerPolicy="no-referrer-when-downgrade"
+          sandbox="allow-scripts allow-same-origin allow-popups"
+        />
+      </div>
+    </div>
+  );
+})()}
+
+      {/* Image Modal */}
+      <Dialog open={modalOpen} onOpenChange={(open) => { setModalOpen(open); if (!open) { setSelectedImage(null); setCurrentIndex(null); } }}>
+        <DialogContent className="p-0 bg-transparent">
+          <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+            <div className="relative bg-black rounded-xl p-4 max-w-[95vw] max-h-[95vh]">
+              <DialogClose className="absolute top-3 right-3 text-white bg-white/10 hover:bg-white/20 rounded-full p-2 z-50">
+                <X className="w-5 h-5" />
+              </DialogClose>
+
+              {/* Prev/Next buttons */}
+              {galleryFiltered.length > 1 && (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (currentIndex === null) return;
+                      const next = (currentIndex - 1 + galleryFiltered.length) % galleryFiltered.length;
+                      setCurrentIndex(next);
+                      setSelectedImage(galleryFiltered[next]);
+                    }}
+                    className="absolute left-2 top-1/2 -translate-y-1/2 text-white bg-white/10 hover:bg-white/20 rounded-full p-2 z-40"
+                  >
+                    <ChevronLeft className="w-5 h-5" />
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (currentIndex === null) return;
+                      const next = (currentIndex + 1) % galleryFiltered.length;
+                      setCurrentIndex(next);
+                      setSelectedImage(galleryFiltered[next]);
+                    }}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 text-white bg-white/10 hover:bg-white/20 rounded-full p-2 z-40"
+                  >
+                    <ChevronRight className="w-5 h-5" />
+                  </button>
+                </>
+              )}
+
+              <div className="flex items-center justify-center">
+                {galleryFiltered.length > 0 ? (
+                  <img
+                    src={galleryFiltered[currentIndex ?? 0]}
+                    alt={`Gallery image ${currentIndex ?? 0 + 1}`}
+                    className="block mx-auto object-contain"
+                    style={{ maxWidth: '90vw', maxHeight: '80vh' }}
+                  />
+                ) : (
+                  <div className="text-white">No image</div>
+                )}
+              </div>
+
+              {/* Thumbnails strip */}
+              {galleryFiltered.length > 1 && (
+                <div className="mt-4 flex items-center justify-center">
+                  <div className="flex gap-2 overflow-x-auto">
+                    {galleryFiltered.map((thumb, i) => (
+                      <button
+                        key={i}
+                        onClick={() => {
+                          setCurrentIndex(i);
+                          setSelectedImage(thumb);
+                        }}
+                        className={`rounded-md overflow-hidden border-2 ${i === currentIndex ? 'border-primary' : 'border-transparent'}`}
+                      >
+                        <img src={thumb} alt={`thumb-${i}`} className="w-20 h-12 object-cover" />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
 
           </div>
         </section>

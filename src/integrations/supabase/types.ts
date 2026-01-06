@@ -275,6 +275,9 @@ export type Database = {
           display_order: number | null
           featured_image: string | null
           gallery: Json | null
+          google_map_embed: string | null
+          latitude: number | null
+          longitude: number | null
           id: string
           is_featured: boolean | null
           land_area: string | null
@@ -299,6 +302,9 @@ export type Database = {
           display_order?: number | null
           featured_image?: string | null
           gallery?: Json | null
+          google_map_embed?: string | null
+          latitude?: number | null
+          longitude?: number | null
           id?: string
           is_featured?: boolean | null
           land_area?: string | null
@@ -323,6 +329,9 @@ export type Database = {
           display_order?: number | null
           featured_image?: string | null
           gallery?: Json | null
+          google_map_embed?: string | null
+          latitude?: number | null
+          longitude?: number | null
           id?: string
           is_featured?: boolean | null
           land_area?: string | null

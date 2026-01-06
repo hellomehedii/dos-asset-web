@@ -6,7 +6,8 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import RealtimeInvalidation from "@/components/RealtimeInvalidation";
 import WhatsappButton from "@/components/WhatsappButton";
-import React, { Suspense, lazy } from "react";
+import React, { Suspense, lazy, useEffect } from "react";
+import { initGoogleAnalytics, gaPageview, initFacebookPixel, fbPageview } from "./lib/analytics";
 
 // ===================== Lazy Loaded Pages =====================
 const Index = lazy(() => import("./pages/Index"));
@@ -49,6 +50,24 @@ const queryClient = new QueryClient({
 const AppWrapper = () => {
   const location = useLocation();
   const showWhatsappButton = !location.pathname.startsWith("/admin");
+
+  useEffect(() => {
+    const GA_ID = (import.meta as any).env.VITE_GA_ID;
+    const FB_ID = (import.meta as any).env.VITE_FB_PIXEL_ID;
+    if (GA_ID) initGoogleAnalytics(GA_ID);
+    if (FB_ID) initFacebookPixel(FB_ID);
+    // initial pageview
+    if (GA_ID) gaPageview(window.location.pathname + window.location.search);
+    if (FB_ID) fbPageview();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    const GA_ID = (import.meta as any).env.VITE_GA_ID;
+    const FB_ID = (import.meta as any).env.VITE_FB_PIXEL_ID;
+    if (GA_ID) gaPageview(location.pathname + location.search);
+    if (FB_ID) fbPageview();
+  }, [location]);
 
   return (
     <>

@@ -13,25 +13,38 @@ const Index = () => {
   const { data: settings } = useSiteSettings();
   const { data: seo } = usePageSeo("home");
 
+  // Document title preference:
+  // 1. use `meta_title` (explicit SEO title)
+  // 2. if missing, compose `page_title | site_name` when `page_title` exists
+  // 3. fall back to site name or default
+  const documentTitle =
+    seo?.meta_title ||
+    (seo?.page_title ? `${seo.page_title} | ${settings?.site_name || "DADL Real Estate"}` : settings?.site_name || "DADL Real Estate");
+
   return (
     <>
       <Helmet>
-        {/* Page title only from Page SEO */}
-        {seo?.page_title && <title>{seo.page_title}</title>}
+        {/* Document title (for browser tab / search engines) */}
+        <title>{documentTitle}</title>
 
-        {/* Meta from Page SEO */}
-        {seo?.meta_description && (
+        {/* Prefer explicit SEO meta fields when available */}
+        {seo?.meta_description ? (
           <meta name="description" content={seo.meta_description} />
+        ) : (
+          settings?.site_tagline && <meta name="description" content={settings.site_tagline} />
         )}
 
-        {seo?.meta_keywords && (
-          <meta name="keywords" content={seo.meta_keywords} />
-        )}
+        {seo?.meta_keywords && <meta name="keywords" content={seo.meta_keywords} />}
+
+        {/* Open Graph */}
+        <meta
+          property="og:title"
+          content={seo?.meta_title || (seo?.page_title ? `${seo.page_title} | ${settings?.site_name || "DADL Real Estate"}` : settings?.site_name || "DADL Real Estate")}
+        />
+        {seo?.meta_description && <meta property="og:description" content={seo.meta_description} />}
 
         {/* Favicon from Site Settings */}
-        {settings?.favicon_url && (
-          <link rel="icon" href={settings.favicon_url} />
-        )}
+        {settings?.favicon_url && <link rel="icon" href={settings.favicon_url} />}
       </Helmet>
 
       <main>
