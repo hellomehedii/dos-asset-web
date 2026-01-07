@@ -10,42 +10,46 @@ import { useSiteSettings } from "@/hooks/useSiteSettings";
 import { usePageSeo } from "@/hooks/usePageSeo";
 
 const Index = () => {
-  const { data: settings } = useSiteSettings();
-  const { data: seo } = usePageSeo("home");
+const { data: settings } = useSiteSettings();
+const { data: seo } = usePageSeo("/");
 
-  // Document title preference:
-  // 1. use `meta_title` (explicit SEO title)
-  // 2. if missing, compose `page_title | site_name` when `page_title` exists
-  // 3. fall back to site name or default
-  const documentTitle =
-    seo?.meta_title ||
-    (seo?.page_title ? `${seo.page_title} | ${settings?.site_name || "DADL Real Estate"}` : settings?.site_name || "DADL Real Estate");
+// Document title (NO site name)
+const documentTitle =
+  seo?.meta_title ||
+  seo?.page_title ||
+  "Default Page Title"; // optional fallback
 
-  return (
-    <>
-      <Helmet>
-        {/* Document title (for browser tab / search engines) */}
-        <title>{documentTitle}</title>
+return (
+  <>
+    <Helmet>
+      {/* Document title */}
+      <title>{documentTitle}</title>
 
-        {/* Prefer explicit SEO meta fields when available */}
-        {seo?.meta_description ? (
-          <meta name="description" content={seo.meta_description} />
-        ) : (
-          settings?.site_tagline && <meta name="description" content={settings.site_tagline} />
-        )}
+      {/* Meta Description */}
+      {seo?.meta_description && (
+        <meta name="description" content={seo.meta_description} />
+      )}
 
-        {seo?.meta_keywords && <meta name="keywords" content={seo.meta_keywords} />}
+      {/* Meta Keywords */}
+      {seo?.meta_keywords && (
+        <meta name="keywords" content={seo.meta_keywords} />
+      )}
 
-        {/* Open Graph */}
-        <meta
-          property="og:title"
-          content={seo?.meta_title || (seo?.page_title ? `${seo.page_title} | ${settings?.site_name || "DADL Real Estate"}` : settings?.site_name || "DADL Real Estate")}
-        />
-        {seo?.meta_description && <meta property="og:description" content={seo.meta_description} />}
+      {/* Open Graph */}
+      <meta
+        property="og:title"
+        content={seo?.meta_title || seo?.page_title || "Default Page Title"}
+      />
 
-        {/* Favicon from Site Settings */}
-        {settings?.favicon_url && <link rel="icon" href={settings.favicon_url} />}
-      </Helmet>
+      {seo?.meta_description && (
+        <meta property="og:description" content={seo.meta_description} />
+      )}
+
+      {/* Favicon */}
+      {settings?.favicon_url && (
+        <link rel="icon" href={settings.favicon_url} />
+      )}
+    </Helmet>
 
       <main>
         <Navbar />

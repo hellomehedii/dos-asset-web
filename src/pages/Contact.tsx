@@ -30,7 +30,7 @@ const Contact = () => {
       const { data } = await supabase
         .from("page_seo")
         .select(
-          "page_title, meta_title, meta_description, og_image, canonical_url"
+          "page_title, meta_title, meta_description, og_image"
         )
         .eq("page_slug", "contact")
         .single();
@@ -42,7 +42,7 @@ const Contact = () => {
   const pageDescription =
     seo?.meta_description ||
     "Get in touch with us. We're here to help with all your property needs.";
-  const canonicalUrl = seo?.canonical_url || window.location.href;
+  const canonicalUrl = window.location.href;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

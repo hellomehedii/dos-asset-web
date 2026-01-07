@@ -289,7 +289,7 @@ export type Database = {
           room_details: string | null
           slug: string
           status: Database["public"]["Enums"]["project_status"]
-          HandOver: number | null
+          HandOver: string | null
           unit_size: string | null
           updated_at: string
           verandas: number | null
@@ -316,7 +316,7 @@ export type Database = {
           room_details?: string | null
           slug: string
           status?: Database["public"]["Enums"]["project_status"]
-          HandOver?: number | null
+          HandOver?: string | null
           unit_size?: string | null
           updated_at?: string
           verandas?: number | null
@@ -343,7 +343,7 @@ export type Database = {
           room_details?: string | null
           slug?: string
           status?: Database["public"]["Enums"]["project_status"]
-          HandOver?: number | null
+          HandOver?: string | null
           unit_size?: string | null
           updated_at?: string
           verandas?: number | null
