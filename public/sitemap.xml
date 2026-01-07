@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>/</loc>
+    <loc>https://dosasset.com/</loc>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
     <lastmod>2026-01-05</lastmod>
   </url>
   <url>
-    <loc>/projects</loc>
+    <loc>https://dosasset.com//projects</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <lastmod>2026-01-05</lastmod>
@@ -19,38 +19,38 @@
     <lastmod>2026-01-05</lastmod>
   </url>
   <url>
-    <loc>/projects/ongoing</loc>
+    <loc>https://dosasset.com//projects/ongoing</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
     <lastmod>2026-01-05</lastmod>
   </url>
   <url>
-    <loc>/projects/completed</loc>
+    <loc>https://dosasset.com//projects/completed</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
     <lastmod>2026-01-05</lastmod>
   </url>
   <url>
-    <loc>/about/story</loc>
+    <loc>https://dosasset.com//about/story</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <lastmod>2026-01-05</lastmod>
   </url>
     <url>
-    <loc>/about/management</loc>
+    <loc>https://dosasset.com//about/management</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <lastmod>2026-01-05</lastmod>
   </url>
   <url>
-    <loc>/contact</loc>
+    <loc>https://dosasset.com//contact</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <lastmod>2026-01-05</lastmod>
   </url>
   
   <url>
-    <loc>/blog</loc>
+    <loc>https://dosasset.com//blog</loc>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
     <lastmod>2026-01-05</lastmod>
