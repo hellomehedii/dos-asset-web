@@ -224,7 +224,7 @@ const ProjectsManager = () => {
                   </div>
                   <div>
                     <Label htmlFor="HandOver">Hand Over</Label>
-                    <Input id="HandOver" name="HandOver" type="number" defaultValue={editingProject?.HandOver || ""} />
+                    <Input id="HandOver" name="HandOver"  defaultValue={editingProject?.HandOver || ""} />
                   </div>
                   <div>
                     <Label htmlFor="verandas">Belcony</Label>
