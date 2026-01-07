@@ -31,7 +31,13 @@
     <lastmod>2026-01-05</lastmod>
   </url>
   <url>
-    <loc>/about</loc>
+    <loc>/about/story</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <lastmod>2026-01-05</lastmod>
+  </url>
+    <url>
+    <loc>/about/management</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <lastmod>2026-01-05</lastmod>
@@ -42,6 +48,7 @@
     <priority>0.6</priority>
     <lastmod>2026-01-05</lastmod>
   </url>
+  
   <url>
     <loc>/blog</loc>
     <changefreq>daily</changefreq>
