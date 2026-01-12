@@ -17,7 +17,7 @@ const { data: seo } = usePageSeo("/");
 const documentTitle =
   seo?.meta_title ||
   seo?.page_title ||
-  "DOS ASSET DEVELOPMENT"; // optional fallback
+  "DOS ASSETS DEVELOPMENT"; // optional fallback
 
 return (
   <>
@@ -38,7 +38,7 @@ return (
       {/* Open Graph */}
       <meta
         property="og:title"
-        content={seo?.meta_title || seo?.page_title || "DOS ASSET DEVELOPMENT"}
+        content={seo?.meta_title || seo?.page_title || "DOS ASSETS DEVELOPMENT"}
       />
 
       {seo?.meta_description && (

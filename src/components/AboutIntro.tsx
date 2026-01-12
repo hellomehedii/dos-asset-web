@@ -41,13 +41,13 @@ const AboutIntro = () => {
           {/* Content Side */}
           <div className="animate-fade-up" style={{ animationDelay: "0.2s" }}>
             <span className="text-accent font-semibold uppercase tracking-wider text-sm">
-              About DOS ASSET DEVELOPMENT
+              About DOS ASSETS DEVELOPMENT
             </span>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-foreground mt-3 mb-6">
               Building Dreams, Creating <span className="text-primary">Landmarks</span>
             </h2>
             <p className="text-muted-foreground mb-6 text-lg">
-              Since 2025,  <b className="text-foreground"> DOS ASSET DEVELOPMENT LTD </b>  Real Estate has been at the forefront of premium
+              Since 2025,  <b className="text-foreground"> DOS ASSETS DEVELOPMENT LTD </b>  Real Estate has been at the forefront of premium
               property development in Bangladesh. We combine innovative design with
               exceptional craftsmanship to create spaces that inspire and endure.
             </p>
