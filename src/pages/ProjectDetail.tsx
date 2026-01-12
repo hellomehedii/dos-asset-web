@@ -299,17 +299,18 @@ const ProjectDetail = () => {
                   )}
                 </div>
 
+              
+              </div>
                 {project.description && (
                   <div className="mt-8">
                     <h3 className="text-xl font-serif font-bold mb-4 text-foreground">
                       Description
                     </h3>
-                    <p className="text-muted-foreground">
+                    <p className="text-muted-foreground whitespace-pre-line">
                       {project.description}
                     </p>
                   </div>
                 )}
-              </div>
             </div>
 
             {/* Gallery */}

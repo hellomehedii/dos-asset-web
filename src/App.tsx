@@ -6,6 +6,8 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import RealtimeInvalidation from "@/components/RealtimeInvalidation";
 import WhatsappButton from "@/components/WhatsappButton";
+import { AnimatePresence, motion } from "framer-motion";
+import { pageVariants, pageTransition } from "./lib/animations";
 import React, { Suspense, lazy, useEffect } from "react";
 import { initGoogleAnalytics, gaPageview, initFacebookPixel, fbPageview } from "./lib/analytics";
 
@@ -76,44 +78,43 @@ const AppWrapper = () => {
       <RealtimeInvalidation />
       {showWhatsappButton && <WhatsappButton />}
 
-
-
-<Suspense
-  fallback={
-    <div>
-      <svg
-        width="50"   // ↓ Set your desired width
-        height="50"  // ↓ Set your desired height
-        fill="hsl(228, 97%, 42%)"
-        viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg"
+      <Suspense
+        fallback={
+          <div>
+            <svg
+              width="50"
+              height="50"
+              fill="hsl(228, 97%, 42%)"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g>
+                <circle cx="12" cy="3" r="1">
+                  <animate
+                    id="spinner_7Z73"
+                    begin="0;spinner_tKsu.end-0.5s"
+                    attributeName="r"
+                    calcMode="spline"
+                    dur="0.6s"
+                    values="1;2;1"
+                    keySplines=".27,.42,.37,.99;.53,0,.61,.73"
+                  />
+                </circle>
+                <animateTransform
+                  attributeName="transform"
+                  type="rotate"
+                  dur="6s"
+                  values="360 12 12;0 12 12"
+                  repeatCount="indefinite"
+                />
+              </g>
+            </svg>
+          </div>
+        }
       >
-        <g>
-          <circle cx="12" cy="3" r="1">
-            <animate
-              id="spinner_7Z73"
-              begin="0;spinner_tKsu.end-0.5s"
-              attributeName="r"
-              calcMode="spline"
-              dur="0.6s"
-              values="1;2;1"
-              keySplines=".27,.42,.37,.99;.53,0,.61,.73"
-            />
-          </circle>
-          {/* ...rest of your circles and animations */}
-          <animateTransform
-            attributeName="transform"
-            type="rotate"
-            dur="6s"
-            values="360 12 12;0 12 12"
-            repeatCount="indefinite"
-          />
-        </g>
-      </svg>
-    </div>
-  }
->
-        <Routes>
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div key={location.pathname} variants={pageVariants} initial="initial" animate="animate" exit="exit" transition={pageTransition}>
+                <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/about/story" element={<OurStory />} />
@@ -137,7 +138,9 @@ const AppWrapper = () => {
             <Route path="messages" element={<ContactMessagesManager />} />
           </Route>
           <Route path="*" element={<NotFound />} />
-        </Routes>
+            </Routes>
+          </motion.div>
+        </AnimatePresence>
       </Suspense>
     </>
   );

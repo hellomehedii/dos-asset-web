@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import heroBg from "@/assets/hero-bg.jpg";
+import { motion } from "framer-motion";
+import { fadeUpVariants, staggerContainer } from "@/lib/animations";
 
 const Hero = () => {
   const { data: heroContent } = useQuery({
@@ -41,48 +43,36 @@ const Hero = () => {
       {/* Content - Full width container */}
       <div className="w-full relative z-10 pt-32 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="max-w-3xl">
+          <motion.div className="max-w-3xl" variants={staggerContainer} initial="hidden" animate="show">
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-accent/30 bg-accent/10 mb-8 animate-fade-up">
+            <motion.div variants={fadeUpVariants} className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-accent/30 bg-accent/10 mb-8">
               <span className="text-accent font-medium">{heroContent?.badge_text || "Trusted Since 1998"}</span>
-            </div>
+            </motion.div>
 
             {/* Headline */}
-            <h1 
-              className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-white leading-tight mb-6 animate-fade-up"
-              style={{ animationDelay: "0.1s" }}
-            >
+            <motion.h1 variants={fadeUpVariants} className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-white leading-tight mb-6">
               {heroContent?.headline?.split(heroContent?.highlight_text || "Real Estate")[0]}
               <span className="text-accent">{heroContent?.highlight_text || "Real Estate"}</span>
               {heroContent?.headline?.split(heroContent?.highlight_text || "Real Estate")[1] || " Development"}
-            </h1>
+            </motion.h1>
 
             {/* Subtext */}
-            <p 
-              className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl animate-fade-up"
-              style={{ animationDelay: "0.2s" }}
-            >
+            <motion.p variants={fadeUpVariants} className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl">
               {heroContent?.subtext || "We transform visions into exceptional living spaces. Discover our portfolio of premium residential and commercial developments crafted with excellence."}
-            </p>
+            </motion.p>
 
             {/* CTA Button - Only Explore Projects */}
-            <div 
-              className="flex flex-col sm:flex-row gap-4 mb-16 animate-fade-up"
-              style={{ animationDelay: "0.3s" }}
-            >
+            <motion.div variants={fadeUpVariants} className="flex flex-col sm:flex-row gap-4 mb-16">
               <Link to={heroContent?.primary_button_link || "/projects"}>
                 <Button className="btn-hero-primary">
                   {heroContent?.primary_button_text || "Explore Projects"}
                   <ArrowRight className="w-5 h-5" />
                 </Button>
               </Link>
-            </div>
+            </motion.div>
 
             {/* Stats */}
-            <div 
-              className="flex flex-wrap gap-8 md:gap-16 animate-fade-up"
-              style={{ animationDelay: "0.4s" }}
-            >
+            <motion.div variants={fadeUpVariants} className="flex flex-wrap gap-8 md:gap-16">
               {stats.map((stat, index) => (
                 <div key={index} className="text-center sm:text-left">
                   <div className="text-3xl md:text-4xl font-bold text-accent mb-1">
@@ -91,8 +81,8 @@ const Hero = () => {
                   <div className="text-white/70 text-sm">{stat.label}</div>
                 </div>
               ))}
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
       </div>
 
