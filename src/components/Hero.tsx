@@ -53,7 +53,7 @@ const Hero = () => {
             <motion.h1 variants={fadeUpVariants} className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-white leading-tight mb-6">
               {heroContent?.headline?.split(heroContent?.highlight_text || "Real Estate")[0]}
               <span className="text-accent">{heroContent?.highlight_text || "Real Estate"}</span>
-              {heroContent?.headline?.split(heroContent?.highlight_text || "Real Estate")[1] || " Development"}
+              {heroContent?.headline?.split(heroContent?.highlight_text || "Real Estate")[1] || " "}
             </motion.h1>
 
             {/* Subtext */}
