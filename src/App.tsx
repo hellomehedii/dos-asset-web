@@ -11,6 +11,7 @@ import { pageVariants, pageTransition } from "./lib/animations";
 import React, { Suspense, lazy, useEffect } from "react";
 import LazyLoadingIcon from "@/components/ui/lazy-loading-icon";
 import { initGoogleAnalytics, gaPageview, initFacebookPixel, fbPageview } from "./lib/analytics";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
 
 // ===================== Lazy Loaded Pages =====================
 const Index = lazy(() => import("./pages/Index"));
@@ -53,24 +54,25 @@ const queryClient = new QueryClient({
 const AppWrapper = () => {
   const location = useLocation();
   const showWhatsappButton = !location.pathname.startsWith("/admin");
+  const { data: settings } = useSiteSettings();
 
   useEffect(() => {
-    const GA_ID = (import.meta as any).env.VITE_GA_ID;
-    const FB_ID = (import.meta as any).env.VITE_FB_PIXEL_ID;
+    const GA_ID = settings?.google_analytics_id;
+    const FB_ID = settings?.meta_pixel_id;
     if (GA_ID) initGoogleAnalytics(GA_ID);
     if (FB_ID) initFacebookPixel(FB_ID);
     // initial pageview
     if (GA_ID) gaPageview(window.location.pathname + window.location.search);
     if (FB_ID) fbPageview();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [settings]);
 
   useEffect(() => {
-    const GA_ID = (import.meta as any).env.VITE_GA_ID;
-    const FB_ID = (import.meta as any).env.VITE_FB_PIXEL_ID;
+    const GA_ID = settings?.google_analytics_id;
+    const FB_ID = settings?.meta_pixel_id;
     if (GA_ID) gaPageview(location.pathname + location.search);
     if (FB_ID) fbPageview();
-  }, [location]);
+  }, [location, settings]);
 
   return (
     <>
