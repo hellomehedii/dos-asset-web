@@ -106,12 +106,7 @@ const ProjectsManager = () => {
       plan: formData.get("plan") as string,
       unit_size: formData.get("unit_size") as string,
       room_details: formData.get("room_details") as string,
-      // Allow freeform text like "December 2026" or numeric years — store as trimmed string
-      HandOver: (() => {
-        const raw = (formData.get("HandOver") as string) || "";
-        const trimmed = raw.trim();
-        return trimmed === "" ? null : trimmed;
-      })(),
+      HandOver: parseInt(formData.get("HandOver") as string) || null,
       verandas: parseInt(formData.get("verandas") as string) || null,
       address: formData.get("address") as string,
       is_featured: formData.get("is_featured") === "true",
@@ -119,6 +114,7 @@ const ProjectsManager = () => {
       google_map_embed: formData.get("google_map_embed") as string || null,
       latitude: formData.get("latitude") ? parseFloat(formData.get("latitude") as string) : null,
       longitude: formData.get("longitude") ? parseFloat(formData.get("longitude") as string) : null,
+      youtube_video_url: formData.get("youtube_video_url") as string || null,
     };
 
     if (editingProject) {
@@ -263,6 +259,10 @@ const ProjectsManager = () => {
                       <Label htmlFor="longitude">Longitude</Label>
                       <Input id="longitude" name="longitude" type="number" step="any" defaultValue={(editingProject as any)?.longitude ?? ""} />
                     </div>
+                  </div>
+                  <div>
+                    <Label htmlFor="youtube_video_url">YouTube Video URL</Label>
+                    <Input id="youtube_video_url" name="youtube_video_url" defaultValue={(editingProject as any)?.youtube_video_url || ""} placeholder="https://www.youtube.com/watch?v=VIDEO_ID or https://youtu.be/VIDEO_ID" />
                   </div>
                 </div>
               </div>

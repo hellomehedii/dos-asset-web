@@ -370,7 +370,43 @@ const ProjectDetail = () => {
                       loading="lazy"
                       className="border-0 w-full h-[450px]"
                       referrerPolicy="no-referrer-when-downgrade"
-                      sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation"
+                      sandbox="allow-scripts allow-same-origin allow-popups"
+                    />
+                  </div>
+                </div>
+              );
+            })()}
+
+            {/* YouTube Video */}
+            {(() => {
+              const youtubeUrl = (project as any).youtube_video_url;
+              if (!youtubeUrl) return null;
+
+              // Extract video ID from YouTube URL
+              const getYouTubeVideoId = (url: string) => {
+                const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+                const match = url.match(regExp);
+                return match && match[2].length === 11 ? match[2] : null;
+              };
+
+              const videoId = getYouTubeVideoId(youtubeUrl);
+              if (!videoId) return null;
+
+              return (
+                <div className="mt-12">
+                  <h2 className="text-2xl font-serif font-bold mb-4 text-foreground">
+                    Project Video
+                  </h2>
+                  <div className="rounded-xl overflow-hidden bg-secondary">
+                    <iframe
+                      title={`youtube-video-${project.slug}`}
+                      src={`https://www.youtube.com/embed/${videoId}`}
+                      width="100%"
+                      height="650"
+                      loading="lazy"
+                      className="border-0 w-full h-[650px]"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
                     />
                   </div>
                 </div>
