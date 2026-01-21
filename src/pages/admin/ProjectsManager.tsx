@@ -106,7 +106,7 @@ const ProjectsManager = () => {
       plan: formData.get("plan") as string,
       unit_size: formData.get("unit_size") as string,
       room_details: formData.get("room_details") as string,
-      HandOver: parseInt(formData.get("HandOver") as string) || null,
+      HandOver: formData.get("HandOver") as string || null,
       verandas: parseInt(formData.get("verandas") as string) || null,
       address: formData.get("address") as string,
       is_featured: formData.get("is_featured") === "true",
