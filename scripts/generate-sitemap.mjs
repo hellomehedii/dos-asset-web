@@ -116,6 +116,6 @@ ${urlset}
   // Write to public/sitemap.xml
   writeFileSync(join(process.cwd(), 'public', 'sitemap.xml'), sitemap.trim());
   console.log('Sitemap generated successfully');
-}
+
 
 generateSitemap().catch(console.error);
