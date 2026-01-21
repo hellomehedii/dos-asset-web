@@ -103,7 +103,10 @@ const ProjectDetail = () => {
       if (apiKey) {
         return `https://www.google.com/maps/embed/v1/view?key=${apiKey}&center=${lat},${lng}&zoom=15`;
       } else {
-        return `https://www.google.com/maps?q=${lat},${lng}&z=15&output=embed`;
+        // Use OpenStreetMap as fallback since Google Maps may be blocked
+        const delta = 0.01; // Approximate for zoom 15
+        const bbox = `${lng - delta},${lat - delta},${lng + delta},${lat + delta}`;
+        return `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${lat},${lng}`;
       }
     }
 

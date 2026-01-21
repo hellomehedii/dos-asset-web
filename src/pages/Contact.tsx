@@ -161,7 +161,7 @@ const Contact = () => {
                 {/* MAP */}
                <div className="w-full aspect-video rounded-xl overflow-hidden border border-border">
   <iframe
-    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d105699.29664438682!2d90.26876270771024!3d23.81690442623615!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c70025dc8e03%3A0xc575c374545b28b7!2sDOS%20Asset%20Development!5e1!3m2!1sen!2sbd!4v1767081138713!5m2!1sen!2sbd"
+    src="https://www.openstreetmap.org/export/embed.html?bbox=90.25876270771024,23.80690442623615,90.27876270771024,23.82690442623615&layer=mapnik&marker=23.81690442623615,90.26876270771024"
     className="w-full h-full"
     style={{ border: 0 }}
     allowFullScreen
