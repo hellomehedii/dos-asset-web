@@ -98,8 +98,13 @@ const ProjectDetail = () => {
     // Fallback to latitude/longitude
     const lat = (project as any).latitude;
     const lng = (project as any).longitude;
-    if (lat || lng) {
-      return `https://www.google.com/maps?q=${lat},${lng}&z=15&output=embed`;
+    if (lat && lng) {
+      const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+      if (apiKey) {
+        return `https://www.google.com/maps/embed/v1/view?key=${apiKey}&center=${lat},${lng}&zoom=15`;
+      } else {
+        return `https://www.google.com/maps?q=${lat},${lng}&z=15&output=embed`;
+      }
     }
 
     return null;
@@ -370,7 +375,6 @@ const ProjectDetail = () => {
                       loading="lazy"
                       className="border-0 w-full h-[450px]"
                       referrerPolicy="no-referrer-when-downgrade"
-                      sandbox="allow-scripts allow-same-origin allow-popups"
                     />
                   </div>
                 </div>
