@@ -5,6 +5,106 @@ import { join } from 'path';
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
 const SUPABASE_PUBLISHABLE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 
+function buildStaticUrls() {
+  const baseUrl = 'https://dosasset.com';
+  return [
+    { loc: `${baseUrl}/`, changefreq: 'daily', priority: '1.0', lastmod: new Date().toISOString().split('T')[0] },
+    { loc: `${baseUrl}/projects`, changefreq: 'weekly', priority: '0.9', lastmod: new Date().toISOString().split('T')[0] },
+    { loc: `${baseUrl}/projects/upcoming`, changefreq: 'weekly', priority: '0.7', lastmod: new Date().toISOString().split('T')[0] },
+    { loc: `${baseUrl}/projects/ongoing`, changefreq: 'weekly', priority: '0.7', lastmod: new Date().toISOString().split('T')[0] },
+    { loc: `${baseUrl}/projects/completed`, changefreq: 'weekly', priority: '0.7', lastmod: new Date().toISOString().split('T')[0] },
+    { loc: `${baseUrl}/about/story`, changefreq: 'monthly', priority: '0.6', lastmod: new Date().toISOString().split('T')[0] },
+    { loc: `${baseUrl}/about/management`, changefreq: 'monthly', priority: '0.6', lastmod: new Date().toISOString().split('T')[0] },
+    { loc: `${baseUrl}/contact`, changefreq: 'monthly', priority: '0.6', lastmod: new Date().toISOString().split('T')[0] },
+    { loc: `${baseUrl}/blog`, changefreq: 'weekly', priority: '0.8', lastmod: new Date().toISOString().split('T')[0] },
+  ];
+}
+
+function writeSitemap(urls) {
+  const urlset = urls.map(url => `\n  <url>\n    <loc>${url.loc}</loc>\n    <changefreq>${url.changefreq}</changefreq>\n    <priority>${url.priority}</priority>\n    <lastmod>${url.lastmod}</lastmod>\n  </url>`).join('');
+
+  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urlset}\n</urlset>`;
+  writeFileSync(join(process.cwd(), 'public', 'sitemap.xml'), sitemap.trim());
+}
+
+async function generateStaticSitemap() {
+  const urls = buildStaticUrls();
+  writeSitemap(urls);
+  console.log('Static sitemap generated successfully');
+}
+
+if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
+  console.log('Supabase environment variables not found, generating static sitemap');
+  generateStaticSitemap();
+  process.exit(0);
+}
+
+const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+
+async function generateSitemap() {
+  const urls = buildStaticUrls();
+
+  // Fetch projects
+  try {
+    const { data: projects, error: projectsError } = await supabase
+      .from('projects')
+      .select('slug, updated_at');
+
+    if (projectsError) {
+      console.error('Error fetching projects:', projectsError);
+    } else if (Array.isArray(projects)) {
+      projects.forEach(project => {
+        if (project && project.slug) {
+          urls.push({
+            loc: `https://dosasset.com/projects/${project.slug}`,
+            changefreq: 'monthly',
+            priority: '0.8',
+            lastmod: new Date(project.updated_at || Date.now()).toISOString().split('T')[0]
+          });
+        }
+      });
+    }
+  } catch (err) {
+    console.error('Failed fetching projects:', err);
+  }
+
+  // Fetch blog posts
+  try {
+    const { data: blogs, error: blogsError } = await supabase
+      .from('blog_posts')
+      .select('slug, updated_at, published_at')
+      .eq('is_published', true);
+
+    if (blogsError) {
+      console.error('Error fetching blogs:', blogsError);
+    } else if (Array.isArray(blogs)) {
+      blogs.forEach(blog => {
+        if (blog && blog.slug) {
+          urls.push({
+            loc: `https://dosasset.com/blog/${blog.slug}`,
+            changefreq: 'monthly',
+            priority: '0.7',
+            lastmod: new Date(blog.updated_at || blog.published_at || Date.now()).toISOString().split('T')[0]
+          });
+        }
+      });
+    }
+  } catch (err) {
+    console.error('Failed fetching blogs:', err);
+  }
+
+  writeSitemap(urls);
+  console.log('Sitemap generated successfully');
+}
+
+generateSitemap().catch(console.error);
+import { createClient } from '@supabase/supabase-js';
+import { writeFileSync } from 'fs';
+import { join } from 'path';
+
+const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
+const SUPABASE_PUBLISHABLE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+
 if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
   console.log('Supabase environment variables not found, generating static sitemap');
   generateStaticSitemap();
