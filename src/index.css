@@ -106,6 +106,18 @@
   h1, h2, h3, h4, h5, h6 {
     @apply font-serif;
   }
+
+  body {
+    cursor: none;
+  }
+
+  button,
+  a,
+  input,
+  textarea,
+  select {
+    cursor: none;
+  }
 }
 
 @layer components {
@@ -134,6 +146,74 @@
     box-shadow: var(--shadow-card-hover);
   }
 
+  .custom-cursor {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+  }
+
+  .custom-cursor__outer,
+  .custom-cursor__inner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    transform: translate3d(var(--cursor-x, 0), var(--cursor-y, 0), 0) translate(-50%, -50%) scale(var(--cursor-scale, 1));
+    transition: transform 180ms ease, opacity 180ms ease, background-color 180ms ease, border-color 180ms ease;
+    will-change: transform, opacity, background-color, border-color;
+    mix-blend-mode: difference;
+  }
+
+  .custom-cursor__outer {
+    width: 48px;
+    height: 48px;
+    border-radius: 9999px;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.04);
+    opacity: 0.85;
+    transition: transform 240ms ease, opacity 240ms ease, border-color 240ms ease, background-color 240ms ease;
+  }
+
+  .custom-cursor__inner {
+    width: 12px;
+    height: 12px;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.08);
+  }
+
+  .custom-cursor__outer.cursor-hover,
+  .custom-cursor__inner.cursor-hover {
+    --cursor-scale: 1.25;
+  }
+
+  .custom-cursor__outer.cursor-hover {
+    border-color: rgba(56, 189, 248, 0.9);
+    background: rgba(56, 189, 248, 0.14);
+  }
+
+  .custom-cursor__inner.cursor-hover {
+    background: rgba(56, 189, 248, 0.95);
+    box-shadow: 0 0 0 8px rgba(56, 189, 248, 0.12);
+  }
+
+  .custom-cursor__outer.cursor-pressed,
+  .custom-cursor__inner.cursor-pressed {
+    --cursor-scale: 1.5;
+  }
+
+  .custom-cursor__outer.cursor-pressed {
+    border-color: rgba(59, 130, 246, 0.95);
+    background: rgba(59, 130, 246, 0.12);
+    opacity: 0.7;
+  }
+
+  .custom-cursor__inner.cursor-pressed {
+    background: rgba(59, 130, 246, 1);
+    box-shadow: 0 0 0 10px rgba(59, 130, 246, 0.18);
+  }
+
   /* Use runtime brand color for hover and accents when provided via inline --brand */
   .dynamic-primary .project-name { transition: color .25s ease; }
   .dynamic-primary:hover .project-name { color: var(--brand); }
@@ -160,62 +240,6 @@
 
   .container-custom {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
-  }
-
-  body {
-    cursor: none;
-  }
-
-  button,
-  a,
-  input,
-  textarea,
-  select {
-    cursor: auto !important;
-  }
-
-  .custom-cursor {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 9999;
-  }
-
-  .custom-cursor__inner,
-  .custom-cursor__outer {
-    position: absolute;
-    top: 0;
-    left: 0;
-    transform: translate3d(-50%, -50%, 0);
-    pointer-events: none;
-    will-change: transform, opacity;
-  }
-
-  .custom-cursor__inner {
-    width: 10px;
-    height: 10px;
-    border-radius: 9999px;
-    background: rgba(255, 255, 255, 0.95);
-    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.12);
-    transition: transform 150ms ease, opacity 150ms ease, background-color 150ms ease;
-  }
-
-  .custom-cursor__outer {
-    width: 42px;
-    height: 42px;
-    border-radius: 9999px;
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    backdrop-filter: blur(6px);
-    transition: transform 200ms ease, width 200ms ease, height 200ms ease, border-color 200ms ease;
-  }
-
-  .custom-cursor__outer.cursor-pressed,
-  .custom-cursor__inner.cursor-pressed {
-    transform: translate3d(-50%, -50%, 0) scale(1.4);
-  }
-
-  .custom-cursor__outer.cursor-pressed {
-    border-color: rgba(255, 255, 255, 0.55);
   }
 
   .text-gradient-gold {
