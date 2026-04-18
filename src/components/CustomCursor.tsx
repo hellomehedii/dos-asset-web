@@ -3,16 +3,20 @@ import { useEffect, useRef } from "react";
 const CustomCursor = () => {
   const innerRef = useRef<HTMLDivElement>(null);
   const outerRef = useRef<HTMLDivElement>(null);
-  const requestRef = useRef<number>();
-  const position = useRef({ x: 0, y: 0 });
-  const target = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
     const handleMouseMove = (event: MouseEvent) => {
-      target.current = { x: event.clientX, y: event.clientY };
+      const x = `${event.clientX}px`;
+      const y = `${event.clientY}px`;
+
       if (innerRef.current) {
-        innerRef.current.style.setProperty("--cursor-x", `${event.clientX}px`);
-        innerRef.current.style.setProperty("--cursor-y", `${event.clientY}px`);
+        innerRef.current.style.setProperty("--cursor-x", x);
+        innerRef.current.style.setProperty("--cursor-y", y);
+      }
+
+      if (outerRef.current) {
+        outerRef.current.style.setProperty("--cursor-x", x);
+        outerRef.current.style.setProperty("--cursor-y", y);
       }
     };
 
@@ -51,23 +55,11 @@ const CustomCursor = () => {
       }
     };
 
-    document.addEventListener("mouseover", handleDocumentMouseOver);
-    document.addEventListener("mouseout", handleDocumentMouseOut);
-
-    const onAnimationFrame = () => {
-      position.current.x += (target.current.x - position.current.x) * 0.16;
-      position.current.y += (target.current.y - position.current.y) * 0.16;
-      if (outerRef.current) {
-        outerRef.current.style.setProperty("--cursor-x", `${position.current.x}px`);
-        outerRef.current.style.setProperty("--cursor-y", `${position.current.y}px`);
-      }
-      requestRef.current = requestAnimationFrame(onAnimationFrame);
-    };
-
     document.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("mousedown", handleMouseDown);
     document.addEventListener("mouseup", handleMouseUp);
-    requestRef.current = requestAnimationFrame(onAnimationFrame);
+    document.addEventListener("mouseover", handleDocumentMouseOver);
+    document.addEventListener("mouseout", handleDocumentMouseOut);
 
     return () => {
       document.removeEventListener("mousemove", handleMouseMove);
@@ -75,7 +67,6 @@ const CustomCursor = () => {
       document.removeEventListener("mouseup", handleMouseUp);
       document.removeEventListener("mouseover", handleDocumentMouseOver);
       document.removeEventListener("mouseout", handleDocumentMouseOut);
-      if (requestRef.current) cancelAnimationFrame(requestRef.current);
     };
   }, []);
 
