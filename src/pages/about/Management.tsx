@@ -1,14 +1,17 @@
 import { Helmet } from "react-helmet-async";
+import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Facebook, Linkedin, Twitter } from "lucide-react";
 
 type TeamMember = {
   id: string;
   name: string;
   designation: string;
+  bio: string | null;
   image: string | null;
   is_active: boolean | null;
   display_order: number | null;
@@ -56,28 +59,31 @@ const SocialLinks = ({ member }: { member: TeamMember }) => (
   </div>
 );
 
-const MemberCard = ({ member }: { member: TeamMember }) => {
+const MemberCard = ({ member, onViewDetails }: { member: TeamMember; onViewDetails?: (member: TeamMember) => void }) => {
   const initials = (member.name || "").trim().slice(0, 1).toUpperCase();
+  const isClickable = Boolean(onViewDetails);
 
-  return (
-    <article className="group overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+  const CardContent = () => (
+    <>
       <div className="relative aspect-square bg-secondary">
-        {member.image ? (
-          <img
-            src={member.image}
-            alt={`${member.name} - ${member.designation}`}
-            className="h-full w-full object-cover"
-            loading="lazy"
-          />
-        ) : (
-          <div className="flex h-full w-full items-center justify-center">
-            <div className="h-20 w-20 rounded-full bg-background/70 ring-1 ring-border flex items-center justify-center">
-              <span className="text-2xl font-serif font-semibold text-foreground">
-                {initials}
-              </span>
+        <div className="flex h-full w-full items-center justify-center overflow-hidden">
+          {member.image ? (
+            <img
+              src={member.image}
+              alt={`${member.name} - ${member.designation}`}
+              className="h-full w-full object-cover"
+              loading="lazy"
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center">
+              <div className="h-20 w-20 rounded-full bg-background/70 ring-1 ring-border flex items-center justify-center">
+                <span className="text-2xl font-serif font-semibold text-foreground">
+                  {initials}
+                </span>
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
         <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-border/60" />
       </div>
 
@@ -88,6 +94,22 @@ const MemberCard = ({ member }: { member: TeamMember }) => {
         <p className="mt-1 text-sm font-medium text-primary">{member.designation}</p>
         <SocialLinks member={member} />
       </div>
+    </>
+  );
+
+  return (
+    <article className={`group overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ${isClickable ? 'cursor-pointer' : ''}`}>
+      {isClickable ? (
+        <button
+          type="button"
+          onClick={() => onViewDetails?.(member)}
+          className="w-full text-left"
+        >
+          <CardContent />
+        </button>
+      ) : (
+        <CardContent />
+      )}
     </article>
   );
 };
@@ -98,12 +120,14 @@ const TeamSection = ({
   description,
   members,
   tone = "default",
+  onViewDetails,
 }: {
   eyebrow: string;
   title: string;
   description?: string;
   members: TeamMember[];
   tone?: "default" | "muted";
+  onViewDetails?: (member: TeamMember) => void;
 }) => {
   if (members.length === 0) return null;
 
@@ -118,7 +142,7 @@ const TeamSection = ({
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {members.map((member) => (
-            <MemberCard key={member.id} member={member} />
+            <MemberCard key={member.id} member={member} onViewDetails={onViewDetails} />
           ))}
         </div>
       </div>
@@ -163,6 +187,19 @@ const Management = () => {
       return data;
     },
   });
+
+  const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
+  const [isMemberModalOpen, setIsMemberModalOpen] = useState(false);
+
+  const handleOpenMember = (member: TeamMember) => {
+    setSelectedMember(member);
+    setIsMemberModalOpen(true);
+  };
+
+  const handleCloseMember = () => {
+    setIsMemberModalOpen(false);
+    setSelectedMember(null);
+  };
 
   const boardMembers = teamMembers?.filter((m) => m.team_category === "board") || [];
   const seniorManagement = teamMembers?.filter((m) => m.team_category === "senior_management") || [];
@@ -230,6 +267,7 @@ const Management = () => {
               title="Board of Directors"
               description="Strategic guidance and governance for long-term growth."
               members={boardMembers}
+              onViewDetails={handleOpenMember}
             />
             <TeamSection
               eyebrow="Operations"
@@ -258,6 +296,34 @@ const Management = () => {
           </>
         )}
       </main>
+
+      <Dialog
+        open={isMemberModalOpen}
+        onOpenChange={(open) => {
+          if (!open) {
+            handleCloseMember();
+          }
+        }}
+      >
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Message from {selectedMember?.designation}</DialogTitle>
+            <DialogDescription>
+              {selectedMember?.name}
+            </DialogDescription>
+          </DialogHeader>
+
+          {selectedMember && (
+            <div className="mt-6">
+              <div className="rounded-2xl border border-border bg-card p-6">
+                <p className="text-sm leading-7 text-foreground whitespace-pre-wrap">
+                  {selectedMember.bio || "No message available."}
+                </p>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
 
       <Footer />
     </>

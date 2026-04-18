@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useToast } from "@/hooks/use-toast";
@@ -87,6 +88,7 @@ const TeamManager = () => {
     const member = {
       name: formData.get("name") as string,
       designation: formData.get("designation") as string,
+      bio: formData.get("bio") as string,
       image: image,
       display_order: parseInt(formData.get("display_order") as string) || 0,
       is_active: formData.get("is_active") === "true",
@@ -143,6 +145,10 @@ const TeamManager = () => {
               <div>
                 <Label htmlFor="designation">Designation *</Label>
                 <Input id="designation" name="designation" required defaultValue={editingMember?.designation || ""} />
+              </div>
+              <div>
+                <Label htmlFor="bio">Bio / Message</Label>
+                <Textarea id="bio" name="bio" rows={4} defaultValue={editingMember?.bio || ""} placeholder="Enter the member's bio or message..." />
               </div>
               <div>
                 <Label>Photo</Label>
