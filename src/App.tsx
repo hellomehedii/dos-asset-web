@@ -10,6 +10,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { pageVariants, pageTransition } from "./lib/animations";
 import React, { Suspense, lazy, useEffect } from "react";
 import LazyLoadingIcon from "@/components/ui/lazy-loading-icon";
+import CustomCursor from "@/components/CustomCursor";
 import { initGoogleAnalytics, gaPageview, initFacebookPixel, fbPageview } from "./lib/analytics";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 
@@ -76,6 +77,7 @@ const AppWrapper = () => {
 
   return (
     <>
+      <CustomCursor />
       <Toaster />
       <Sonner />
       <RealtimeInvalidation />

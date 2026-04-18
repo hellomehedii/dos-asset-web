@@ -110,15 +110,15 @@
 
 @layer components {
   .btn-primary {
-    @apply bg-primary text-primary-foreground px-6 py-3 rounded-full font-medium transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5;
+    @apply bg-primary text-primary-foreground px-6 py-3 rounded-full font-medium transition-colors duration-300 hover:shadow-lg;
   }
 
   .btn-outline-gold {
-    @apply border-2 border-accent text-accent px-6 py-3 rounded-full font-medium transition-all duration-300 hover:bg-accent hover:text-accent-foreground;
+    @apply border-2 border-accent text-accent px-6 py-3 rounded-full font-medium transition-colors duration-300 hover:bg-accent hover:text-accent-foreground;
   }
 
   .btn-hero-primary {
-    @apply bg-accent text-accent-foreground px-8 py-4 rounded-full font-semibold transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 inline-flex items-center gap-2;
+    @apply bg-accent text-accent-foreground px-8 py-4 rounded-full font-semibold transition-colors duration-300 hover:shadow-lg inline-flex items-center gap-2;
   }
 
   .btn-hero-secondary {
@@ -126,7 +126,7 @@
   }
 
   .card-project {
-    @apply bg-card rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-2;
+    @apply bg-card rounded-2xl overflow-hidden transition-shadow duration-300;
     box-shadow: var(--shadow-card);
   }
 
@@ -142,8 +142,80 @@
     @apply py-20 md:py-28;
   }
 
+  button:active,
+  a:active,
+  input:active,
+  textarea:active,
+  select:active {
+    transform: none !important;
+  }
+
+  .modern-hover-icon svg {
+    transition: transform 200ms ease, color 200ms ease, fill 200ms ease;
+  }
+
+  .modern-hover-icon:hover svg {
+    transform: translateX(4px) scale(1.02);
+  }
+
   .container-custom {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  body {
+    cursor: none;
+  }
+
+  button,
+  a,
+  input,
+  textarea,
+  select {
+    cursor: auto !important;
+  }
+
+  .custom-cursor {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  .custom-cursor__inner,
+  .custom-cursor__outer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate3d(-50%, -50%, 0);
+    pointer-events: none;
+    will-change: transform, opacity;
+  }
+
+  .custom-cursor__inner {
+    width: 10px;
+    height: 10px;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.12);
+    transition: transform 150ms ease, opacity 150ms ease, background-color 150ms ease;
+  }
+
+  .custom-cursor__outer {
+    width: 42px;
+    height: 42px;
+    border-radius: 9999px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(6px);
+    transition: transform 200ms ease, width 200ms ease, height 200ms ease, border-color 200ms ease;
+  }
+
+  .custom-cursor__outer.cursor-pressed,
+  .custom-cursor__inner.cursor-pressed {
+    transform: translate3d(-50%, -50%, 0) scale(1.4);
+  }
+
+  .custom-cursor__outer.cursor-pressed {
+    border-color: rgba(255, 255, 255, 0.55);
   }
 
   .text-gradient-gold {
