@@ -107,17 +107,15 @@
     @apply font-serif;
   }
 
-  body {
-    cursor: none;
-  }
+  /* Removed cursor: none to use original mouse cursor */
 
-  button,
+  /* button,
   a,
   input,
   textarea,
   select {
     cursor: none;
-  }
+  } */
 }
 
 @layer components {
@@ -223,6 +221,12 @@
   .custom-cursor__inner.cursor-pressed {
     background: rgba(59, 130, 246, 1);
     box-shadow: 0 0 0 10px rgba(59, 130, 246, 0.18);
+  }
+
+  .custom-cursor__outer.cursor-hidden,
+  .custom-cursor__inner.cursor-hidden {
+    opacity: 0;
+    pointer-events: none;
   }
 
   /* Use runtime brand color for hover and accents when provided via inline --brand */

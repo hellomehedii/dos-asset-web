@@ -77,7 +77,7 @@ const AppWrapper = () => {
 
   return (
     <>
-      <CustomCursor />
+      {/* <CustomCursor /> */}
       <Toaster />
       <Sonner />
       <RealtimeInvalidation />

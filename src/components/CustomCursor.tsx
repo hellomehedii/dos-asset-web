@@ -40,6 +40,16 @@ const CustomCursor = () => {
       outerRef.current?.classList.remove("cursor-hover");
     };
 
+    const handleDragStart = () => {
+      innerRef.current?.classList.add("cursor-hidden");
+      outerRef.current?.classList.add("cursor-hidden");
+    };
+
+    const handleDragEnd = () => {
+      innerRef.current?.classList.remove("cursor-hidden");
+      outerRef.current?.classList.remove("cursor-hidden");
+    };
+
     const interactiveSelector = "a, button, input, textarea, select, [role=button], [data-cursor='hover']";
 
     const handleDocumentMouseOver = (event: MouseEvent) => {
@@ -60,6 +70,8 @@ const CustomCursor = () => {
     document.addEventListener("mouseup", handleMouseUp);
     document.addEventListener("mouseover", handleDocumentMouseOver);
     document.addEventListener("mouseout", handleDocumentMouseOut);
+    document.addEventListener("dragstart", handleDragStart);
+    document.addEventListener("dragend", handleDragEnd);
 
     return () => {
       document.removeEventListener("mousemove", handleMouseMove);
@@ -67,6 +79,8 @@ const CustomCursor = () => {
       document.removeEventListener("mouseup", handleMouseUp);
       document.removeEventListener("mouseover", handleDocumentMouseOver);
       document.removeEventListener("mouseout", handleDocumentMouseOut);
+      document.removeEventListener("dragstart", handleDragStart);
+      document.removeEventListener("dragend", handleDragEnd);
     };
   }, []);
 
