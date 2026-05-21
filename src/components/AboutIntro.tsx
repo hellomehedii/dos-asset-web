@@ -29,7 +29,7 @@ const AboutIntro = () => {
             <div className="absolute -bottom-6 -right-6 bg-card p-6 rounded-2xl shadow-xl max-w-xs hidden md:block">
               <div className="flex items-center gap-4">
                 <div className="w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center">
-                  <span className="text-2xl font-bold text-accent">16+</span>
+                  <span className="text-2xl font-bold text-accent">5+</span>
                 </div>
                 <div>
                   <p className="font-semibold text-foreground">Years of Trust</p>
