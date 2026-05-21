@@ -46,7 +46,7 @@ const Hero = () => {
           <motion.div className="max-w-3xl" variants={staggerContainer} initial="hidden" animate="show">
             {/* Badge */}
             <motion.div variants={fadeUpVariants} className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-accent/30 bg-accent/10 mb-8">
-              <span className="text-accent font-medium">{heroContent?.badge_text || "Trusted Since 1998"}</span>
+              <span className="text-accent font-medium">{heroContent?.badge_text || "Trusted Since 2023"}</span>
             </motion.div>
 
             {/* Headline */}
