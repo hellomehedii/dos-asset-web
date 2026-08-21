@@ -143,7 +143,7 @@ const HeroManager = () => {
           <Input
             value={formData.highlight_text}
             onChange={(e) => setFormData({ ...formData, highlight_text: e.target.value })}
-            placeholder="Real Estate"
+            placeholder="Your Trusted Partner in Property Development"
           />
         </div>
 
