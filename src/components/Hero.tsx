@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -6,6 +7,46 @@ import { supabase } from "@/integrations/supabase/client";
 import heroBg from "@/assets/hero-bg.jpg";
 import { motion } from "framer-motion";
 import { fadeUpVariants, staggerContainer } from "@/lib/animations";
+
+const CountUpValue = ({ value }: { value: string }) => {
+  const match = value.match(/^([\d,]+(?:\.\d+)?)(.*)$/);
+  const target = match ? Number(match[1].replace(/,/g, "")) : null;
+  const suffix = match?.[2] || "";
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (target === null) return;
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduceMotion) {
+      setCount(target);
+      return;
+    }
+
+    const duration = 1400;
+    const startTime = performance.now();
+    let animationFrame = 0;
+    setCount(0);
+
+    const animate = (currentTime: number) => {
+      const progress = Math.min((currentTime - startTime) / duration, 1);
+      const easedProgress = 1 - Math.pow(1 - progress, 3);
+      setCount(target * easedProgress);
+
+      if (progress < 1) {
+        animationFrame = requestAnimationFrame(animate);
+      }
+    };
+
+    animationFrame = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationFrame);
+  }, [target]);
+
+  if (target === null) return <>{value}</>;
+
+  const decimalPlaces = match?.[1].split(".")[1]?.length || 0;
+  return <>{count.toLocaleString(undefined, { minimumFractionDigits: decimalPlaces, maximumFractionDigits: decimalPlaces })}{suffix}</>;
+};
 
 const Hero = () => {
   const { data: heroContent } = useQuery({
@@ -76,7 +117,7 @@ const Hero = () => {
               {stats.map((stat, index) => (
                 <div key={index} className="text-center sm:text-left">
                   <div className="text-3xl md:text-4xl font-bold text-accent mb-1">
-                    {stat.value}
+                    <CountUpValue value={stat.value} />
                   </div>
                   <div className="text-white/70 text-sm">{stat.label}</div>
                 </div>
