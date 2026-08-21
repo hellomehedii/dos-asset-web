@@ -89,7 +89,7 @@ const Navbar = () => {
                 <img
                   src={isScrolled && settings?.logo_hover_url ? settings.logo_hover_url : settings.logo_url}
                   alt={settings.site_name || "Site logo"}
-                  className="h-10 w-auto transition-all duration-500"
+                  className="h-14 w-auto transition-all duration-500"
                   loading="eager"
                 />
               </div>
