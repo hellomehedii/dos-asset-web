@@ -125,7 +125,7 @@ const HeroManager = () => {
           <Input
             value={formData.badge_text}
             onChange={(e) => setFormData({ ...formData, badge_text: e.target.value })}
-            placeholder="Trusted Since 1998"
+            placeholder="Trusted Since 2023"
           />
         </div>
 
