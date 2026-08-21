@@ -23,12 +23,14 @@ const SiteSettings = () => {
   });
 
   const [logoUrl, setLogoUrl] = useState("");
+  const [logoHoverUrl, setLogoHoverUrl] = useState("");
   const [faviconUrl, setFaviconUrl] = useState("");
   const [showBrandText, setShowBrandText] = useState<boolean>(false);
 
   useEffect(() => {
     if (settings) {
       setLogoUrl(settings.logo_url || "");
+      setLogoHoverUrl((settings as any).logo_hover_url || "");
       setFaviconUrl((settings as any).favicon_url || "");
       setShowBrandText(!!(settings as any).show_brand_text);
     }
@@ -40,6 +42,7 @@ const SiteSettings = () => {
         site_name: formData.get("site_name") as string,
         site_tagline: formData.get("site_tagline") as string,
         logo_url: logoUrl,
+        logo_hover_url: logoHoverUrl,
         favicon_url: faviconUrl,
         show_brand_text: showBrandText,
         phone: formData.get("phone") as string,
@@ -83,9 +86,15 @@ const SiteSettings = () => {
           
           <div className="grid md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium text-foreground mb-2">Site Logo</label>
+              <label className="block text-sm font-medium text-foreground mb-2">Site Logo - Normal</label>
               <ImageUpload value={logoUrl} onChange={setLogoUrl} folder="branding" />
             </div>
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-2">Site Logo - Sticky</label>
+              <ImageUpload value={logoHoverUrl} onChange={setLogoHoverUrl} folder="branding" />
+            </div>
+          </div>
+          <div className="grid md:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-medium text-foreground mb-2">Favicon</label>
               <ImageUpload value={faviconUrl} onChange={setFaviconUrl} folder="branding" />

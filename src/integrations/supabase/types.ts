@@ -12,6 +12,31 @@ export type Database = {
   __InternalSupabase: {
     PostgrestVersion: "14.1"
   }
+  graphql_public: {
+    Tables: {
+      [_ in never]: never
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      graphql: {
+        Args: {
+          extensions?: Json
+          operationName?: string
+          query?: string
+          variables?: Json
+        }
+        Returns: Json
+      }
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
   public: {
     Tables: {
       about_content: {
@@ -92,6 +117,44 @@ export type Database = {
         }
         Relationships: []
       }
+      construction_phases: {
+        Row: {
+          created_at: string
+          id: string
+          phase_number: number
+          progress_percentage: number
+          project_id: string
+          updated_at: string
+          work_name: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          phase_number: number
+          progress_percentage?: number
+          project_id: string
+          updated_at?: string
+          work_name: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          phase_number?: number
+          progress_percentage?: number
+          project_id?: string
+          updated_at?: string
+          work_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "construction_phases_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       contact_messages: {
         Row: {
           created_at: string
@@ -129,6 +192,7 @@ export type Database = {
         Row: {
           badge_text: string | null
           banner_image: string | null
+          banner_video: string | null
           created_at: string
           headline: string | null
           highlight_text: string | null
@@ -147,6 +211,7 @@ export type Database = {
         Insert: {
           badge_text?: string | null
           banner_image?: string | null
+          banner_video?: string | null
           created_at?: string
           headline?: string | null
           highlight_text?: string | null
@@ -165,6 +230,7 @@ export type Database = {
         Update: {
           badge_text?: string | null
           banner_image?: string | null
+          banner_video?: string | null
           created_at?: string
           headline?: string | null
           highlight_text?: string | null
@@ -233,6 +299,7 @@ export type Database = {
       page_seo: {
         Row: {
           created_at: string
+          favicon_url: string | null
           id: string
           meta_description: string | null
           meta_keywords: string | null
@@ -244,6 +311,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          favicon_url?: string | null
           id?: string
           meta_description?: string | null
           meta_keywords?: string | null
@@ -255,6 +323,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          favicon_url?: string | null
           id?: string
           meta_description?: string | null
           meta_keywords?: string | null
@@ -276,12 +345,13 @@ export type Database = {
           featured_image: string | null
           gallery: Json | null
           google_map_embed: string | null
-          latitude: number | null
-          longitude: number | null
+          HandOver: string | null
           id: string
           is_featured: boolean | null
           land_area: string | null
+          latitude: number | null
           location: string
+          longitude: number | null
           name: string
           num_apartments: number | null
           orientation: string | null
@@ -289,10 +359,10 @@ export type Database = {
           room_details: string | null
           slug: string
           status: Database["public"]["Enums"]["project_status"]
-          HandOver: string | null
           unit_size: string | null
           updated_at: string
           verandas: number | null
+          youtube_video_url: string | null
         }
         Insert: {
           address?: string | null
@@ -303,12 +373,13 @@ export type Database = {
           featured_image?: string | null
           gallery?: Json | null
           google_map_embed?: string | null
-          latitude?: number | null
-          longitude?: number | null
+          HandOver?: string | null
           id?: string
           is_featured?: boolean | null
           land_area?: string | null
+          latitude?: number | null
           location: string
+          longitude?: number | null
           name: string
           num_apartments?: number | null
           orientation?: string | null
@@ -316,10 +387,10 @@ export type Database = {
           room_details?: string | null
           slug: string
           status?: Database["public"]["Enums"]["project_status"]
-          HandOver?: string | null
           unit_size?: string | null
           updated_at?: string
           verandas?: number | null
+          youtube_video_url?: string | null
         }
         Update: {
           address?: string | null
@@ -330,12 +401,13 @@ export type Database = {
           featured_image?: string | null
           gallery?: Json | null
           google_map_embed?: string | null
-          latitude?: number | null
-          longitude?: number | null
+          HandOver?: string | null
           id?: string
           is_featured?: boolean | null
           land_area?: string | null
+          latitude?: number | null
           location?: string
+          longitude?: number | null
           name?: string
           num_apartments?: number | null
           orientation?: string | null
@@ -343,10 +415,10 @@ export type Database = {
           room_details?: string | null
           slug?: string
           status?: Database["public"]["Enums"]["project_status"]
-          HandOver?: string | null
           unit_size?: string | null
           updated_at?: string
           verandas?: number | null
+          youtube_video_url?: string | null
         }
         Relationships: []
       }
@@ -359,10 +431,12 @@ export type Database = {
           footer_text: string | null
           google_analytics_id: string | null
           id: string
+          logo_hover_url: string | null
           logo_url: string | null
           meta_pixel_id: string | null
           phone: string | null
           primary_color: string | null
+          show_brand_text: boolean | null
           site_name: string
           site_tagline: string | null
           updated_at: string
@@ -375,10 +449,12 @@ export type Database = {
           footer_text?: string | null
           google_analytics_id?: string | null
           id?: string
+          logo_hover_url?: string | null
           logo_url?: string | null
           meta_pixel_id?: string | null
           phone?: string | null
           primary_color?: string | null
+          show_brand_text?: boolean | null
           site_name?: string
           site_tagline?: string | null
           updated_at?: string
@@ -391,10 +467,12 @@ export type Database = {
           footer_text?: string | null
           google_analytics_id?: string | null
           id?: string
+          logo_hover_url?: string | null
           logo_url?: string | null
           meta_pixel_id?: string | null
           phone?: string | null
           primary_color?: string | null
+          show_brand_text?: boolean | null
           site_name?: string
           site_tagline?: string | null
           updated_at?: string
@@ -597,6 +675,9 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
+  graphql_public: {
+    Enums: {},
+  },
   public: {
     Enums: {
       app_role: ["admin", "editor"],

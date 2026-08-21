@@ -6,6 +6,7 @@ export interface SiteSettings {
   site_name: string;
   site_tagline: string | null;
   logo_url: string | null;
+  logo_hover_url: string | null;
   favicon_url?: string | null;
   show_brand_text?: boolean | null;
   primary_color: string | null;

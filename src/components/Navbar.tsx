@@ -19,7 +19,7 @@ const Navbar = () => {
       setIsScrolled(window.scrollY > 12);
     };
     handleScroll();
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -60,7 +60,7 @@ const Navbar = () => {
 
   const headerClass = useTransparent
     ? "bg-transparent border-b border-border/20"
-    : "bg-background/90 backdrop-blur-md border-b border-border";
+    : "bg-background/90 backdrop-blur-md border-b border-border shadow-sm";
 
   const brandTextClass = useTransparent ? "text-background" : "text-foreground";
   const mutedBrandTextClass = useTransparent
@@ -76,18 +76,23 @@ const Navbar = () => {
   };
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${headerClass}`}>
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${headerClass}`}>
       <div className="container-custom">
         <nav className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3">
+          <Link
+            to="/"
+            className="flex items-center gap-3"
+          >
             {settings?.logo_url ? (
-              <img
-                src={settings.logo_url}
-                alt={settings.site_name || "Site logo"}
-                className="h-10 w-auto"
-                loading="eager"
-              />
+              <div className="relative overflow-hidden rounded-lg">
+                <img
+                  src={isScrolled && settings?.logo_hover_url ? settings.logo_hover_url : settings.logo_url}
+                  alt={settings.site_name || "Site logo"}
+                  className="h-10 w-auto transition-all duration-500"
+                  loading="eager"
+                />
+              </div>
             ) : (
               <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
                 <Building2 className="w-6 h-6 text-primary-foreground" />
