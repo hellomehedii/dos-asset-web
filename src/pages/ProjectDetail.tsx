@@ -53,7 +53,7 @@ const ProjectDetail = () => {
     return (
       <>
         <Navbar />
-        <div className="pt-20 min-h-screen flex items-center justify-center">
+        <div className="pt-36 min-h-screen flex items-center justify-center">
           Loading...
         </div>
         <Footer />
@@ -65,7 +65,7 @@ const ProjectDetail = () => {
     return (
       <>
         <Navbar />
-        <div className="pt-20 min-h-screen flex items-center justify-center">
+        <div className="pt-36 min-h-screen flex items-center justify-center">
           Project not found
         </div>
         <Footer />
@@ -149,7 +149,7 @@ const ProjectDetail = () => {
 
       <Navbar />
 
-      <main className="pt-20">
+      <main className="pt-36">
         <section className="bg-navy text-white py-12">
           <div className="container-custom">
             <span

@@ -6,8 +6,6 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import RealtimeInvalidation from "@/components/RealtimeInvalidation";
 import WhatsappButton from "@/components/WhatsappButton";
-import { AnimatePresence, motion } from "framer-motion";
-import { pageVariants, pageTransition } from "./lib/animations";
 import React, { Suspense, lazy, useEffect } from "react";
 import LazyLoadingIcon from "@/components/ui/lazy-loading-icon";
 import CustomCursor from "@/components/CustomCursor";
@@ -75,6 +73,26 @@ const AppWrapper = () => {
     if (FB_ID) fbPageview();
   }, [location, settings]);
 
+  useEffect(() => {
+    const hasCenteredInitialScroll = sessionStorage.getItem("website-centered-scroll");
+
+    if (hasCenteredInitialScroll) return;
+
+    const centerPageOnInitialLoad = () => {
+      const maxScroll = Math.max(document.documentElement.scrollHeight - window.innerHeight, 0);
+      const middleScroll = maxScroll / 2;
+
+      window.scrollTo({
+        top: middleScroll,
+        behavior: "auto",
+      });
+
+      sessionStorage.setItem("website-centered-scroll", "true");
+    };
+
+    requestAnimationFrame(centerPageOnInitialLoad);
+  }, []);
+
   return (
     <>
       {/* <CustomCursor /> */}
@@ -90,9 +108,7 @@ const AppWrapper = () => {
           </div>
         }
       >
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.div key={location.pathname} variants={pageVariants} initial="initial" animate="animate" exit="exit" transition={pageTransition}>
-                <Routes>
+        <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/about/story" element={<OurStory />} />
@@ -116,9 +132,7 @@ const AppWrapper = () => {
             <Route path="messages" element={<ContactMessagesManager />} />
           </Route>
           <Route path="*" element={<NotFound />} />
-            </Routes>
-          </motion.div>
-        </AnimatePresence>
+        </Routes>
       </Suspense>
     </>
   );

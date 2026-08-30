@@ -86,7 +86,7 @@ const OurStory = () => {
 
       <Navbar />
 
-      <main className="pt-20">
+      <main className="pt-36">
         {/* Hero Section */}
         <section className="bg-primary text-white py-20">
           <div className="container-custom">

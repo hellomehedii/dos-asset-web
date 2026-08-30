@@ -60,7 +60,7 @@ const Navbar = () => {
 
   const headerClass = useTransparent
     ? "bg-transparent border-b border-border/20"
-    : "bg-background/90 backdrop-blur-md border-b border-border shadow-sm";
+    : "bg-background/90 backdrop-blur-md ";
 
   const brandTextClass = useTransparent ? "text-background" : "text-foreground";
   const mutedBrandTextClass = useTransparent

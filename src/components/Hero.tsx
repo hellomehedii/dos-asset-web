@@ -5,8 +5,6 @@ import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import heroBg from "@/assets/hero-bg.jpg";
-import { motion } from "framer-motion";
-import { fadeUpVariants, staggerContainer } from "@/lib/animations";
 
 const CountUpValue = ({ value }: { value: string }) => {
   const match = value.match(/^([\d,]+(?:\.\d+)?)(.*)$/);
@@ -140,31 +138,20 @@ const Hero = () => {
       ===================================== */}
       <div className="w-full relative z-10 pt-32 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <motion.div
-            className="max-w-3xl"
-            variants={staggerContainer}
-            initial="hidden"
-            animate="show"
-          >
+          <div className="max-w-3xl">
             {/* =====================================
                 BADGE
             ===================================== */}
-            <motion.div
-              variants={fadeUpVariants}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-accent/30 bg-accent/10 mb-8"
-            >
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-accent/30 bg-accent/10 mb-8">
               <span className="text-accent font-medium">
                 {heroContent?.badge_text || "Trusted Since 2023"}
               </span>
-            </motion.div>
+            </div>
 
             {/* =====================================
                 HEADLINE
             ===================================== */}
-            <motion.h1
-              variants={fadeUpVariants}
-              className="uppercase text-xl md:text-5xl lg:text-5xl font-bold leading-tight mb-6"
-            >
+            <h1 className="uppercase text-xl md:text-5xl lg:text-5xl font-bold leading-tight mb-6">
               <span className="bg-gradient-to-r from-[#2c3538] via-[#191f20] to-[#007ea8] bg-clip-text text-transparent">
                 {headlineParts[0]}
               </span>
@@ -178,26 +165,20 @@ const Hero = () => {
               <span className="bg-gradient-to-r from-[#2c3538] via-[#191f20] to-[#4cbae9] bg-clip-text text-transparent">
                 {headlineParts[1] || ""}
               </span>
-            </motion.h1>
+            </h1>
 
             {/* =====================================
                 SUBTEXT
             ===================================== */}
-            <motion.p
-              variants={fadeUpVariants}
-              className="text-base md:text-lg text-dark/80 mb-10 max-w-2xl"
-            >
+            <p className="text-base md:text-lg text-dark/80 mb-10 max-w-2xl">
               {heroContent?.subtext ||
                 "We transform visions into exceptional living spaces. Transparency and Trust Our Commitment | Customer Satisfaction Our Highest Goal"}
-            </motion.p>
+            </p>
 
             {/* =====================================
                 CTA BUTTON
             ===================================== */}
-            <motion.div
-              variants={fadeUpVariants}
-              className="flex flex-col sm:flex-row gap-4 mb-16"
-            >
+            <div className="flex flex-col sm:flex-row gap-4 mb-16">
               <Link to={heroContent?.primary_button_link || "/projects"}>
                 <Button
                   className="bg-gradient-to-r from-[#4cbae9] via-[#4cbae9] to-[#19a7e4]
@@ -210,15 +191,12 @@ const Hero = () => {
                   <ArrowRight className="w-5 h-5 ml-1" />
                 </Button>
               </Link>
-            </motion.div>
+            </div>
 
             {/* =====================================
                 STATS
             ===================================== */}
-            <motion.div
-              variants={fadeUpVariants}
-              className="flex flex-wrap gap-8 md:gap-16"
-            >
+            <div className="flex flex-wrap gap-8 md:gap-16">
               {stats.map((stat, index) => (
                 <div key={index} className="text-center sm:text-left">
                   <div
@@ -233,8 +211,8 @@ const Hero = () => {
                   </div>
                 </div>
               ))}
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
         </div>
       </div>
     </section>

@@ -241,7 +241,7 @@ const Management = () => {
 
       <Navbar />
 
-      <main className="pt-20">
+      <main className="pt-36">
         {/* Hero Section */}
         <section className="relative overflow-hidden ">
           <div className="absolute inset-0 bg-primary" />

@@ -77,7 +77,7 @@ const Projects = () => {
       <Navbar />
 
       {/* ================== MAIN ================== */}
-      <main className="pt-20">
+      <main className="pt-36">
         {/* ================== HERO ================== */}
         <section className="bg-navy text-white py-20">
           <div className="container-custom">

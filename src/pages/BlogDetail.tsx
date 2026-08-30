@@ -43,7 +43,7 @@ const BlogDetail = () => {
     return (
       <>
         <Navbar />
-        <div className="pt-20 min-h-screen flex items-center justify-center">
+        <div className="pt-36 min-h-screen flex items-center justify-center">
           Loading...
         </div>
         <Footer />
@@ -55,7 +55,7 @@ const BlogDetail = () => {
     return (
       <>
         <Navbar />
-        <div className="pt-20 min-h-screen flex items-center justify-center">
+        <div className="pt-36 min-h-screen flex items-center justify-center">
           Blog post not found
         </div>
         <Footer />
@@ -98,7 +98,7 @@ const BlogDetail = () => {
 
       <Navbar />
 
-      <main className="pt-20">
+      <main className="pt-36">
         <article>
           {/* ================= HERO ================= */}
           <section className="bg-navy text-white py-20">
