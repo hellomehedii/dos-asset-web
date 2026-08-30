@@ -163,13 +163,21 @@ const Hero = () => {
             ===================================== */}
             <motion.h1
               variants={fadeUpVariants}
-              className="uppercase text-xl md:text-5xl lg:text-5xl font-bold bg-gradient-to-r from-[#2c3538] via-[#191f20] to-[#007ea8]  bg-clip-text text-transparent leading-tight mb-6"
+              className="uppercase text-xl md:text-5xl lg:text-5xl font-bold leading-tight mb-6"
             >
-              {headlineParts[0]} <br></br>
-              <span className="bg-gradient-to-r from-[#4cbae9] via-[#2a8fe2] to-[#24bdff] bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-[#2c3538] via-[#191f20] to-[#007ea8] bg-clip-text text-transparent">
+                {headlineParts[0]}
+              </span>
+
+              <br />
+
+              <span className="bg-gradient-to-r from-[#4cbae9] via-[#2a8fe2] to-[#4cbae9] bg-clip-text text-transparent">
                 {highlightText}
               </span>
-              {headlineParts[1] || ""}
+
+              <span className="bg-gradient-to-r from-[#2c3538] via-[#191f20] to-[#4cbae9] bg-clip-text text-transparent">
+                {headlineParts[1] || ""}
+              </span>
             </motion.h1>
 
             {/* =====================================

@@ -312,7 +312,7 @@ h1, h2, h3, h4, h5, h6 {
 
   border-radius: 100px;
 
-  background: #00b3ff65;
+  background: #4cbae9;
 
   filter: blur(35px);
 
@@ -334,7 +334,8 @@ h1, h2, h3, h4, h5, h6 {
 
   position: absolute;
 
-background: rgba(0, 198, 255, 0.22);
+  background: #4cbae9;
+
   border-radius: 50%;
 }
 
@@ -357,7 +358,7 @@ background: rgba(0, 198, 255, 0.22);
 
 /* ============================================
    CLOUD 3
-   BOTTOM — FIRST CLOUD
+   FIRST CLOUD
 ============================================ */
 
 .hero-cloud-3 {
@@ -369,13 +370,13 @@ background: rgba(0, 198, 255, 0.22);
 
   opacity: 0.30;
 
-  animation: bottomCloudLoop 24s linear infinite;
+  animation: cloudMove 25s linear infinite;
 }
 
 
 /* ============================================
    CLOUD 4
-   BOTTOM — SECOND CLOUD
+   SECOND CLOUD
 ============================================ */
 
 .hero-cloud-4 {
@@ -387,13 +388,15 @@ background: rgba(0, 198, 255, 0.22);
 
   opacity: 0.50;
 
-  animation: bottomCloudLoop 24s linear infinite;
+  animation: cloudMove 25s linear infinite;
 }
 
 
+/* ============================================
+   CONTINUOUS CLOUD MOVEMENT
+============================================ */
 
-
-@keyframes bottomCloudLoop {
+@keyframes cloudMove {
 
   0% {
     transform: translateX(0);
@@ -418,7 +421,6 @@ background: rgba(0, 198, 255, 0.22);
     filter: blur(28px);
   }
 
-
   .hero-cloud::before {
     width: 150px;
     height: 150px;
@@ -426,7 +428,6 @@ background: rgba(0, 198, 255, 0.22);
     left: 10%;
     top: -70px;
   }
-
 
   .hero-cloud::after {
     width: 125px;
@@ -436,7 +437,6 @@ background: rgba(0, 198, 255, 0.22);
     top: -55px;
   }
 
-
   .hero-cloud-3,
   .hero-cloud-4 {
     top: 82%;
@@ -444,7 +444,7 @@ background: rgba(0, 198, 255, 0.22);
     width: 100vw;
     height: 120px;
 
-    animation-duration: 18s;
+    animation-duration: 25s;
   }
 
 }
