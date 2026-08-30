@@ -54,11 +54,11 @@ return (
       <main>
         <Navbar />
         <Hero />
-        <FeaturedProjects />
+        {/* <FeaturedProjects />
         <AboutIntro />
         <WhyChooseUs />
-        <LatestBlogs />
-        <Footer />
+        <LatestBlogs /> */}
+        {/* <Footer /> */}
       </main>
     </>
   );

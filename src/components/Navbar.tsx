@@ -48,7 +48,7 @@ const Navbar = () => {
       },
       { name: "Blogs", path: "/blog" },
     ],
-    []
+    [],
   );
 
   const isActive = (path: string) => {
@@ -67,29 +67,30 @@ const Navbar = () => {
     ? "text-background/80"
     : "text-muted-foreground";
 
-  const linkBaseClass = useTransparent
-    ? "text-background/80 hover:text-background"
-    : "text-muted-foreground hover:text-foreground";
+const linkBaseClass = "text-gray-900 hover:text-[#00B2FF] transition-colors";
 
   const handleMobileDropdown = (name: string) => {
     setOpenDropdown((prev) => (prev === name ? null : name));
   };
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${headerClass}`}>
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${headerClass}`}
+    >
       <div className="container-custom">
-        <nav className="flex items-center justify-between h-20">
+        <nav className="flex items-center justify-between h-20 lg:h-32">
           {/* Logo */}
-          <Link
-            to="/"
-            className="flex items-center gap-3"
-          >
+          <Link to="/" className="flex items-center gap-3">
             {settings?.logo_url ? (
               <div className="relative overflow-hidden rounded-lg">
                 <img
-                  src={isScrolled && settings?.logo_hover_url ? settings.logo_hover_url : settings.logo_url}
+                  src={
+                    isScrolled && settings?.logo_hover_url
+                      ? settings.logo_hover_url
+                      : settings.logo_url
+                  }
                   alt={settings.site_name || "Site logo"}
-                  className="h-14 w-auto transition-all duration-500"
+                  className="h-20 w-auto transition-all duration-500"
                   loading="eager"
                 />
               </div>
@@ -100,10 +101,14 @@ const Navbar = () => {
             )}
             {settings?.show_brand_text && (
               <div className="flex flex-col leading-tight">
-                <span className={`text-xl font-serif font-bold ${brandTextClass}`}>
+                <span
+                  className={`text-xl font-serif font-bold ${brandTextClass}`}
+                >
                   {settings?.site_name || "DADL"}
                 </span>
-                <span className={`text-xs tracking-wider uppercase ${mutedBrandTextClass}`}>
+                <span
+                  className={`text-xs tracking-wider uppercase ${mutedBrandTextClass}`}
+                >
                   {settings?.site_tagline || "Real Estate"}
                 </span>
               </div>
@@ -158,36 +163,58 @@ const Navbar = () => {
           </div>
 
           {/* Right Side Actions */}
-          <div className="hidden lg:flex items-center gap-4">
-            {settings?.phone && (
-              <a
-                href={`tel:${settings.phone.replace(/\s/g, "")}`}
-                className={`flex items-center gap-2 transition-colors ${
-                  useTransparent
-                    ? "text-background/90 hover:text-background"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                <Phone className="w-4 h-4" />
-                <span className="font-medium">{settings.phone}</span>
-              </a>
-            )}
-            <Link to="/contact">
-              <Button className="btn-hero-primary text-sm py-2 px-5">Contact Us</Button>
-            </Link>
-          </div>
+      <div className="hidden lg:flex items-center gap-5">
+  
+
+  <Link to="/contact">
+    <Button
+      className="
+        group relative overflow-hidden
+        rounded-full
+        border border-[#00B2FF]
+        bg-[#00B2FF]
+        px-6 py-3
+        text-sm font-semibold text-white
+        shadow-[0_8px_25px_rgba(0,178,255,0.25)]
+        transition-all duration-300
+        hover:-translate-y-1
+        hover:shadow-[0_12px_30px_rgba(0,178,255,0.40)]
+      "
+    >
+      {/* Animated shine */}
+      <span
+        className="
+          absolute inset-0
+          -translate-x-full
+          bg-gradient-to-r
+          from-transparent via-white/30 to-transparent
+          transition-transform duration-700
+          group-hover:translate-x-full
+        "
+      />
+
+      <span className="relative z-10 flex items-center gap-2">
+        CONTACT US
+
+        <span className="transition-transform duration-300 group-hover:translate-x-1">
+          →
+        </span>
+      </span>
+    </Button>
+  </Link>
+</div>
 
           {/* Mobile Menu Button */}
           <button
-            className={`lg:hidden p-2 rounded-md transition-colors ${
-              useTransparent
-                ? "text-background hover:bg-background/10"
-                : "text-foreground hover:bg-secondary"
-            }`}
+            className="lg:hidden p-2 rounded-md transition-colors text-[#273235] hover:bg-[#0099ff]"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
           >
-            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {isMobileMenuOpen ? (
+              <X className="w-6 h-6 text-[#273235]" />
+            ) : (
+              <Menu className="w-6 h-6 text-[#273235]" />
+            )}
           </button>
         </nav>
 
@@ -263,7 +290,10 @@ const Navbar = () => {
                 ))}
 
                 <div className="px-4 pt-4 border-t border-border">
-                  <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)}>
+                  <Link
+                    to="/contact"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
                     <Button className="w-full btn-hero-primary">Contact</Button>
                   </Link>
                 </div>
