@@ -29,9 +29,7 @@ const Contact = () => {
     queryFn: async () => {
       const { data } = await supabase
         .from("page_seo")
-        .select(
-          "page_title, meta_title, meta_description, og_image"
-        )
+        .select("page_title, meta_title, meta_description, og_image")
         .eq("page_slug", "contact")
         .single();
       return data;
@@ -159,17 +157,24 @@ const Contact = () => {
                 </div>
 
                 {/* MAP */}
-               <div className="w-full aspect-video rounded-xl overflow-hidden border border-border">
-  <iframe
-    src="https://www.openstreetmap.org/export/embed.html?bbox=90.25876270771024,23.80690442623615,90.27876270771024,23.82690442623615&layer=mapnik&marker=23.81690442623615,90.26876270771024"
-    className="w-full h-full"
-    style={{ border: 0 }}
-    allowFullScreen
-    loading="lazy"
-    referrerPolicy="no-referrer-when-downgrade"
-  />
-</div>
+              {/* ================= MAP ================= */}
+<div className="space-y-4">
 
+
+
+  <div className="w-full h-[350px] md:h-[420px]  rounded-2xl overflow-hidden border border-border shadow-lg">
+    <iframe
+      title="DOS Assets Development Location"
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d8681.10543266546!2d90.42025792058102!3d23.820191374017977!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c70025dc8e03%3A0xc575c374545b28b7!2sDOS%20Assets%20Development!5e0!3m2!1sen!2sbd!4v1788158643254!5m2!1sen!2sbd"
+      className="w-full h-full"
+      style={{ border: 0 }}
+      allowFullScreen
+      loading="lazy"
+      referrerPolicy="strict-origin-when-cross-origin"
+    />
+  </div>
+
+</div>
               </div>
 
               {/* ================= FORM ================= */}
