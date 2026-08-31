@@ -153,9 +153,9 @@ const Blog = () => {
               <div className="relative hidden min-h-[370px] lg:block">
                 <div className="absolute right-0 top-0 aspect-[1.2] w-full max-w-[620px] overflow-hidden rounded-bl-[110px] rounded-tl-[110px] shadow-[0_24px_60px_rgba(23,51,89,0.12)]">
                   <img
-                    src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=85"
+                    src="https://dpsbd.com/projects/pptx/health-engineering-department-head-office.webp?auto=format&fit=crop&w=1200&q=85"
                     alt="Contemporary apartment building surrounded by greenery"
-                    className="h-full w-full object-cover object-center"
+                    className="h-full w-full object-cover object-[center_10%]"
                   />
                 </div>
               </div>
