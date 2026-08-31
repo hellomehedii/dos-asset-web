@@ -120,13 +120,13 @@ const Blog = () => {
 
       <main className="bg-[#f8fafc] pt-28 text-[#0e1b35] md:pt-36">
         <section className="relative overflow-hidden md:pt-20">
-          <div className="container-custom relative z-10 ">
+          <div className="container-custom relative z-10 px-4 sm:px-6 lg:px-0">
             <div className="grid items-start gap-12 lg:grid-cols-[1fr_0.9fr]">
               <div className="max-w-xl pt-4 md:pt-10">
                 <p className="mb-5 text-xs font-semibold uppercase tracking-[0.28em] text-[#2667d9]">
                   Insights for better living
                 </p>
-                <h1 className="mb-8 max-w-lg text-5xl font-bold uppercase leading-[1.05] tracking-tight md:text-7xl">
+                <h1 className="mb-8 max-w-lg text-4xl font-bold uppercase leading-[1.05] tracking-tight sm:text-5xl md:text-7xl">
                   <span className="bg-gradient-to-r from-[#2c3538] via-[#191f20] to-[#007ea8] bg-clip-text text-transparent">
                     The DADL
                   </span>{" "}
@@ -173,7 +173,7 @@ const Blog = () => {
         </section>
 
         <section className="pb-20 md:pb-28">
-          <div className="container-custom ">
+          <div className="container-custom px-4 sm:px-6 lg:px-0">
             <div className="flex gap-3 overflow-x-auto border-b border-[#e3eaf3] pb-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               {categories.map((category) => (
                 <button
