@@ -1,10 +1,10 @@
 import { Helmet } from "react-helmet-async";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Calendar } from "lucide-react";
+import { ArrowLeft, Calendar } from "lucide-react";
 import { format } from "date-fns";
 import DOMPurify from "dompurify";
 
@@ -103,6 +103,14 @@ const BlogDetail = () => {
           {/* ================= HERO ================= */}
           <section className="bg-navy text-white py-20">
             <div className="container-custom max-w-4xl">
+              <Link
+                to="/blog"
+                className="mb-10 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-medium text-white/85 backdrop-blur-sm transition-all duration-300 hover:-translate-x-1 hover:border-white/40 hover:bg-white/15 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+              >
+                <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+                Back to Journal
+              </Link>
+
               {post.published_at && (
                 <p className="flex items-center gap-2 text-white/60 mb-4">
                   <Calendar className="w-4 h-4" />
