@@ -95,7 +95,7 @@ const OurStory = () => {
               {seo?.page_title || "Our Story"}
             </h1>
             <p className="text-sm sm:text-base md:text-lg text-white/80 max-w-2xl">
-              Building dreams and creating landmarks since 2025.
+              Building dreams and creating landmarks since 2023.
             </p>
           </div>
         </section>

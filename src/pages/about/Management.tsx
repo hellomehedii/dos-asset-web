@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { Facebook, Linkedin, Twitter } from "lucide-react";
+import { Facebook, Linkedin, Twitter, Loader2, Mail } from "lucide-react";
 
 type TeamMember = {
   id: string;
@@ -22,13 +22,13 @@ type TeamMember = {
 };
 
 const SocialLinks = ({ member }: { member: TeamMember }) => (
-  <div className="flex items-center justify-center gap-2 mt-4">
+  <div className="flex items-center justify-center gap-3 mt-5">
     {member.social_facebook && (
       <a
         href={member.social_facebook}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border bg-background/60 text-muted-foreground transition-colors hover:bg-primary hover:text-primary-foreground"
+        className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-primary/30 bg-primary/10 text-primary transition-all duration-300 hover:bg-primary hover:text-white hover:shadow-lg hover:scale-110"
         aria-label={`${member.name} on Facebook`}
       >
         <Facebook className="h-4 w-4" />
@@ -39,7 +39,7 @@ const SocialLinks = ({ member }: { member: TeamMember }) => (
         href={member.social_linkedin}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border bg-background/60 text-muted-foreground transition-colors hover:bg-primary hover:text-primary-foreground"
+        className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-primary/30 bg-primary/10 text-primary transition-all duration-300 hover:bg-primary hover:text-white hover:shadow-lg hover:scale-110"
         aria-label={`${member.name} on LinkedIn`}
       >
         <Linkedin className="h-4 w-4" />
@@ -50,7 +50,7 @@ const SocialLinks = ({ member }: { member: TeamMember }) => (
         href={member.social_twitter}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border bg-background/60 text-muted-foreground transition-colors hover:bg-primary hover:text-primary-foreground"
+        className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-primary/30 bg-primary/10 text-primary transition-all duration-300 hover:bg-primary hover:text-white hover:shadow-lg hover:scale-110"
         aria-label={`${member.name} on Twitter`}
       >
         <Twitter className="h-4 w-4" />
@@ -65,40 +65,42 @@ const MemberCard = ({ member, onViewDetails }: { member: TeamMember; onViewDetai
 
   const CardContent = () => (
     <>
-      <div className="relative aspect-square bg-secondary">
+      <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-secondary to-secondary/60">
         <div className="flex h-full w-full items-center justify-center overflow-hidden">
           {member.image ? (
-            <img
-              src={member.image}
-              alt={`${member.name} - ${member.designation}`}
-              className="h-full w-full object-cover"
-              loading="lazy"
-            />
+            <>
+              <img
+                src={member.image}
+                alt={`${member.name} - ${member.designation}`}
+                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            </>
           ) : (
-            <div className="flex h-full w-full items-center justify-center">
-              <div className="h-20 w-20 rounded-full bg-background/70 ring-1 ring-border flex items-center justify-center">
-                <span className="text-2xl font-serif font-semibold text-foreground">
+            <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-primary/20 to-primary/10">
+              <div className="h-24 w-24 rounded-full bg-primary/20 ring-2 ring-primary/30 flex items-center justify-center">
+                <span className="text-4xl font-serif font-semibold text-primary">
                   {initials}
                 </span>
               </div>
             </div>
           )}
         </div>
-        <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-border/60" />
       </div>
 
-      <div className="p-5 text-center">
-        <h3 className="font-serif text-lg font-semibold text-foreground leading-snug">
+      <div className="p-6 text-center">
+        <h3 className="font-serif text-lg font-bold text-foreground leading-snug">
           {member.name}
         </h3>
-        <p className="mt-1 text-sm font-medium text-primary">{member.designation}</p>
+        <p className="mt-2 text-sm font-semibold text-primary uppercase tracking-wide">{member.designation}</p>
         <SocialLinks member={member} />
       </div>
     </>
   );
 
   return (
-    <article className={`group overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ${isClickable ? 'cursor-pointer' : ''}`}>
+    <article className={`group overflow-hidden rounded-xl border border-border/40 bg-card shadow-md transition-all duration-300 hover:shadow-xl hover:-translate-y-2 hover:border-primary/50 ${isClickable ? 'cursor-pointer' : ''}`}>
       {isClickable ? (
         <button
           type="button"
@@ -132,15 +134,15 @@ const TeamSection = ({
   if (members.length === 0) return null;
 
   return (
-    <section className={tone === "muted" ? "section-padding bg-secondary" : "section-padding"}>
-      <div className="container-custom">
-        <header className="mx-auto mb-10 max-w-3xl text-center">
-          <p className="text-sm font-semibold tracking-wider uppercase text-primary">{eyebrow}</p>
-          <h2 className="mt-3 text-3xl md:text-4xl font-serif font-bold text-foreground">{title}</h2>
-          {description && <p className="mt-3 text-muted-foreground">{description}</p>}
+    <section className={tone === "muted" ? "section-padding bg-secondary/30" : "section-padding"}>
+      <div className="container-custom px-4 md:px-0">
+        <header className="mx-auto mb-12 max-w-3xl text-center">
+          <p className="text-xs font-bold tracking-widest uppercase text-primary mb-3">{eyebrow}</p>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-foreground">{title}</h2>
+          {description && <p className="mt-4 text-sm sm:text-base text-muted-foreground">{description}</p>}
         </header>
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {members.map((member) => (
             <MemberCard key={member.id} member={member} onViewDetails={onViewDetails} />
           ))}
@@ -256,8 +258,9 @@ const Management = () => {
         {/* Team Sections */}
         {isTeamLoading ? (
           <section className="section-padding">
-            <div className="container-custom text-center text-muted-foreground">
-              Loading team...
+            <div className="container-custom flex items-center justify-center gap-3 text-muted-foreground">
+              <Loader2 className="w-5 h-5 animate-spin" />
+              <span className="font-medium">Loading team members...</span>
             </div>
           </section>
         ) : (
@@ -284,11 +287,16 @@ const Management = () => {
             />
 
             {/* Info Box */}
-            <section className="pb-16">
-              <div className="container-custom">
-                <div className="mx-auto max-w-3xl rounded-2xl border border-border bg-card p-8 text-center">
-                  <p className="text-muted-foreground">
-                    Our team brings together decades of real estate development, construction, and customer service experience—built on transparency and results.
+            <section className="py-12 md:py-16">
+              <div className="container-custom px-4 md:px-0">
+                <div className="mx-auto max-w-3xl rounded-xl border border-primary/20 bg-gradient-to-r from-primary/5 to-primary/10 p-8 md:p-10 text-center backdrop-blur-sm">
+                  <div className="flex items-center justify-center gap-3 mb-4">
+                    <div className="h-1 w-8 bg-primary rounded-full" />
+                    <Mail className="w-5 h-5 text-primary" />
+                    <div className="h-1 w-8 bg-primary rounded-full" />
+                  </div>
+                  <p className="text-sm sm:text-base text-foreground leading-relaxed">
+                    Our team brings together decades of real estate development, construction, and customer service experience—<span className="font-semibold text-primary">built on transparency and results</span>.
                   </p>
                 </div>
               </div>
@@ -307,19 +315,37 @@ const Management = () => {
       >
         <DialogContent className="max-w-2xl">
           <DialogHeader>
-            <DialogTitle>Message from {selectedMember?.designation}</DialogTitle>
-            <DialogDescription>
-              {selectedMember?.name}
-            </DialogDescription>
+            <div className="flex items-center gap-4 mb-4">
+              {selectedMember?.image && (
+                <img
+                  src={selectedMember.image}
+                  alt={selectedMember.name}
+                  className="h-16 w-16 rounded-full object-cover border-2 border-primary"
+                />
+              )}
+              <div>
+                <DialogTitle className="text-2xl">{selectedMember?.name}</DialogTitle>
+                <DialogDescription className="text-sm font-semibold text-primary mt-1 uppercase tracking-wide">
+                  {selectedMember?.designation}
+                </DialogDescription>
+              </div>
+            </div>
           </DialogHeader>
 
           {selectedMember && (
-            <div className="mt-6">
-              <div className="rounded-2xl border border-border bg-card p-6">
+            <div className="mt-4">
+              <div className="rounded-lg border border-border/40 bg-secondary/30 p-6">
                 <p className="text-sm leading-7 text-foreground whitespace-pre-wrap">
                   {selectedMember.bio || "No message available."}
                 </p>
               </div>
+              {selectedMember.bio && (
+                <div className="mt-6 flex items-center gap-2 text-xs text-muted-foreground">
+                  <div className="h-px flex-1 bg-border" />
+                  <span>Message from leadership</span>
+                  <div className="h-px flex-1 bg-border" />
+                </div>
+              )}
             </div>
           )}
         </DialogContent>
