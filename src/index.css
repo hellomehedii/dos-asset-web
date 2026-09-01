@@ -300,6 +300,16 @@ h1, h2, h3, h4, h5, h6 {
       opacity: 1;
     }
   }
+
+  /* Premium AI/SaaS button border glow animation */
+  @keyframes border-glow-rotate {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
 }
 
 

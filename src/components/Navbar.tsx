@@ -169,34 +169,78 @@ const linkBaseClass = "text-gray-900 hover:text-[#00B2FF] transition-colors";
   <Link to="/contact">
     <Button
       className="
-        group relative overflow-hidden
+        group relative overflow-visible
         rounded-full
-        border border-[#00B2FF]
-        bg-[#00B2FF]
+        bg-[#19a7e4]
         px-6 py-3
         text-sm font-semibold text-white
-        shadow-[0_8px_25px_rgba(0,178,255,0.25)]
         transition-all duration-300
-        hover:-translate-y-1
-        hover:shadow-[0_12px_30px_rgba(0,178,255,0.40)]
+        hover:bg-[#19a7e4]
       "
+      style={{
+        background: "linear-gradient(135deg, #0B2A5B 0%, #0F3A7D 100%)",
+      }}
     >
-      {/* Animated shine */}
+      {/* Animated conic-gradient border with moving light streak */}
+      <span
+        className="
+          absolute -inset-[2px]
+          rounded-full
+          bg-gradient-to-r
+          from-transparent
+          via-[#1677FF]
+          to-[#67E8F9]
+          animate-border-glow
+          -z-10
+          opacity-100
+          group-hover:opacity-100
+        "
+        style={{
+          background: "conic-gradient(from 0deg, transparent, #1677FF, #38B6FF, #67E8F9, #EAF6FF, #38B6FF, #1677FF, transparent)",
+          backgroundSize: "200% 200%",
+        }}
+      />
+      
+      {/* Soft outer glow */}
+      <span
+        className="
+          absolute -inset-[3px]
+          rounded-full
+          bg-blue-500/20
+          blur-sm
+          -z-10
+          group-hover:bg-blue-400/30
+          transition-all duration-300
+        "
+      />
+      
+      {/* Dark background layer to keep center dark blue */}
+      <span
+        className="
+          absolute inset-0
+          rounded-full
+          bg-[#0b5b36]
+          -z-10
+        "
+      />
+
+      {/* Animated shine on hover */}
       <span
         className="
           absolute inset-0
           -translate-x-full
           bg-gradient-to-r
-          from-transparent via-white/30 to-transparent
+          from-transparent via-white/20 to-transparent
           transition-transform duration-700
           group-hover:translate-x-full
+          rounded-full
         "
       />
 
       <span className="relative z-10 flex items-center gap-2">
         CONTACT US
 
-        <span className="transition-transform duration-300 group-hover:translate-x-1">
+        <span className="transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1">
           →
         </span>
       </span>
