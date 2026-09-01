@@ -54,7 +54,7 @@ const ProjectDetail = () => {
     return (
       <>
         <Navbar />
-        <div className="pt-36 min-h-screen flex items-center justify-center">
+        <div className="pt-32 min-h-screen flex items-center justify-center">
           Loading...
         </div>
         <Footer />
@@ -66,7 +66,7 @@ const ProjectDetail = () => {
     return (
       <>
         <Navbar />
-        <div className="pt-36 min-h-screen flex items-center justify-center">
+        <div className="pt-32 min-h-screen flex items-center justify-center">
           Project not found
         </div>
         <Footer />
@@ -150,10 +150,10 @@ const ProjectDetail = () => {
 
       <Navbar />
 
-      <main className="pt-36">
-        <section className="relative overflow-hidden bg-[#071827] text-white py-20">
+      <main className="pt-32">
+        <section className="relative overflow-hidden bg-[#071827] text-white py-12 md:py-20">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(52,211,153,0.18),transparent_35%),radial-gradient(circle_at_bottom_right,_rgba(59,130,246,0.18),transparent_30%)]" />
-          <div className="container-custom relative">
+          <div className="container-custom relative px-4 md:px-0">
             <span
               className={`inline-block px-3 py-1 rounded-full text-xs font-medium mb-4 ${
                 project.status === "upcoming"
@@ -165,31 +165,32 @@ const ProjectDetail = () => {
             >
               {statusLabels[project.status]}
             </span>
-            <h1 className="text-4xl md:text-5xl font-serif font-bold mb-4">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif font-bold mb-4">
               {project.name}
             </h1>
-            <p className="flex items-center gap-2 text-white/80">
-              <MapPin className="w-5 h-5" />
+            <p className="flex items-center gap-2 text-sm sm:text-base text-white/80">
+              <MapPin className="w-4 h-4 sm:w-5 sm:h-5" />
               {project.location}
             </p>
           </div>
         </section>
 
-        <section className="section-padding pt-10">
+        <section className="section-padding pt-10 px-4 md:px-0">
           <div className="container-custom">
             <Link
               to="/projects"
-              className="group mb-8 inline-flex items-center gap-3 rounded-full border border-border bg-secondary px-4 py-2 text-sm font-medium text-foreground transition-all duration-300 hover:-translate-x-1 hover:border-primary/40 hover:bg-secondary/80 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+              className="group mb-8 inline-flex items-center gap-2 sm:gap-3 rounded-full border border-border bg-secondary px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-foreground transition-all duration-300 hover:-translate-x-1 hover:border-primary/40 hover:bg-secondary/80 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 whitespace-nowrap"
             >
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-background text-foreground shadow-sm ring-1 ring-border transition-colors group-hover:bg-primary/5 group-hover:text-primary">
-                <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+              <span className="flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full bg-background text-foreground shadow-sm ring-1 ring-border transition-colors group-hover:bg-primary/5 group-hover:text-primary flex-shrink-0">
+                <ArrowLeft className="h-3 w-3 sm:h-4 sm:w-4" aria-hidden="true" />
               </span>
-              Back to Projects
+              <span className="hidden sm:inline">Back to Projects</span>
+              <span className="sm:hidden">Back</span>
             </Link>
 
-            <div className="grid lg:grid-cols-2 gap-12">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
               {/* Project Image */}
-              <div className="aspect-[3/4] bg-secondary rounded-2xl overflow-hidden">
+              <div className="aspect-[3/4] sm:aspect-[4/5] bg-secondary rounded-xl sm:rounded-2xl overflow-hidden">
                 {project.featured_image ? (
                   <img
                     src={project.featured_image}
@@ -205,19 +206,19 @@ const ProjectDetail = () => {
 
               {/* Project Details */}
               <div>
-                <h2 className="text-2xl font-serif font-bold mb-6 text-foreground">
+                <h2 className="text-xl sm:text-2xl font-serif font-bold mb-6 text-foreground">
                   Project Details
                 </h2>
 
-                <div className="space-y-4">
+                <div className="space-y-3 sm:space-y-4">
                   {project.land_area && (
-                    <div className="flex items-center gap-4 p-4 bg-secondary rounded-xl">
-                      <Ruler className="w-6 h-6 text-primary" />
-                      <div>
-                        <p className="text-sm text-muted-foreground">
+                    <div className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-secondary rounded-lg sm:rounded-xl">
+                      <Ruler className="w-5 h-5 sm:w-6 sm:h-6 text-primary flex-shrink-0" />
+                      <div className="min-w-0">
+                        <p className="text-xs sm:text-sm text-muted-foreground">
                           Land Area
                         </p>
-                        <p className="font-medium text-foreground">
+                        <p className="text-sm sm:font-medium text-foreground truncate">
                           {project.land_area}
                         </p>
                       </div>
@@ -225,13 +226,13 @@ const ProjectDetail = () => {
                   )}
 
                   {project.orientation && (
-                    <div className="flex items-center gap-4 p-4 bg-secondary rounded-xl">
-                      <Compass className="w-6 h-6 text-primary" />
-                      <div>
-                        <p className="text-sm text-muted-foreground">
+                    <div className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-secondary rounded-lg sm:rounded-xl">
+                      <Compass className="w-5 h-5 sm:w-6 sm:h-6 text-primary flex-shrink-0" />
+                      <div className="min-w-0">
+                        <p className="text-xs sm:text-sm text-muted-foreground">
                           Orientation
                         </p>
-                        <p className="font-medium text-foreground">
+                        <p className="text-sm sm:font-medium text-foreground truncate">
                           {project.orientation}
                         </p>
                       </div>
@@ -239,11 +240,11 @@ const ProjectDetail = () => {
                   )}
 
                   {project.plan && (
-                    <div className="flex items-center gap-4 p-4 bg-secondary rounded-xl">
-                      <Building className="w-6 h-6 text-primary" />
-                      <div>
-                        <p className="text-sm text-muted-foreground">Plan</p>
-                        <p className="font-medium text-foreground">
+                    <div className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-secondary rounded-lg sm:rounded-xl">
+                      <Building className="w-5 h-5 sm:w-6 sm:h-6 text-primary flex-shrink-0" />
+                      <div className="min-w-0">
+                        <p className="text-xs sm:text-sm text-muted-foreground">Plan</p>
+                        <p className="text-sm sm:font-medium text-foreground truncate">
                           {project.plan}
                         </p>
                       </div>
@@ -251,13 +252,13 @@ const ProjectDetail = () => {
                   )}
 
                   {project.num_apartments && (
-                    <div className="flex items-center gap-4 p-4 bg-secondary rounded-xl">
-                      <Home className="w-6 h-6 text-primary" />
-                      <div>
-                        <p className="text-sm text-muted-foreground">
+                    <div className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-secondary rounded-lg sm:rounded-xl">
+                      <Home className="w-5 h-5 sm:w-6 sm:h-6 text-primary flex-shrink-0" />
+                      <div className="min-w-0">
+                        <p className="text-xs sm:text-sm text-muted-foreground">
                           Number of Apartments
                         </p>
-                        <p className="font-medium text-foreground">
+                        <p className="text-sm sm:font-medium text-foreground truncate">
                           {project.num_apartments}
                         </p>
                       </div>
@@ -265,13 +266,13 @@ const ProjectDetail = () => {
                   )}
 
                   {project.unit_size && (
-                    <div className="flex items-center gap-4 p-4 bg-secondary rounded-xl">
-                      <Ruler className="w-6 h-6 text-primary" />
-                      <div>
-                        <p className="text-sm text-muted-foreground">
+                    <div className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-secondary rounded-lg sm:rounded-xl">
+                      <Ruler className="w-5 h-5 sm:w-6 sm:h-6 text-primary flex-shrink-0" />
+                      <div className="min-w-0">
+                        <p className="text-xs sm:text-sm text-muted-foreground">
                           Unit Size
                         </p>
-                        <p className="font-medium text-foreground">
+                        <p className="text-sm sm:font-medium text-foreground truncate">
                           {project.unit_size}
                         </p>
                       </div>
@@ -279,13 +280,13 @@ const ProjectDetail = () => {
                   )}
 
                   {project.room_details && (
-                    <div className="flex items-center gap-4 p-4 bg-secondary rounded-xl">
-                      <Home className="w-6 h-6 text-primary" />
-                      <div>
-                        <p className="text-sm text-muted-foreground">
+                    <div className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-secondary rounded-lg sm:rounded-xl">
+                      <Home className="w-5 h-5 sm:w-6 sm:h-6 text-primary flex-shrink-0" />
+                      <div className="min-w-0">
+                        <p className="text-xs sm:text-sm text-muted-foreground">
                           Room Details
                         </p>
-                        <p className="font-medium text-foreground">
+                        <p className="text-sm sm:font-medium text-foreground truncate">
                           {project.room_details}
                         </p>
                       </div>
@@ -293,11 +294,11 @@ const ProjectDetail = () => {
                   )}
 
                   {project.verandas && (
-                    <div className="flex items-center gap-4 p-4 bg-secondary rounded-xl">
-                      <Landmark className="w-6 h-6 text-primary" />
-                      <div>
-                        <p className="text-sm text-muted-foreground">Belcony</p>
-                        <p className="font-medium text-foreground">
+                    <div className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-secondary rounded-lg sm:rounded-xl">
+                      <Landmark className="w-5 h-5 sm:w-6 sm:h-6 text-primary flex-shrink-0" />
+                      <div className="min-w-0">
+                        <p className="text-xs sm:text-sm text-muted-foreground">Belcony</p>
+                        <p className="text-sm sm:font-medium text-foreground truncate">
                           {project.verandas}
                         </p>
                       </div>
@@ -305,13 +306,13 @@ const ProjectDetail = () => {
                   )}
 
                   {project.HandOver && (
-                    <div className="flex items-center gap-4 p-4 bg-secondary rounded-xl">
-                      <Handshake className="w-6 h-6 text-primary" />
-                      <div>
-                        <p className="text-sm text-muted-foreground">
+                    <div className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-secondary rounded-lg sm:rounded-xl">
+                      <Handshake className="w-5 h-5 sm:w-6 sm:h-6 text-primary flex-shrink-0" />
+                      <div className="min-w-0">
+                        <p className="text-xs sm:text-sm text-muted-foreground">
                           Hand Over
                         </p>
-                        <p className="font-medium text-foreground">
+                        <p className="text-sm sm:font-medium text-foreground truncate">
                           {project.HandOver}
                         </p>
                       </div>
@@ -321,30 +322,32 @@ const ProjectDetail = () => {
 
               
               </div>
-                {project.description && (
-                  <div className="mt-8">
-                    <h3 className="text-xl font-serif font-bold mb-4 text-foreground">
-                      Description
-                    </h3>
-                    <p className="text-muted-foreground whitespace-pre-line">
-                      {project.description}
-                    </p>
-                  </div>
-                )}
             </div>
+
+            {/* Description */}
+            {project.description && (
+              <div className="mt-12 lg:mt-16">
+                <h3 className="text-lg sm:text-xl font-serif font-bold mb-4 text-foreground">
+                  Description
+                </h3>
+                <p className="text-sm sm:text-base text-muted-foreground whitespace-pre-line leading-relaxed">
+                  {project.description}
+                </p>
+              </div>
+            )}
 
             {/* Gallery */}
             {Array.isArray(gallery) && gallery.length > 0 && (
-              <div className="mt-16">
-                <h2 className="text-2xl font-serif font-bold mb-8 text-foreground">
+              <div className="mt-12 lg:mt-16">
+                <h2 className="text-lg sm:text-2xl font-serif font-bold mb-6 sm:mb-8 text-foreground">
                   Gallery
                 </h2>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                   {galleryFiltered.map((image, index) => (
                     <div
                       key={index}
-                      className="bg-secondary rounded-xl overflow-hidden p-2 flex items-center justify-center"
+                      className="bg-secondary rounded-lg sm:rounded-xl overflow-hidden p-1 sm:p-2 flex items-center justify-center cursor-pointer hover:opacity-90 transition-opacity"
                     >
                       <button
                         type="button"
@@ -357,9 +360,9 @@ const ProjectDetail = () => {
                         className="w-full"
                       >
                         <img
-                          src={String(image)} // Explicitly cast 'image' to string
+                          src={String(image)}
                           alt={`Gallery image ${index + 1}`}
-                          className="w-full h-auto object-contain rounded-lg"
+                          className="w-full h-auto object-contain rounded-md"
                           loading="lazy"
                           onError={(e) => {
                             e.currentTarget.src = "/placeholder.png";
@@ -377,11 +380,11 @@ const ProjectDetail = () => {
               const mapSrc = getMapEmbedSrc();
               if (!mapSrc) return null;
               return (
-                <div className="mt-12">
-                  <h2 className="text-2xl font-serif font-bold mb-4 text-foreground">
+                <div className="mt-12 lg:mt-16">
+                  <h2 className="text-lg sm:text-2xl font-serif font-bold mb-4 text-foreground">
                     Project Google Map Location
                   </h2>
-                  <div className="rounded-xl overflow-hidden bg-secondary">
+                  <div className="rounded-lg sm:rounded-xl overflow-hidden bg-secondary">
                     <iframe
                       title={`map-${project.slug}`}
                       src={mapSrc}
@@ -412,11 +415,11 @@ const ProjectDetail = () => {
               if (!videoId) return null;
 
               return (
-                <div className="mt-12">
-                  <h2 className="text-2xl font-serif font-bold mb-4 text-foreground">
+                <div className="mt-12 lg:mt-16">
+                  <h2 className="text-lg sm:text-2xl font-serif font-bold mb-4 text-foreground">
                     Project Video
                   </h2>
-                  <div className="rounded-xl overflow-hidden bg-secondary">
+                  <div className="rounded-lg sm:rounded-xl overflow-hidden bg-secondary">
                     <iframe
                       title={`youtube-video-${project.slug}`}
                       src={`https://www.youtube.com/embed/${videoId}`}
