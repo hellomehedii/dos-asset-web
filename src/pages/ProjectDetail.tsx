@@ -174,7 +174,7 @@ const ProjectDetail = () => {
           </div>
         </section>
 
-        <section className="section-padding">
+        <section className="section-padding pt-10">
           <div className="container-custom">
             <Link
               to="/projects"
