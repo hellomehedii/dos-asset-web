@@ -4,11 +4,11 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { MapPin, ArrowRight, Search, X } from "lucide-react";
+import { MapPin, ArrowRight, Search, X, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
-import React from "react";
+import React, { useEffect } from "react";
 
 const statusMap: Record<string, string> = {
   upcoming: "upcoming",
@@ -32,6 +32,7 @@ const Projects = () => {
   const { status } = useParams();
   const dbStatus = status ? statusMap[status] : undefined;
   const [locationQuery, setLocationQuery] = React.useState("");
+  const [showLoading, setShowLoading] = React.useState(false);
 
   // Fetch projects based on status
   const { data: projects, isLoading } = useQuery({
@@ -50,6 +51,16 @@ const Projects = () => {
     },
     keepPreviousData: true,
   });
+
+  // 3-second lazy loading delay
+  useEffect(() => {
+    if (isLoading) {
+      const timer = setTimeout(() => setShowLoading(true), 3000);
+      return () => clearTimeout(timer);
+    } else {
+      setShowLoading(false);
+    }
+  }, [isLoading]);
 
   // Site settings for favicon
   const { data: settings } = useSiteSettings();
@@ -187,8 +198,15 @@ const Projects = () => {
               </div>
             </div>
             {isLoading ? (
-              <div className="flex min-h-[220px] items-center justify-center rounded-3xl border border-dashed border-border bg-secondary/40 text-base text-muted-foreground">
-                Loading projects...
+              <div className="flex min-h-[220px] items-center justify-center rounded-3xl border border-dashed border-border bg-secondary/40">
+                {showLoading ? (
+                  <div className="flex flex-col items-center gap-3">
+                    <Loader2 className="w-8 h-8 text-primary animate-spin" />
+                    <p className="text-base text-muted-foreground font-medium">Loading projects...</p>
+                  </div>
+                ) : (
+                  <div className="w-full h-full" />
+                )}
               </div>
             ) : filteredProjects.length === 0 ? (
               <div className="flex min-h-[220px] flex-col items-center justify-center rounded-3xl border border-dashed border-border bg-secondary/40 text-center text-base text-muted-foreground">

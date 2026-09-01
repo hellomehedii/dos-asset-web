@@ -16,8 +16,9 @@ import {
   ChevronLeft,
   ChevronRight,
   ArrowLeft,
+  Loader2,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -49,13 +50,31 @@ const ProjectDetail = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [currentIndex, setCurrentIndex] = useState<number | null>(null);
   const [showDetailsInModal, setShowDetailsInModal] = useState(false);
+  const [showLoading, setShowLoading] = useState(false);
+
+  // 3-second lazy loading delay
+  useEffect(() => {
+    if (isLoading) {
+      const timer = setTimeout(() => setShowLoading(true), 3000);
+      return () => clearTimeout(timer);
+    } else {
+      setShowLoading(false);
+    }
+  }, [isLoading]);
 
   if (isLoading) {
     return (
       <>
         <Navbar />
         <div className="pt-32 min-h-screen flex items-center justify-center">
-          Loading...
+          {showLoading ? (
+            <div className="flex flex-col items-center gap-4">
+              <Loader2 className="w-10 h-10 text-primary animate-spin" />
+              <p className="text-base text-muted-foreground font-medium">Loading project details...</p>
+            </div>
+          ) : (
+            <div />
+          )}
         </div>
         <Footer />
       </>
