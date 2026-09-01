@@ -4,7 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { MapPin, ArrowRight } from "lucide-react";
+import { MapPin, ArrowRight, Search, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
@@ -31,6 +31,7 @@ const statusColors: Record<string, string> = {
 const Projects = () => {
   const { status } = useParams();
   const dbStatus = status ? statusMap[status] : undefined;
+  const [locationQuery, setLocationQuery] = React.useState("");
 
   // Fetch projects based on status
   const { data: projects, isLoading } = useQuery({
@@ -62,6 +63,18 @@ const Projects = () => {
   const pageDescription = React.useMemo(() => {
     return `Explore our ${pageTitle.toLowerCase()} - premium residential and commercial developments.`;
   }, [pageTitle]);
+
+  const filteredProjects = React.useMemo(() => {
+    if (!projects) return [];
+
+    const normalizedQuery = locationQuery.trim().toLowerCase();
+
+    if (!normalizedQuery) return projects;
+
+    return projects.filter((project) =>
+      (project.location || "").toLowerCase().includes(normalizedQuery)
+    );
+  }, [projects, locationQuery]);
 
   return (
     <>
@@ -148,19 +161,45 @@ const Projects = () => {
         </section>
 
         {/* ================== PROJECTS LIST ================== */}
-        <section className="section-padding">
+        <section className="section-padding pt-8">
           <div className="container-custom">
+            <div className="mb-8 max-w-xl">
+              <div className="relative">
+                <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" />
+                <input
+                  type="text"
+                  value={locationQuery}
+                  onChange={(event) => setLocationQuery(event.target.value)}
+                  placeholder="Search by project location..."
+                  className="w-full rounded-full border border-slate-200 bg-white py-3 pl-11 pr-12 text-sm text-slate-700 placeholder:text-slate-400 outline-none transition focus:border-primary/60 focus:ring-4 focus:ring-primary/10"
+                  aria-label="Search projects by location"
+                />
+                {locationQuery && (
+                  <button
+                    type="button"
+                    onClick={() => setLocationQuery("")}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full p-1 text-slate-500 transition hover:bg-slate-100 hover:text-slate-700"
+                    aria-label="Clear search"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                )}
+              </div>
+            </div>
             {isLoading ? (
               <div className="flex min-h-[220px] items-center justify-center rounded-3xl border border-dashed border-border bg-secondary/40 text-base text-muted-foreground">
                 Loading projects...
               </div>
-            ) : projects?.length === 0 ? (
-              <div className="flex min-h-[220px] items-center justify-center rounded-3xl border border-dashed border-border bg-secondary/40 text-base text-muted-foreground">
-                No projects found
+            ) : filteredProjects.length === 0 ? (
+              <div className="flex min-h-[220px] flex-col items-center justify-center rounded-3xl border border-dashed border-border bg-secondary/40 text-center text-base text-muted-foreground">
+                <p className="text-lg font-medium text-foreground">No projects found</p>
+                <p className="mt-2 text-sm">
+                  Try another location or clear the search.
+                </p>
               </div>
             ) : (
               <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
-                {projects.map((project) => (
+                {filteredProjects.map((project) => (
                   <div
                     key={project.id}
                     className="group overflow-hidden rounded-[28px] border border-border bg-white shadow-[0_18px_50px_rgba(15,23,42,0.08)] transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_25px_60px_rgba(15,23,42,0.12)]"
