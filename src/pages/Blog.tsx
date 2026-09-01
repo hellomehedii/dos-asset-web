@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { ArrowRight, Calendar, Search } from "lucide-react";
 import { format } from "date-fns";
+import ledImage from "@/assets/led.jpg";
 
 const Blog = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -153,7 +154,7 @@ const Blog = () => {
               <div className="relative hidden min-h-[370px] lg:block">
                 <div className="absolute right-0 top-0 aspect-[1.2] w-full max-w-[620px] overflow-hidden rounded-bl-[110px] rounded-tl-[110px] shadow-[0_24px_60px_rgba(23,51,89,0.12)]">
                   <img
-                    src="../../src/assets/led.jpg"
+                    src={ledImage}
                     alt="Contemporary apartment building surrounded by greenery"
                     className="h-full w-full object-cover object-[center_10%]"
                   />
