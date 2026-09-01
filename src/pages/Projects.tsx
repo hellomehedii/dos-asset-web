@@ -79,19 +79,26 @@ const Projects = () => {
       {/* ================== MAIN ================== */}
       <main className="pt-36">
         {/* ================== HERO ================== */}
-        <section className="bg-navy text-white py-20">
-          <div className="container-custom">
-            <h1 className="text-4xl md:text-5xl font-serif font-bold mb-6">
-              {pageTitle}
-            </h1>
-            <div className="flex gap-4 flex-wrap mb-6">
+        <section className="relative overflow-hidden bg-[#071827] text-white py-20">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(52,211,153,0.18),transparent_35%),radial-gradient(circle_at_bottom_right,_rgba(59,130,246,0.18),transparent_30%)]" />
+          <div className="container-custom relative">
+            <div className="max-w-3xl">
+              <p className="mb-3 inline-flex items-center rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-white/70">
+                Premium living
+              </p>
+              <h1 className="text-4xl md:text-5xl font-serif font-bold mb-6 leading-tight">
+                {pageTitle}
+              </h1>
+            </div>
+
+            <div className="flex gap-3 flex-wrap mb-6">
               {/* Filter Buttons */}
               <Link to="/projects">
                 <Button
                   className={
                     !status
-                      ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                      : "bg-transparent text-white border border-white/30 hover:bg-white/10"
+                      ? "rounded-full bg-primary px-5 text-primary-foreground shadow-lg shadow-primary/30 hover:bg-primary/90"
+                      : "rounded-full border border-white/15 bg-white/5 px-5 text-white/80 hover:bg-white/10 hover:text-white"
                   }
                 >
                   All
@@ -102,8 +109,8 @@ const Projects = () => {
                 <Button
                   className={
                     status === "upcoming"
-                      ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                      : "bg-transparent text-white border border-white/30 hover:bg-white/10"
+                      ? "rounded-full bg-primary px-5 text-primary-foreground shadow-lg shadow-primary/30 hover:bg-primary/90"
+                      : "rounded-full border border-white/15 bg-white/5 px-5 text-white/80 hover:bg-white/10 hover:text-white"
                   }
                 >
                   Upcoming
@@ -114,8 +121,8 @@ const Projects = () => {
                 <Button
                   className={
                     status === "ongoing"
-                      ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                      : "bg-transparent text-white border border-white/30 hover:bg-white/10"
+                      ? "rounded-full bg-primary px-5 text-primary-foreground shadow-lg shadow-primary/30 hover:bg-primary/90"
+                      : "rounded-full border border-white/15 bg-white/5 px-5 text-white/80 hover:bg-white/10 hover:text-white"
                   }
                 >
                   On Going
@@ -126,15 +133,15 @@ const Projects = () => {
                 <Button
                   className={
                     status === "completed"
-                      ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                      : "bg-transparent text-white border border-white/30 hover:bg-white/10"
+                      ? "rounded-full bg-primary px-5 text-primary-foreground shadow-lg shadow-primary/30 hover:bg-primary/90"
+                      : "rounded-full border border-white/15 bg-white/5 px-5 text-white/80 hover:bg-white/10 hover:text-white"
                   }
                 >
                   Handed Over
                 </Button>
               </Link>
             </div>
-            <p className="text-white/80 max-w-2xl">
+            <p className="max-w-2xl text-base text-white/75 md:text-lg">
               {pageDescription}
             </p>
           </div>
@@ -144,53 +151,63 @@ const Projects = () => {
         <section className="section-padding">
           <div className="container-custom">
             {isLoading ? (
-              <div className="text-center py-12">Loading projects...</div>
+              <div className="flex min-h-[220px] items-center justify-center rounded-3xl border border-dashed border-border bg-secondary/40 text-base text-muted-foreground">
+                Loading projects...
+              </div>
             ) : projects?.length === 0 ? (
-              <div className="text-center py-12 text-muted-foreground">
+              <div className="flex min-h-[220px] items-center justify-center rounded-3xl border border-dashed border-border bg-secondary/40 text-base text-muted-foreground">
                 No projects found
               </div>
             ) : (
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
                 {projects.map((project) => (
                   <div
                     key={project.id}
-                    className="bg-white rounded-2xl shadow-md hover:shadow-xl transition overflow-hidden"
+                    className="group overflow-hidden rounded-[28px] border border-border bg-white shadow-[0_18px_50px_rgba(15,23,42,0.08)] transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_25px_60px_rgba(15,23,42,0.12)]"
                   >
-                    <div className="relative aspect-[3/4]">
+                    <div className="relative aspect-[4/4.6] overflow-hidden bg-slate-100">
                       <img
                         src={
                           project.featured_image ||
                           "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&auto=format&fit=crop"
                         }
                         alt={project.name}
-                        className="w-full h-full object-cover"
+                        className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                        loading="lazy"
+                        style={{ imageRendering: "auto" }}
                       />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
                       <Badge
-                        className={`absolute top-4 left-4 ${
+                        className={`absolute left-4 top-4 ${
                           statusColors[project.status]
-                        }`}
+                        } rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.12em]`}
                       >
                         {statusLabels[project.status]}
                       </Badge>
                     </div>
 
-                    <div className="p-6 space-y-4">
-                      <div>
-                        <h3 className="text-xl font-serif font-bold text-foreground">
+                    <div className="p-6">
+                      <div className="space-y-3">
+                        <h3 className="text-xl font-serif font-bold uppercase tracking-[0.08em] text-foreground md:text-[1.35rem]">
                           {project.name}
                         </h3>
-                        <p className="flex items-center gap-2 text-muted-foreground text-sm mt-2">
-                          <MapPin className="w-4 h-4 text-primary" />
+                        <p className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <MapPin className="h-4 w-4 text-primary" />
                           {project.location}
                         </p>
                       </div>
 
-                      <Link to={`/project/${project.slug}`}>
-                        <Button variant="outline"  className="w-full border-primary text-primary hover:bg-primary hover:text-white mt-3">
-                          View Details
-                          <ArrowRight className="w-4 h-4 ml-2" />
-                        </Button>
-                      </Link>
+                      <div className="mt-7 flex justify-center">
+                        <Link to={`/project/${project.slug}`} className="w-full">
+                          <Button
+                            variant="outline"
+                            className="w-full justify-center gap-2 rounded-full border-primary/30 bg-primary/5 text-primary transition-all hover:bg-primary hover:text-white"
+                          >
+                            <span>View Details</span>
+                            <ArrowRight className="h-4 w-4" />
+                          </Button>
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 ))}

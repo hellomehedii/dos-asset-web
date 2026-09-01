@@ -110,7 +110,38 @@ const Hero = () => {
   const headlineParts = headline.split(highlightText);
 
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden">
+    <>
+      <style>{`
+        @keyframes heroGradientShift {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+
+        .animated-gradient-text {
+          background-image: linear-gradient(
+            90deg,
+            #0f172a 0%,
+            #1e293b 12%,
+            #38bdf8 25%,
+            #60a5fa 38%,
+            #67e8f9 50%,
+          
+            #60a5fa 76%,
+            #38bdf8 88%,
+            #0f172a 100%
+          );
+          background-size: 220% auto;
+          background-clip: text;
+          -webkit-background-clip: text;
+          color: transparent;
+          -webkit-text-fill-color: transparent;
+          animation: heroGradientShift 5s ease infinite;
+          filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.25));
+        }
+      `}</style>
+
+      <section className="relative min-h-screen flex items-center overflow-hidden">
       {/* =====================================
           BACKGROUND IMAGE
       ===================================== */}
@@ -158,7 +189,7 @@ const Hero = () => {
 
               <br />
 
-              <span className="bg-gradient-to-r from-[#4cbae9] via-[#2a8fe2] to-[#4cbae9] bg-clip-text text-transparent">
+              <span className="animated-gradient-text">
                 {highlightText}
               </span>
 
@@ -216,6 +247,7 @@ const Hero = () => {
         </div>
       </div>
     </section>
+    </>
   );
 };
 
