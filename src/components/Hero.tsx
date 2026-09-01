@@ -160,10 +160,10 @@ const Hero = () => {
       {/* =====================================
           WHITE MOVING CLOUDS
       ===================================== */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {/* <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="hero-cloud hero-cloud-3" />
         <div className="hero-cloud hero-cloud-4" />
-      </div>
+      </div> */}
       {/* =====================================
           CONTENT
       ===================================== */}
