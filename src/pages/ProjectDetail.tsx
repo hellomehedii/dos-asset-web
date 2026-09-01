@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet-async";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useQuery } from "@tanstack/react-query";
@@ -15,6 +15,7 @@ import {
   X,
   ChevronLeft,
   ChevronRight,
+  ArrowLeft,
 } from "lucide-react";
 import { useState } from "react";
 import {
@@ -175,6 +176,16 @@ const ProjectDetail = () => {
 
         <section className="section-padding">
           <div className="container-custom">
+            <Link
+              to="/projects"
+              className="group mb-8 inline-flex items-center gap-3 rounded-full border border-border bg-secondary px-4 py-2 text-sm font-medium text-foreground transition-all duration-300 hover:-translate-x-1 hover:border-primary/40 hover:bg-secondary/80 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+            >
+              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-background text-foreground shadow-sm ring-1 ring-border transition-colors group-hover:bg-primary/5 group-hover:text-primary">
+                <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+              </span>
+              Back to Projects
+            </Link>
+
             <div className="grid lg:grid-cols-2 gap-12">
               {/* Project Image */}
               <div className="aspect-[3/4] bg-secondary rounded-2xl overflow-hidden">
