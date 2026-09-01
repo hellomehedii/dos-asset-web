@@ -153,7 +153,7 @@ const Blog = () => {
               <div className="relative hidden min-h-[370px] lg:block">
                 <div className="absolute right-0 top-0 aspect-[1.2] w-full max-w-[620px] overflow-hidden rounded-bl-[110px] rounded-tl-[110px] shadow-[0_24px_60px_rgba(23,51,89,0.12)]">
                   <img
-                    src="../../src/assets/led.webp"
+                    src="../../src/assets/led.jpg"
                     alt="Contemporary apartment building surrounded by greenery"
                     className="h-full w-full object-cover object-[center_10%]"
                   />
@@ -223,7 +223,7 @@ const Blog = () => {
                     <div className="p-6 md:p-7">
                       {post.published_at && (
                         <p className="mb-3 flex items-center gap-2 text-sm text-slate-400">
-                          <Calendar className="h-4 w-4 text-[#2667d9]" />
+                          <Calendar className="h-4 w-4 text-[#4cbae9]" />
                           {format(
                             new Date(post.published_at),
                             "MMM d, yyyy"
@@ -231,7 +231,7 @@ const Blog = () => {
                         </p>
                       )}
 
-                      <h3 className="mb-2 font-serif text-xl font-bold text-[#0e1b35] transition-colors group-hover:text-[#2667d9]">
+                      <h3 className="mb-2 font-serif text-xl font-bold text-[#0e1b35] transition-colors group-hover:text-[#4cbae9]">
                         {post.title}
                       </h3>
 
@@ -241,7 +241,7 @@ const Blog = () => {
                         </p>
                       )}
 
-                      <p className="mt-4 flex items-center gap-2 text-sm font-semibold text-[#2667d9]">
+                      <p className="mt-4 flex items-center gap-2 text-sm font-semibold text-[#4cbae9]">
                         Read More <ArrowRight className="w-4 h-4" />
                       </p>
                     </div>
@@ -255,7 +255,7 @@ const Blog = () => {
                 <button
                   type="button"
                   onClick={() => setVisiblePostCount((count) => count + 3)}
-                  className="inline-flex items-center gap-3 rounded-xl border border-[#2667d9] bg-white px-7 py-3.5 text-sm font-semibold text-[#2667d9] transition-all hover:-translate-y-0.5 hover:bg-[#2667d9] hover:text-white hover:shadow-[0_10px_24px_rgba(38,103,217,0.2)]"
+                  className="inline-flex items-center gap-3 rounded-xl border border-[#4cbae9] bg-white px-7 py-3.5 text-sm font-semibold text-[#4cbae9] transition-all hover:-translate-y-0.5 hover:bg-[#4cbae9] hover:text-white hover:shadow-[0_10px_24px_rgba(38,103,217,0.2)]"
                 >
                   More Articles <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </button>

@@ -33,7 +33,7 @@ const BlogDetail = () => {
     queryFn: async () => {
       const { data } = await supabase
         .from("site_settings")
-        .select("site_title, favicon_url")
+        .select("favicon_url")
         .single();
       return data;
     },
@@ -66,9 +66,7 @@ const BlogDetail = () => {
   /* ================= SEO VALUES ================= */
   const pageTitle = post.meta_title || post.title;
 
-  const fullTitle = settings?.site_title
-    ? `${pageTitle} | ${settings.site_title}`
-    : pageTitle;
+  const fullTitle = pageTitle;
 
   const pageDescription =
     post.meta_description ||
@@ -86,8 +84,8 @@ const BlogDetail = () => {
         <meta property="og:type" content="article" />
         <meta property="og:title" content={pageTitle} />
         <meta property="og:description" content={pageDescription} />
-        {post.og_image && (
-          <meta property="og:image" content={post.og_image} />
+        {post.featured_image && (
+          <meta property="og:image" content={post.featured_image} />
         )}
 
         {/* Favicon */}

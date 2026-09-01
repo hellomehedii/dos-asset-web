@@ -89,10 +89,10 @@ const Contact = () => {
 
       <main className="pt-36">
         {/* ================= HERO ================= */}
-        <section className="bg-primary text-white py-14 md:py-20">
+        <section className="bg-gradient-to-r from-[#4cbae9] via-[#2a8fe2] to-[#4cbae9] text-white py-14 md:py-20">
           <div className="container-custom px-4">
-            <h1 className="text-3xl md:text-5xl font-serif font-bold mb-4">
-              {seo?.page_title || "Contact Us"}
+            <h1 className="mb-4 bg-gradient-to-r from-[#2c3538] via-[#191f20] to-[#007ea8] bg-clip-text text-3xl font-bold text-transparent md:text-5xl">
+              {seo?.page_title || "CONTACT US"}
             </h1>
             <p className="text-base md:text-xl text-white/80 max-w-2xl">
               {pageDescription}
