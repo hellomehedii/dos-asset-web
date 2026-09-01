@@ -151,8 +151,9 @@ const ProjectDetail = () => {
       <Navbar />
 
       <main className="pt-36">
-        <section className="bg-navy text-white py-12">
-          <div className="container-custom">
+        <section className="relative overflow-hidden bg-[#071827] text-white py-20">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(52,211,153,0.18),transparent_35%),radial-gradient(circle_at_bottom_right,_rgba(59,130,246,0.18),transparent_30%)]" />
+          <div className="container-custom relative">
             <span
               className={`inline-block px-3 py-1 rounded-full text-xs font-medium mb-4 ${
                 project.status === "upcoming"
