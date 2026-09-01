@@ -243,11 +243,11 @@ const Management = () => {
 
       <main className="pt-36">
         {/* Hero Section */}
-        <section className="relative overflow-hidden ">
-          <div className="absolute inset-0 bg-primary" />
-          <div className="container-custom relative py-16 md:py-20">
-            <h1 className="text-4xl md:text-5xl font-serif font-bold  text-white">Management Team</h1>
-            <p className="mt-5 text-lg md:text-xl  text-white max-w-2xl">
+        <section className="relative overflow-hidden bg-[#071827] text-white py-12 md:py-20">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(52,211,153,0.18),transparent_35%),radial-gradient(circle_at_bottom_right,_rgba(59,130,246,0.18),transparent_30%)]" />
+          <div className="container-custom relative px-4 md:px-0">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-white mb-4">Management Team</h1>
+            <p className="text-sm sm:text-base md:text-lg text-white/80 max-w-2xl">
               The people behind our projects—focused on quality, delivery, and long-term trust.
             </p>
           </div>

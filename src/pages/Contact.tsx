@@ -89,12 +89,13 @@ const Contact = () => {
 
       <main className="pt-36">
         {/* ================= HERO ================= */}
-        <section className="bg-gradient-to-r from-[#4cbae9] via-[#2a8fe2] to-[#4cbae9] text-white py-14 md:py-20">
-          <div className="container-custom px-4">
-            <h1 className="mb-4 bg-gradient-to-r from-[#2c3538] via-[#191f20] to-[#007ea8] bg-clip-text text-3xl font-bold text-transparent md:text-5xl">
+        <section className="relative overflow-hidden bg-[#071827] text-white py-12 md:py-20">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(52,211,153,0.18),transparent_35%),radial-gradient(circle_at_bottom_right,_rgba(59,130,246,0.18),transparent_30%)]" />
+          <div className="container-custom relative px-4 md:px-0">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif font-bold mb-4 text-white">
               {seo?.page_title || "CONTACT US"}
             </h1>
-            <p className="text-base md:text-xl text-white/80 max-w-2xl">
+            <p className="text-sm sm:text-base md:text-lg text-white/80 max-w-2xl">
               {pageDescription}
             </p>
           </div>
