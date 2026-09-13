@@ -77,12 +77,12 @@ const linkBaseClass = "text-gray-900 hover:text-[#00B2FF] transition-colors";
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${headerClass}`}
     >
-      <div className="container-custom">
-        <nav className="flex items-center justify-between h-20 lg:h-32">
+      <div className="container-custom px-4 sm:px-6 lg:px-0">
+        <nav className="flex h-20 items-center justify-between lg:h-32">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3">
+          <Link to="/" className="flex min-w-0 items-center gap-3">
             {settings?.logo_url ? (
-              <div className="relative overflow-hidden rounded-lg">
+              <div className="relative shrink-0 overflow-hidden rounded-lg">
                 <img
                   src={
                     isScrolled && settings?.logo_hover_url
@@ -90,7 +90,7 @@ const linkBaseClass = "text-gray-900 hover:text-[#00B2FF] transition-colors";
                       : settings.logo_url
                   }
                   alt={settings.site_name || "Site logo"}
-                  className="h-20 w-auto transition-all duration-500"
+                  className="h-14 w-auto max-w-[180px] object-contain transition-all duration-500 sm:h-16 lg:h-20"
                   loading="eager"
                 />
               </div>
@@ -100,7 +100,7 @@ const linkBaseClass = "text-gray-900 hover:text-[#00B2FF] transition-colors";
               </div>
             )}
             {settings?.show_brand_text && (
-              <div className="flex flex-col leading-tight">
+              <div className="hidden min-w-0 flex-col leading-tight sm:flex">
                 <span
                   className={`text-xl font-serif font-bold ${brandTextClass}`}
                 >
@@ -250,14 +250,16 @@ const linkBaseClass = "text-gray-900 hover:text-[#00B2FF] transition-colors";
 
           {/* Mobile Menu Button */}
           <button
-            className="lg:hidden p-2 rounded-md transition-colors text-[#273235] hover:bg-[#0099ff]"
+            type="button"
+            className="ml-4 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-[#d7e2ec] bg-white/90 text-[#273235] shadow-sm transition-colors hover:border-[#0099ff] hover:text-[#0099ff] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0099ff]/40 lg:hidden"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={isMobileMenuOpen}
           >
             {isMobileMenuOpen ? (
-              <X className="w-6 h-6 text-[#273235]" />
+              <X className="h-6 w-6" strokeWidth={2} />
             ) : (
-              <Menu className="w-6 h-6 text-[#273235]" />
+              <Menu className="h-6 w-6" strokeWidth={2} />
             )}
           </button>
         </nav>
@@ -269,7 +271,7 @@ const linkBaseClass = "text-gray-900 hover:text-[#00B2FF] transition-colors";
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className="lg:hidden bg-background/95 backdrop-blur-md border-t border-border overflow-hidden"
+              className="mx-4 overflow-hidden rounded-xl border border-border bg-background/95 shadow-lg backdrop-blur-md sm:mx-6 lg:hidden"
             >
               <div className="py-3 space-y-1">
                 {navLinks.map((link) => (
