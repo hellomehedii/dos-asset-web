@@ -206,7 +206,7 @@ const linkBaseClass = "text-gray-900 hover:text-[#00B2FF] transition-colors";
         className="
           absolute -inset-[3px]
           rounded-full
-          bg-blue-500/20
+          bg-green-500/20
           blur-sm
           -z-10
           group-hover:bg-blue-400/30

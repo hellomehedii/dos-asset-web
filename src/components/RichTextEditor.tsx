@@ -1,5 +1,5 @@
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+import ReactQuill from "react-quill-new";
+import "react-quill-new/dist/quill.snow.css";
 
 interface RichTextEditorProps {
   value: string;
@@ -49,14 +49,14 @@ const formats = [
 
 const RichTextEditor = ({ value, onChange }: RichTextEditorProps) => {
   return (
-    <div className="rich-text-editor">
+    <div className="rich-text-editor rounded-lg">
       <ReactQuill
         theme="snow"
-        value={value}
+        value={value || ""}
         onChange={onChange}
         modules={modules}
         formats={formats}
-        className="bg-background border-border rounded-lg"
+        className="bg-background rounded-lg"
         style={{ minHeight: "300px" }}
       />
       <style>{`
@@ -67,6 +67,12 @@ const RichTextEditor = ({ value, onChange }: RichTextEditorProps) => {
         }
         .rich-text-editor .ql-editor {
           min-height: 250px;
+          color: hsl(var(--foreground));
+          caret-color: hsl(var(--foreground));
+        }
+        .rich-text-editor .ql-editor.ql-blank::before {
+          color: hsl(var(--muted-foreground));
+          font-style: normal;
         }
         .rich-text-editor .ql-toolbar {
           border-top-left-radius: 0.5rem;

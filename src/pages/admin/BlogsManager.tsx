@@ -163,7 +163,11 @@ const BlogsManager = () => {
                 </div>
                 <div className="md:col-span-2">
                   <Label>Content</Label>
-                  <RichTextEditor value={content} onChange={setContent} />
+                  <RichTextEditor
+                    key={editingPost?.id || "new-post"}
+                    value={content}
+                    onChange={setContent}
+                  />
                 </div>
                 <div className="md:col-span-2">
                   <Label>Featured Image</Label>
