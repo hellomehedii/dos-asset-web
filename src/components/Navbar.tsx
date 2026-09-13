@@ -178,7 +178,7 @@ const linkBaseClass = "text-gray-900 hover:text-[#00B2FF] transition-colors";
         hover:bg-[#19a7e4]
       "
       style={{
-        background: "linear-gradient(135deg, #0B2A5B 0%, #0F3A7D 100%)",
+        background: "#0099ff",
       }}
     >
       {/* Animated conic-gradient border with moving light streak */}
@@ -206,7 +206,7 @@ const linkBaseClass = "text-gray-900 hover:text-[#00B2FF] transition-colors";
         className="
           absolute -inset-[3px]
           rounded-full
-          bg-green-500/20
+          bg-blue-500/20
           blur-sm
           -z-10
           group-hover:bg-blue-400/30
@@ -219,7 +219,7 @@ const linkBaseClass = "text-gray-900 hover:text-[#00B2FF] transition-colors";
         className="
           absolute inset-0
           rounded-full
-          bg-[#0b5b36]
+          bg-[#0099ff]
           -z-10
         "
       />
