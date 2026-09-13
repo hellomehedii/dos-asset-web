@@ -12,13 +12,15 @@ const LatestBlogs = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("blog_posts")
-        .select("*")
+        .select("id, title, slug, excerpt, featured_image, published_at")
         .eq("is_published", true)
         .order("published_at", { ascending: false })
         .limit(3);
       if (error) throw error;
       return data;
     },
+    staleTime: 60_000,
+    refetchOnWindowFocus: false,
   });
 
   return (
@@ -52,6 +54,8 @@ const LatestBlogs = () => {
                   src={blog.featured_image || "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&auto=format&fit=crop"}
                   alt={blog.title}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-navy/40 to-transparent" />
               </div>

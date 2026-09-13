@@ -47,11 +47,13 @@ const Blog = () => {
     queryFn: async () => {
       const { data } = await supabase
         .from("blog_posts")
-        .select("*")
+        .select("id, title, slug, excerpt, featured_image, published_at")
         .eq("is_published", true)
         .order("published_at", { ascending: false });
       return data;
     },
+    staleTime: 60_000,
+    refetchOnWindowFocus: false,
   });
 
   /* ================= FALLBACK ================= */
@@ -214,6 +216,8 @@ const Blog = () => {
                           src={post.featured_image}
                           alt={post.title}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          loading="lazy"
+                          decoding="async"
                         />
                       ) : (
                         <div className="flex h-full w-full items-center justify-center text-slate-400">
