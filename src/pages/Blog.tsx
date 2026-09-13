@@ -8,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { ArrowRight, Calendar, Search } from "lucide-react";
 import { format } from "date-fns";
 import ledImage from "@/assets/led.jpg";
+import { blogHref } from "@/lib/blogSlug";
 
 const Blog = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -92,7 +93,7 @@ const Blog = () => {
   const hasMorePosts = visiblePostCount < filteredPosts.length;
 
   const featuredPost = posts?.[0];
-  const featuredHref = featuredPost ? `/blog/${featuredPost.slug}` : "/blog";
+  const featuredHref = featuredPost ? blogHref(featuredPost.slug) : "/blog";
   const featuredImage =
     featuredPost?.featured_image ||
     "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=1400&q=85";
@@ -204,7 +205,7 @@ const Blog = () => {
                 {visiblePosts.map((post) => (
                   <Link
                     key={post.id}
-                    to={`/blog/${post.slug}`}
+                    to={blogHref(post.slug)}
                     className="group overflow-hidden rounded-[18px] bg-white shadow-[0_12px_35px_rgba(24,55,100,0.06)] transition-shadow duration-300 hover:shadow-[0_18px_45px_rgba(24,55,100,0.12)]"
                   >
                     <div className="relative aspect-[1.45] overflow-hidden bg-slate-100">

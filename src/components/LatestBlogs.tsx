@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
+import { blogHref } from "@/lib/blogSlug";
 
 const LatestBlogs = () => {
   const { data: blogs } = useQuery({
@@ -72,7 +73,7 @@ const LatestBlogs = () => {
                   {blog.excerpt}
                 </p>
 
-                <Link to={`/blog/${blog.slug}`}>
+                <Link to={blogHref(blog.slug)}>
                   <Button variant="link" className="p-0 h-auto text-primary group/btn">
                     Read More
                     <ArrowRight className="w-4 h-4 ml-1 transition-transform group-hover/btn:translate-x-1" />

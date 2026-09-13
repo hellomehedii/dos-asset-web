@@ -12,6 +12,7 @@ import { Plus, Pencil, Trash2 } from "lucide-react";
 import ImageUpload from "@/components/ImageUpload";
 import RichTextEditor from "@/components/RichTextEditor";
 import type { Database } from "@/integrations/supabase/types";
+import { normalizeBlogSlug } from "@/lib/blogSlug";
 
 type BlogPost = Database["public"]["Tables"]["blog_posts"]["Row"];
 type BlogPostInsert = Database["public"]["Tables"]["blog_posts"]["Insert"];
@@ -95,7 +96,7 @@ const BlogsManager = () => {
     const isPublished = formData.get("is_published") === "true";
     const post = {
       title: formData.get("title") as string,
-      slug: formData.get("slug") as string,
+      slug: normalizeBlogSlug(formData.get("slug") as string),
       excerpt: formData.get("excerpt") as string,
       content: content,
       featured_image: featuredImage,

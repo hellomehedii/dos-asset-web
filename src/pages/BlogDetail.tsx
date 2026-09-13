@@ -10,21 +10,23 @@ import DOMPurify from "dompurify";
 
 const BlogDetail = () => {
   const { slug } = useParams();
+  const decodedSlug = slug ? decodeURIComponent(slug) : "";
+  const legacySlug = decodedSlug.replace(/-/g, " ");
 
   /* ================= BLOG POST ================= */
   const { data: post, isLoading } = useQuery({
-    queryKey: ["blog-post", slug],
+    queryKey: ["blog-post", decodedSlug],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("blog_posts")
         .select("*")
-        .eq("slug", slug)
+        .in("slug", [decodedSlug, legacySlug])
         .single();
 
       if (error) throw error;
       return data;
     },
-    enabled: !!slug,
+    enabled: !!decodedSlug,
   });
 
   /* ================= SITE SETTINGS ================= */
