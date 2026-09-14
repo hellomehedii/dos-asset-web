@@ -124,6 +124,66 @@
 }
 
 /* ============================================
+   SUBTLE HERO SKY ATMOSPHERE
+============================================ */
+.hero-sky-background {
+  isolation: isolate;
+}
+
+.hero-sky-background::before,
+.hero-sky-background::after {
+  content: "";
+  position: absolute;
+  inset: -12%;
+  pointer-events: none;
+}
+
+.hero-sky-background::before {
+  z-index: 0;
+  background:
+    linear-gradient(
+      115deg,
+      rgba(12, 88, 150, 0.1),
+      rgba(93, 190, 232, 0.08) 48%,
+      rgba(15, 75, 125, 0.1)
+    );
+  background-size: 180% 180%;
+  animation: heroSkyFlow 32s ease-in-out infinite;
+  will-change: background-position;
+}
+
+.hero-sky-background::after {
+  z-index: 1;
+  background:
+    radial-gradient(
+      ellipse at 22% 20%,
+      rgba(194, 238, 255, 0.16) 0%,
+      rgba(132, 211, 241, 0.06) 24%,
+      transparent 52%
+    ),
+    radial-gradient(
+      ellipse at 82% 72%,
+      rgba(5, 68, 120, 0.12) 0%,
+      transparent 48%
+    );
+  background-size: 125% 125%, 135% 135%;
+  animation: heroSkyLight 38s ease-in-out infinite;
+  will-change: background-position;
+}
+
+@keyframes heroSkyFlow {
+  0%,
+  100% { background-position: 0% 45%; }
+  50% { background-position: 100% 55%; }
+}
+
+@keyframes heroSkyLight {
+  0%,
+  100% { background-position: 0% 0%, 100% 100%; }
+  50% { background-position: 22% 12%, 78% 88%; }
+}
+
+/* ============================================
    CONTINUOUS CLOUD MOVEMENT
 ============================================ */
 .hero-cloud {
@@ -132,7 +192,7 @@
   width: 46vw;
   height: 110px;
   border-radius: 100px;
-  background: rgba(76, 186, 233, 0.28);
+  background: rgba(17, 184, 255, 0.932);
   filter: blur(35px);
   pointer-events: none;
 }
@@ -142,7 +202,7 @@
   content: "";
   position: absolute;
   border-radius: 50%;
-  background: rgba(76, 186, 233, 0.28);
+  background: rgba(6, 180, 255, 0.747);
 }
 
 .hero-cloud::before {
@@ -170,7 +230,7 @@
   bottom: -1%;
   left: -55%;
   opacity: 0.5;
-  animation: cloudMove 30s linear infinite 8s;
+  animation: cloudMove 30s linear infinite s;
 }
 
 @keyframes cloudMove {
@@ -188,6 +248,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .hero-sky-background::before,
+  .hero-sky-background::after,
   .hero-cloud-3,
   .hero-cloud-4 {
     animation: none;
