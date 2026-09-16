@@ -149,8 +149,8 @@ const BlogDetail = () => {
             </div>
           </header>
 
-          <section className="container-custom max-w-6xl px-4 py-12 sm:px-6 md:py-20 lg:px-8">
-            <div className="mx-auto max-w-3xl  ">
+          <section className="container-custom px-0 mt-4 mb-4 ">
+            <div className="mx-auto border border-[#62d0ff] bg-white px-6 py-10 shadow-lg sm:px-10 md:py-16 lg:px-12">
               <div className="blog-content ql-editor !h-auto !min-h-0 !w-full !p-0 text-base text-slate-700 md:text-lg">
                 {post.content ? (
                   <div
