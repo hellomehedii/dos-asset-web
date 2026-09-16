@@ -4,19 +4,21 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { ArrowLeft, Calendar, Clock } from "lucide-react";
+import { ArrowLeft, Calendar } from "lucide-react";
 import { format } from "date-fns";
 import DOMPurify from "dompurify";
 import "react-quill-new/dist/quill.snow.css";
 
 const BlogDetail = () => {
   const { slug } = useParams();
+
   const decodedSlug = slug ? decodeURIComponent(slug) : "";
   const legacySlug = decodedSlug.replace(/-/g, " ");
 
   /* ================= BLOG POST ================= */
   const { data: post, isLoading } = useQuery({
     queryKey: ["blog-post", decodedSlug],
+
     queryFn: async () => {
       const { data, error } = await supabase
         .from("blog_posts")
@@ -25,82 +27,99 @@ const BlogDetail = () => {
         .single();
 
       if (error) throw error;
+
       return data;
     },
+
     enabled: !!decodedSlug,
   });
 
   /* ================= SITE SETTINGS ================= */
   const { data: settings } = useQuery({
     queryKey: ["site-settings"],
+
     queryFn: async () => {
       const { data } = await supabase
         .from("site_settings")
         .select("favicon_url")
         .single();
+
       return data;
     },
   });
 
+  /* ================= LOADING ================= */
   if (isLoading) {
     return (
       <>
         <Navbar />
-        <div className="pt-36 min-h-screen flex items-center justify-center">
+
+        <div className="flex min-h-screen items-center justify-center px-4 pt-36">
           Loading...
         </div>
+
         <Footer />
       </>
     );
   }
 
+  /* ================= NOT FOUND ================= */
   if (!post) {
     return (
       <>
         <Navbar />
-        <div className="pt-36 min-h-screen flex items-center justify-center">
+
+        <div className="flex min-h-screen items-center justify-center px-4 pt-36 text-center">
           Blog post not found
         </div>
+
         <Footer />
       </>
     );
   }
 
-  /* ================= SEO VALUES ================= */
+  /* ================= SEO ================= */
   const pageTitle = post.meta_title || post.title;
-
-  const fullTitle = pageTitle;
 
   const pageDescription =
     post.meta_description ||
     post.excerpt ||
     `Read ${post.title}`;
 
-  const readingTime = Math.max(
-    1,
-    Math.ceil(
-      (post.content || "").replace(/<[^>]*>/g, " ").trim().split(/\s+/).filter(Boolean).length / 200,
-    ),
-  );
-
   return (
     <>
-      {/* ================= SEO ================= */}
       <Helmet>
-        <title>{fullTitle}</title>
-        <meta name="description" content={pageDescription} />
+        <title>{pageTitle}</title>
 
-        {/* Open Graph */}
+        <meta
+          name="description"
+          content={pageDescription}
+        />
+
         <meta property="og:type" content="article" />
-        <meta property="og:title" content={pageTitle} />
-        <meta property="og:description" content={pageDescription} />
+
+        <meta
+          property="og:title"
+          content={pageTitle}
+        />
+
+        <meta
+          property="og:description"
+          content={pageDescription}
+        />
+
         {post.featured_image && (
-          <meta property="og:image" content={post.featured_image} />
+          <meta
+            property="og:image"
+            content={post.featured_image}
+          />
         )}
 
-        {/* Favicon */}
         {settings?.favicon_url && (
-          <link rel="icon" href={settings.favicon_url} />
+          <link
+            rel="icon"
+            href={settings.favicon_url}
+          />
         )}
       </Helmet>
 
@@ -108,71 +127,99 @@ const BlogDetail = () => {
 
       <main className="bg-[#f7f9fc] pt-20 text-[#172033] md:pt-32">
         <article>
+
+          {/* ================= HERO ================= */}
           <header className="relative overflow-hidden bg-[#102235] text-white">
+
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_85%_20%,rgba(36,167,228,0.2),transparent_32%),radial-gradient(circle_at_10%_100%,rgba(255,255,255,0.06),transparent_30%)]" />
-            <div className="container-custom relative max-w-6xl px-4 py-10 sm:px-6 md:py-16 lg:px-8">
+
+            <div className="container-custom relative mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 md:py-16 lg:px-8">
+
+              {/* Back Button */}
               <Link
                 to="/blog"
-                className="mb-10 inline-flex items-center gap-2 text-sm font-semibold text-white/70 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
+                className="mb-8 inline-flex items-center gap-2 text-sm font-semibold text-white/70 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 sm:mb-10"
               >
-                <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+                <ArrowLeft
+                  className="h-4 w-4 shrink-0"
+                  aria-hidden="true"
+                />
+
                 Back to Journal
               </Link>
 
               <div className="max-w-4xl">
-                <p className="mb-5 text-xs font-bold uppercase tracking-[0.28em] text-[#62d0ff]">
-                  DADL Journal
-                </p>
-                <div className="mb-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm font-medium text-white/65">
-                  {post.published_at && (
-                    <span className="inline-flex items-center gap-2">
-                      <Calendar className="h-4 w-4 text-[#62d0ff]" aria-hidden="true" />
-                      {format(new Date(post.published_at), "MMMM d, yyyy")}
-                    </span>
-                  )}
-                  <span className="inline-flex items-center gap-2">
-                    <Clock className="h-4 w-4 text-[#62d0ff]" aria-hidden="true" />
-                    {readingTime} min read
-                  </span>
-                </div>
 
-                <h1 className="max-w-4xl text-4xl font-serif font-semibold leading-[1.08] tracking-[-0.02em] text-white sm:text-5xl md:text-6xl lg:text-7xl">
+                {/* Date */}
+                {post.published_at && (
+                  <div className="mb-5 flex flex-wrap items-center gap-2 text-sm font-medium text-white/65">
+                    <Calendar
+                      className="h-4 w-4 shrink-0 text-[#62d0ff]"
+                      aria-hidden="true"
+                    />
+
+                    <span>
+                      {format(
+                        new Date(post.published_at),
+                        "MMMM d, yyyy"
+                      )}
+                    </span>
+                  </div>
+                )}
+
+                {/* Title */}
+                <h1 className="max-w-4xl font-bangla text-3xl font-semibold leading-[1.3] tracking-normal text-white sm:text-4xl md:text-6xl lg:text-7xl">
                   {post.title}
                 </h1>
 
+                {/* Excerpt */}
                 {post.excerpt && (
-                  <p className="mt-7 max-w-2xl text-lg leading-8 text-white/70 md:text-xl">
+                  <p className="mt-5 max-w-3xl font-bangla text-base leading-7 text-white/70 sm:mt-7 sm:text-lg sm:leading-8 md:text-xl">
                     {post.excerpt}
                   </p>
                 )}
+
               </div>
             </div>
           </header>
 
-          <section className="container-custom px-0 mt-4 mb-4 ">
-            <div className="mx-auto border border-[#62d0ff] bg-white px-6 py-10 shadow-lg sm:px-10 md:py-16 lg:px-12">
-              <div className="blog-content ql-editor !h-auto !min-h-0 !w-full !p-0 text-base text-slate-700 md:text-lg">
+          {/* ================= BLOG CONTENT ================= */}
+          <section className="container-custom mx-auto w-full px-3 py-4 sm:px-6 md:py-8 lg:px-8">
+
+            <div className="mx-auto w-full border border-[#62d0ff] bg-white px-4 py-7 shadow-lg sm:px-8 sm:py-10 md:px-10 md:py-14 lg:px-12 lg:py-16">
+
+              <div className="blog-content ql-editor !h-auto !min-h-0 !w-full !p-0 font-bangla text-base text-slate-700 md:text-lg">
+
                 {post.content ? (
                   <div
                     dangerouslySetInnerHTML={{
-                      __html: DOMPurify.sanitize(post.content),
+                      __html: DOMPurify.sanitize(
+                        post.content
+                      ),
                     }}
                   />
                 ) : (
-                  <p className="text-muted-foreground">No content available</p>
+                  <p className="text-muted-foreground">
+                    No content available
+                  </p>
                 )}
+
               </div>
             </div>
           </section>
+
         </article>
       </main>
 
+      {/* ================= RESPONSIVE BLOG CSS ================= */}
       <style>{`
         .blog-content.ql-editor {
           white-space: pre-wrap;
           overflow-wrap: anywhere;
+          word-break: break-word;
           font-family: inherit;
           line-height: 1.75;
+          max-width: 100%;
         }
 
         .blog-content.ql-editor p,
@@ -180,7 +227,8 @@ const BlogDetail = () => {
         .blog-content.ql-editor ul,
         .blog-content.ql-editor blockquote,
         .blog-content.ql-editor pre {
-          margin-bottom: 0.3rem;
+          margin-bottom: 0.5rem;
+          max-width: 100%;
         }
 
         .blog-content.ql-editor h1,
@@ -192,24 +240,136 @@ const BlogDetail = () => {
           color: #172033;
           font-family: inherit;
           font-weight: 700;
-          line-height: 1.25;
-          margin: 2rem 0 1rem;
+          line-height: 1.3;
+          margin: 1.5rem 0 0.75rem;
+          overflow-wrap: anywhere;
+          word-break: break-word;
         }
 
-        .blog-content.ql-editor h1 { font-size: 2rem; }
-        .blog-content.ql-editor h2 { font-size: 1.75rem; }
-        .blog-content.ql-editor h3 { font-size: 1.5rem; }
-        .blog-content.ql-editor a { color: #167bb5; text-decoration: underline; }
+        .blog-content.ql-editor h1 {
+          font-size: 2rem;
+        }
+
+        .blog-content.ql-editor h2 {
+          font-size: 1.75rem;
+        }
+
+        .blog-content.ql-editor h3 {
+          font-size: 1.5rem;
+        }
+
+        .blog-content.ql-editor h4 {
+          font-size: 1.25rem;
+        }
+
+        .blog-content.ql-editor a {
+          color: #167bb5;
+          text-decoration: underline;
+          overflow-wrap: anywhere;
+          word-break: break-word;
+        }
+
         .blog-content.ql-editor blockquote {
           border-left: 4px solid #24a7e4;
           color: #526174;
           padding-left: 1rem;
         }
+
         .blog-content.ql-editor img {
+          display: block;
+          width: auto;
+          max-width: 100%;
           height: auto;
+          margin: 1.25rem auto;
+          border-radius: 0.75rem;
+        }
+
+        .blog-content.ql-editor iframe,
+        .blog-content.ql-editor video {
+          display: block;
+          width: 100%;
           max-width: 100%;
           border-radius: 0.75rem;
-          margin: 1.5rem 0;
+        }
+
+        .blog-content.ql-editor pre {
+          max-width: 100%;
+          overflow-x: auto;
+          white-space: pre;
+          -webkit-overflow-scrolling: touch;
+        }
+
+        .blog-content.ql-editor table {
+          display: block;
+          width: 100%;
+          max-width: 100%;
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+        }
+
+        .blog-content.ql-editor td,
+        .blog-content.ql-editor th {
+          white-space: nowrap;
+        }
+
+        @media (max-width: 640px) {
+          .blog-content.ql-editor {
+            font-size: 16px;
+            line-height: 1.75;
+          }
+
+          .blog-content.ql-editor h1 {
+            font-size: 1.75rem;
+          }
+
+          .blog-content.ql-editor h2 {
+            font-size: 1.5rem;
+          }
+
+          .blog-content.ql-editor h3 {
+            font-size: 1.3rem;
+          }
+
+          .blog-content.ql-editor h4 {
+            font-size: 1.15rem;
+          }
+
+          .blog-content.ql-editor img {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            margin: 1rem auto;
+            border-radius: 0.5rem;
+          }
+
+          .blog-content.ql-editor blockquote {
+            margin-left: 0;
+            margin-right: 0;
+            padding-left: 0.75rem;
+          }
+
+          .blog-content.ql-editor ul,
+          .blog-content.ql-editor ol {
+            padding-left: 1.5rem;
+          }
+        }
+
+        @media (max-width: 380px) {
+          .blog-content.ql-editor {
+            font-size: 15px;
+          }
+
+          .blog-content.ql-editor h1 {
+            font-size: 1.5rem;
+          }
+
+          .blog-content.ql-editor h2 {
+            font-size: 1.35rem;
+          }
+
+          .blog-content.ql-editor h3 {
+            font-size: 1.2rem;
+          }
         }
       `}</style>
 
