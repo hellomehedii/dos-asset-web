@@ -150,7 +150,7 @@ const BlogDetail = () => {
           </header>
 
           <section className="container-custom max-w-6xl px-4 py-12 sm:px-6 md:py-20 lg:px-8">
-            <div className="mx-auto max-w-3xl border-t border-[#dce3eb] pt-8 md:pt-10">
+            <div className="mx-auto max-w-3xl  ">
               <div className="blog-content ql-editor !h-auto !min-h-0 !w-full !p-0 text-base text-slate-700 md:text-lg">
                 {post.content ? (
                   <div
@@ -180,7 +180,7 @@ const BlogDetail = () => {
         .blog-content.ql-editor ul,
         .blog-content.ql-editor blockquote,
         .blog-content.ql-editor pre {
-          margin-bottom: 1.25rem;
+          margin-bottom: 0.3rem;
         }
 
         .blog-content.ql-editor h1,
