@@ -237,12 +237,12 @@ const Blog = () => {
                         </p>
                       )}
 
-                      <h3 className="mb-2 font-serif text-xl font-bold text-[#0e1b35] transition-colors group-hover:text-[#4cbae9]">
+                      <h3 className="mb-2 font-bangla text-xl font-bold text-[#0e1b35] transition-colors group-hover:text-[#4cbae9]">
                         {post.title}
                       </h3>
 
                       {post.excerpt && (
-                        <p className="line-clamp-2 text-sm leading-6 text-slate-500">
+                        <p className="line-clamp-2 font-bangla text-sm leading-6 text-slate-500">
                           {post.excerpt}
                         </p>
                       )}
