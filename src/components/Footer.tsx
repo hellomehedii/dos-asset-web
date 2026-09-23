@@ -10,6 +10,13 @@ const iconMap: Record<string, any> = {
   Youtube,
 };
 
+const brandColors: Record<string, string> = {
+  Facebook: "#1877F2",
+  Instagram: "#E4405F",
+  Youtube: "#FF0000",
+  Linkedin: "#0A66C2",
+};
+
 const Footer = () => {
   const { data: settings } = useSiteSettings();
   const { data: socialLinks } = useSocialLinks();
@@ -32,6 +39,7 @@ const Footer = () => {
           <div className="flex gap-3">
             {socialLinks?.map((social) => {
               const IconComponent = iconMap[social.icon] || Facebook;
+              const brandColor = brandColors[social.icon];
               return (
                 <a
                   key={social.id}
@@ -39,9 +47,9 @@ const Footer = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={social.platform}
-                  className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors"
+                  className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
                 >
-                  <IconComponent className="w-5 h-5" />
+                  <IconComponent className="w-5 h-5" style={brandColor ? { color: brandColor } : undefined} />
                 </a>
               );
             })}
