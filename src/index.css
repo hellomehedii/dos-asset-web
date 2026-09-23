@@ -225,22 +225,21 @@
 
 .hero-cloud-3 {
   bottom: 7%;
-  left: -20%;
+  left: -55%;
   opacity: 0.3;
-  animation: cloudMove 25s linear infinite;
+  animation: cloudMove 9s linear infinite;
 }
 
 .hero-cloud-4 {
   bottom: -1%;
   left: -55%;
   opacity: 0.5;
-  animation: cloudMove 30s linear infinite s;
+  animation: cloudMove 12s linear infinite -5s;
 }
 
 @keyframes cloudMove {
   0% { transform: translateX(0); }
-  50% { transform: translateX(35vw); }
-  100% { transform: translateX(100vw); }
+  100% { transform: translateX(160vw); }
 }
 
 @media (max-width: 768px) {

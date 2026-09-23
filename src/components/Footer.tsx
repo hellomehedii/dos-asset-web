@@ -23,16 +23,11 @@ const Footer = () => {
       <div className="container-custom py-6">
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex items-center gap-3">
-            {settings?.logo_url ? (
-              <img src={settings.logo_url} alt={settings.site_name} className="h-8 w-auto" />
-            ) : (
-              <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-                <Building2 className="w-5 h-5 text-primary-foreground" />
-              </div>
-            )}
-            <p className="text-white/60 text-sm">
-              © {new Date().getFullYear()} {settings?.site_name || "DADL"}. All rights reserved.
+           
+             <p className="text-white/60 text-sm ">
+             A sister concern of <a href="https://www.dos.com.bd" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">DOS GROUP</a>
             </p>
+            
           </div>
           <div className="flex gap-3">
             {socialLinks?.map((social) => {
