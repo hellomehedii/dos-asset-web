@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useToast } from "@/hooks/use-toast";
 import { Plus, Pencil, Trash2, X } from "lucide-react";
@@ -16,20 +16,13 @@ import type { Database } from "@/integrations/supabase/types";
 type Project = Database["public"]["Tables"]["projects"]["Row"];
 type ProjectInsert = Database["public"]["Tables"]["projects"]["Insert"];
 
-const projectTypeColumnExists = async (): Promise<boolean> => {
-  try {
-    const { error } = await supabase.from("projects").select("project_type").limit(1);
-    if (error) {
-      const message = error.message?.toLowerCase() || "";
-      if (message.includes("project_type") && message.includes("column")) {
-        return false;
-      }
-      throw error;
-    }
-    return true;
-  } catch {
-    return false;
-  }
+const shouldRetryWithoutProjectType = (error: { message?: string } | null | undefined) => {
+  const message = error?.message?.toLowerCase() || "";
+  return message.includes("project_type") && (
+    message.includes("column") ||
+    message.includes("does not exist") ||
+    message.includes("not found")
+  );
 };
 
 const ProjectsManager = () => {
@@ -55,11 +48,14 @@ const ProjectsManager = () => {
   const createMutation = useMutation({
     mutationFn: async (project: ProjectInsert) => {
       const payload: ProjectInsert = { ...project };
-      const hasProjectTypeColumn = await projectTypeColumnExists();
-      if (!hasProjectTypeColumn) {
-        delete payload.project_type;
-      }
       const { error } = await supabase.from("projects").insert(payload);
+      if (error && shouldRetryWithoutProjectType(error)) {
+        const fallback = { ...payload } as ProjectInsert;
+        delete fallback.project_type;
+        const { error: retryError } = await supabase.from("projects").insert(fallback);
+        if (retryError) throw retryError;
+        return;
+      }
       if (error) throw error;
     },
     onSuccess: () => {
@@ -78,11 +74,14 @@ const ProjectsManager = () => {
   const updateMutation = useMutation({
     mutationFn: async ({ id, ...project }: Partial<Project> & { id: string }) => {
       const payload: Partial<Project> = { ...project };
-      const hasProjectTypeColumn = await projectTypeColumnExists();
-      if (!hasProjectTypeColumn) {
-        delete payload.project_type;
-      }
       const { error } = await supabase.from("projects").update(payload).eq("id", id);
+      if (error && shouldRetryWithoutProjectType(error)) {
+        const fallback = { ...payload } as Partial<Project>;
+        delete fallback.project_type;
+        const { error: retryError } = await supabase.from("projects").update(fallback).eq("id", id);
+        if (retryError) throw retryError;
+        return;
+      }
       if (error) throw error;
     },
     onSuccess: () => {
@@ -188,6 +187,9 @@ const ProjectsManager = () => {
           <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>{editingProject ? "Edit Project" : "Add New Project"}</DialogTitle>
+              <DialogDescription>
+                {editingProject ? "Update the project details and status." : "Create a new project and assign its type and status."}
+              </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Basic Info */}
