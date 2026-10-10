@@ -162,7 +162,7 @@ const Projects = () => {
                   ["upcoming", "Upcoming"],
                   ["ongoing", "Ongoing"],
                   ["ready_for_handover", "Ready for Handover"],
-                  ["handed_over", "Handed Over"],
+                  ["handed_over", "Handedover"],
                 ] as [StatusFilter, string][]).map(([value, label]) => (
                   <Button
                     key={value}

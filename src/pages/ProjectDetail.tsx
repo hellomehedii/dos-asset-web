@@ -97,7 +97,7 @@ const ProjectDetail = () => {
     upcoming: "Upcoming",
     ongoing: "Ongoing",
     ready_for_handover: "Ready for Handover",
-    handed_over: "Handed Over",
+    handed_over: "Handedover",
   };
 
   const gallery = Array.isArray(project?.gallery) ? project.gallery : [];

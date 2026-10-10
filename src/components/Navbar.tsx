@@ -44,7 +44,7 @@ const Navbar = () => {
           { name: "Upcoming", path: "/projects/upcoming" },
           { name: "Ongoing", path: "/projects/ongoing" },
           { name: "Ready for Handover", path: "/projects/ready-for-handover" },
-          { name: "Handed Over", path: "/projects/completed" },
+          { name: "Handedover", path: "/projects/completed" },
         ],
       },
       { name: "Blogs", path: "/blog" },

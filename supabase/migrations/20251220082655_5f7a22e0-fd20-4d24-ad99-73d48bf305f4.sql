@@ -33,5 +33,5 @@ INSERT INTO public.page_seo (page_slug, page_title, meta_title, meta_description
 VALUES 
   ('projects-upcoming', 'Upcoming Projects', 'Upcoming Projects | Real Estate', 'Discover our upcoming real estate projects'),
   ('projects-ongoing', 'Ongoing Projects', 'Ongoing Projects | Real Estate', 'View our ongoing construction projects'),
-  ('projects-handed-over', 'Handed Over Projects', 'Completed Projects | Real Estate', 'Explore our successfully completed projects')
+  ('projects-handed-over', 'Handedover Projects', 'Completed Projects | Real Estate', 'Explore our successfully completed projects')
 ON CONFLICT (page_slug) DO NOTHING;
