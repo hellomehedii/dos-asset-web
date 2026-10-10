@@ -399,7 +399,7 @@ const ProjectsManager = () => {
                       upcoming: "Upcoming",
                       ongoing: "Ongoing",
                       ready_for_handover: "Sold Out",
-                      handed_over: "Handed Over",
+                      handed_over: "Handedover",
                     }[project.status]}
                   </TableCell>
                   <TableCell>{project.is_featured ? "Yes" : "No"}</TableCell>

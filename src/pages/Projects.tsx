@@ -28,7 +28,7 @@ const statusLabels: Record<string, string> = {
   upcoming: "Upcoming",
   ongoing: "Ongoing",
   ready_for_handover: "Sold Out",
-  handed_over: "Handed Over",
+  handed_over: "Handedover",
 };
 
 const statusColors: Record<string, string> = {
@@ -162,7 +162,7 @@ const Projects = () => {
                   ["upcoming", "Upcoming"],
                   ["ongoing", "Ongoing"],
                   ["ready_for_handover", "Sold Out"],
-                  ["handed_over", "Handed Over"],
+                  ["handed_over", "Handedover"],
                 ] as [StatusFilter, string][]).map(([value, label]) => (
                   <Button
                     key={value}
