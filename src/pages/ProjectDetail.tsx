@@ -95,7 +95,8 @@ const ProjectDetail = () => {
 
   const statusLabels: Record<string, string> = {
     upcoming: "Upcoming",
-    ongoing: "On Going",
+    ongoing: "Ongoing",
+    ready_for_handover: "Ready for Handover",
     handed_over: "Handed Over",
   };
 
@@ -173,17 +174,24 @@ const ProjectDetail = () => {
         <section className="relative overflow-hidden bg-[#071827] text-white py-12 md:py-20">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(52,211,153,0.18),transparent_35%),radial-gradient(circle_at_bottom_right,_rgba(59,130,246,0.18),transparent_30%)]" />
           <div className="container-custom relative px-4 md:px-0">
-            <span
-              className={`inline-block px-3 py-1 rounded-full text-xs font-medium mb-4 ${
-                project.status === "upcoming"
-                  ? "bg-primary/20 text-primary"
-                  : project.status === "ongoing"
-                  ? "bg-accent/20 text-accent"
-                  : "bg-green-500/20 text-green-400"
-              }`}
-            >
-              {statusLabels[project.status]}
-            </span>
+            <div className="mb-4 flex flex-wrap gap-2">
+              <span className="inline-block rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-white">
+                {(project.project_type ?? "apartment") === "land_share" ? "LAND SHARE" : "APARTMENT"}
+              </span>
+              <span
+                className={`inline-block rounded-full px-3 py-1 text-xs font-medium ${
+                  project.status === "upcoming"
+                    ? "bg-primary/20 text-primary"
+                    : project.status === "ongoing"
+                      ? "bg-accent/20 text-accent"
+                      : project.status === "ready_for_handover"
+                        ? "bg-amber-500/20 text-amber-300"
+                        : "bg-green-500/20 text-green-400"
+                }`}
+              >
+                {statusLabels[project.status] || "Upcoming"}
+              </span>
+            </div>
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif font-bold mb-4">
               {project.name}
             </h1>

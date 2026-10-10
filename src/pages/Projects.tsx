@@ -9,47 +9,57 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 import React, { useEffect } from "react";
+import type { Database } from "@/integrations/supabase/types";
 
-const statusMap: Record<string, string> = {
+type ProjectStatus = Database["public"]["Enums"]["project_status"];
+type ProjectType = Database["public"]["Enums"]["project_type"];
+type StatusFilter = ProjectStatus | "all";
+type TypeFilter = ProjectType | "all";
+
+const statusMap: Record<string, ProjectStatus> = {
   upcoming: "upcoming",
   ongoing: "ongoing",
+  "ready-for-handover": "ready_for_handover",
+  "handed-over": "handed_over",
   completed: "handed_over",
 };
 
 const statusLabels: Record<string, string> = {
   upcoming: "Upcoming",
-  ongoing: "On Going",
+  ongoing: "Ongoing",
+  ready_for_handover: "Ready for Handover",
   handed_over: "Handed Over",
 };
 
 const statusColors: Record<string, string> = {
   upcoming: "bg-primary text-primary-foreground",
   ongoing: "bg-sky-500 text-white",
+  ready_for_handover: "bg-amber-500 text-white",
   handed_over: "bg-green-500 text-white",
 };
 
 const Projects = () => {
   const { status } = useParams();
-  const dbStatus = status ? statusMap[status] : undefined;
+  const routeStatus = status ? statusMap[status] || "all" : "all";
+  const [statusFilter, setStatusFilter] = React.useState<StatusFilter>(routeStatus);
+  const [typeFilter, setTypeFilter] = React.useState<TypeFilter>("all");
   const [locationQuery, setLocationQuery] = React.useState("");
   const [showLoading, setShowLoading] = React.useState(false);
 
-  // Fetch projects based on status
+  useEffect(() => {
+    setStatusFilter(routeStatus);
+  }, [routeStatus]);
+
   const { data: projects, isLoading } = useQuery({
-    queryKey: ["projects", dbStatus],
+    queryKey: ["projects"],
     queryFn: async () => {
-      let query = supabase.from("projects").select("*").order("display_order");
-      if (dbStatus) {
-        query = query.eq(
-          "status",
-          dbStatus as "upcoming" | "ongoing" | "handed_over"
-        );
-      }
-      const { data, error } = await query;
+      const { data, error } = await supabase
+        .from("projects")
+        .select("*")
+        .order("display_order");
       if (error) throw error;
       return data;
     },
-    keepPreviousData: true,
   });
 
   // 3-second lazy loading delay
@@ -65,11 +75,15 @@ const Projects = () => {
   // Site settings for favicon
   const { data: settings } = useSiteSettings();
 
-  // Dynamic page title & description based on status
   const pageTitle = React.useMemo(() => {
-    if (!status) return "All Projects";
-    return `${statusLabels[dbStatus || ""] || "All"} Projects`;
-  }, [status, dbStatus]);
+    const selectedType = typeFilter === "land_share"
+      ? "Land Share"
+      : typeFilter === "apartment"
+        ? "Apartments"
+        : "All Projects";
+    const selectedStatus = statusFilter === "all" ? "" : statusLabels[statusFilter];
+    return [selectedType, selectedStatus].filter(Boolean).join(" - ");
+  }, [typeFilter, statusFilter]);
 
   const pageDescription = React.useMemo(() => {
     return `Explore our ${pageTitle.toLowerCase()} - premium residential and commercial developments.`;
@@ -80,12 +94,17 @@ const Projects = () => {
 
     const normalizedQuery = locationQuery.trim().toLowerCase();
 
-    if (!normalizedQuery) return projects;
-
-    return projects.filter((project) =>
-      (project.location || "").toLowerCase().includes(normalizedQuery)
-    );
-  }, [projects, locationQuery]);
+    return projects.filter((project) => {
+      const projectType = project.project_type ?? "apartment";
+      const projectStatus = project.status ?? "upcoming";
+      const matchesType = typeFilter === "all" || projectType === typeFilter;
+      const matchesStatus = statusFilter === "all" || projectStatus === statusFilter;
+      const matchesLocation = (project.location || "")
+        .toLowerCase()
+        .includes(normalizedQuery);
+      return matchesType && matchesStatus && matchesLocation;
+    });
+  }, [projects, locationQuery, typeFilter, statusFilter]);
 
   return (
     <>
@@ -115,55 +134,49 @@ const Projects = () => {
               </h1>
             </div>
 
-            <div className="flex gap-2 sm:gap-3 flex-wrap mb-6 overflow-x-auto pb-2">
-              {/* Filter Buttons */}
-              <Link to="/projects">
-                <Button
-                  className={
-                    !status
-                      ? "rounded-full bg-primary px-3 sm:px-5 text-primary-foreground shadow-lg shadow-primary/30 hover:bg-primary/90 text-xs sm:text-sm whitespace-nowrap"
-                      : "rounded-full border border-white/15 bg-white/5 px-3 sm:px-5 text-white/80 hover:bg-white/10 hover:text-white text-xs sm:text-sm whitespace-nowrap"
-                  }
-                >
-                  All
-                </Button>
-              </Link>
-
-              <Link to="/projects/upcoming">
-                <Button
-                  className={
-                    status === "upcoming"
-                      ? "rounded-full bg-primary px-3 sm:px-5 text-primary-foreground shadow-lg shadow-primary/30 hover:bg-primary/90 text-xs sm:text-sm whitespace-nowrap"
-                      : "rounded-full border border-white/15 bg-white/5 px-3 sm:px-5 text-white/80 hover:bg-white/10 hover:text-white text-xs sm:text-sm whitespace-nowrap"
-                  }
-                >
-                  Upcoming
-                </Button>
-              </Link>
-
-              <Link to="/projects/ongoing">
-                <Button
-                  className={
-                    status === "ongoing"
-                      ? "rounded-full bg-primary px-3 sm:px-5 text-primary-foreground shadow-lg shadow-primary/30 hover:bg-primary/90 text-xs sm:text-sm whitespace-nowrap"
-                      : "rounded-full border border-white/15 bg-white/5 px-3 sm:px-5 text-white/80 hover:bg-white/10 hover:text-white text-xs sm:text-sm whitespace-nowrap"
-                  }
-                >
-                  On Going
-                </Button>
-              </Link>
-
-              <Link to="/projects/completed">
-                <Button
-                  className={
-                    status === "completed"
-                      ? "rounded-full bg-primary px-3 sm:px-5 text-primary-foreground shadow-lg shadow-primary/30 hover:bg-primary/90 text-xs sm:text-sm whitespace-nowrap"
-                      : "rounded-full border border-white/15 bg-white/5 px-3 sm:px-5 text-white/80 hover:bg-white/10 hover:text-white text-xs sm:text-sm whitespace-nowrap"
-                  }
-                >
-                  Handed Over
-                </Button>
-              </Link>
+            <div className="mb-4 overflow-x-auto pb-2">
+              <div className="flex w-max gap-2 sm:gap-3" role="group" aria-label="Filter projects by type">
+                {([
+                  ["all", "All Projects"],
+                  ["land_share", "Land Share"],
+                  ["apartment", "Apartments"],
+                ] as [TypeFilter, string][]).map(([value, label]) => (
+                  <Button
+                    key={value}
+                    type="button"
+                    aria-pressed={typeFilter === value}
+                    onClick={() => setTypeFilter(value)}
+                    className={typeFilter === value
+                      ? "rounded-full bg-primary px-4 text-primary-foreground shadow-lg shadow-primary/30 hover:bg-primary/90 text-xs sm:text-sm whitespace-nowrap"
+                      : "rounded-full border border-white/15 bg-white/5 px-4 text-white/80 hover:bg-white/10 hover:text-white text-xs sm:text-sm whitespace-nowrap"}
+                  >
+                    {label}
+                  </Button>
+                ))}
+              </div>
+            </div>
+            <div className="mb-6 overflow-x-auto pb-2">
+              <div className="flex w-max gap-2" role="group" aria-label="Filter projects by status">
+                {([
+                  ["all", "All Status"],
+                  ["upcoming", "Upcoming"],
+                  ["ongoing", "Ongoing"],
+                  ["ready_for_handover", "Ready for Handover"],
+                  ["handed_over", "Handed Over"],
+                ] as [StatusFilter, string][]).map(([value, label]) => (
+                  <Button
+                    key={value}
+                    type="button"
+                    aria-pressed={statusFilter === value}
+                    onClick={() => setStatusFilter(value)}
+                    className={statusFilter === value
+                      ? "rounded-full bg-primary px-3 sm:px-4 text-primary-foreground hover:bg-primary/90 text-xs whitespace-nowrap"
+                      : "rounded-full border border-white/15 bg-white/5 px-3 sm:px-4 text-white/80 hover:bg-white/10 hover:text-white text-xs whitespace-nowrap"}
+                  >
+                    {label}
+                  </Button>
+                ))}
+              </div>
             </div>
             <p className="max-w-2xl text-xs sm:text-base text-white/75 md:text-lg">
               {pageDescription}
@@ -212,7 +225,7 @@ const Projects = () => {
               <div className="flex min-h-[220px] flex-col items-center justify-center rounded-3xl border border-dashed border-border bg-secondary/40 text-center text-base text-muted-foreground">
                 <p className="text-lg font-medium text-foreground">No projects found</p>
                 <p className="mt-2 text-sm">
-                  Try another location or clear the search.
+                  Try changing the filters or clearing your location search.
                 </p>
               </div>
             ) : (
@@ -234,13 +247,16 @@ const Projects = () => {
                         style={{ imageRendering: "auto" }}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
-                      <Badge
-                        className={`absolute left-4 top-4 ${
-                          statusColors[project.status]
-                        } rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.12em]`}
-                      >
-                        {statusLabels[project.status]}
-                      </Badge>
+                      <div className="absolute left-4 top-4 flex flex-col items-start gap-2">
+                        <Badge className="rounded-full bg-white px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-900">
+                          {(project.project_type ?? "apartment") === "land_share" ? "LAND SHARE" : "APARTMENT"}
+                        </Badge>
+                        <Badge
+                          className={`${statusColors[project.status] || statusColors.upcoming} rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.12em]`}
+                        >
+                          {statusLabels[project.status] || "Upcoming"}
+                        </Badge>
+                      </div>
                     </div>
 
                     <div className="p-4 sm:p-6">

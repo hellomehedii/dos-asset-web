@@ -356,6 +356,7 @@ export type Database = {
           num_apartments: number | null
           orientation: string | null
           plan: string | null
+          project_type: Database["public"]["Enums"]["project_type"]
           room_details: string | null
           slug: string
           status: Database["public"]["Enums"]["project_status"]
@@ -384,6 +385,7 @@ export type Database = {
           num_apartments?: number | null
           orientation?: string | null
           plan?: string | null
+          project_type?: Database["public"]["Enums"]["project_type"]
           room_details?: string | null
           slug: string
           status?: Database["public"]["Enums"]["project_status"]
@@ -412,6 +414,7 @@ export type Database = {
           num_apartments?: number | null
           orientation?: string | null
           plan?: string | null
+          project_type?: Database["public"]["Enums"]["project_type"]
           room_details?: string | null
           slug?: string
           status?: Database["public"]["Enums"]["project_status"]
@@ -549,7 +552,8 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "editor"
-      project_status: "upcoming" | "ongoing" | "handed_over"
+      project_status: "upcoming" | "ongoing" | "ready_for_handover" | "handed_over"
+      project_type: "land_share" | "apartment"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -681,7 +685,8 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "editor"],
-      project_status: ["upcoming", "ongoing", "handed_over"],
+      project_status: ["upcoming", "ongoing", "ready_for_handover", "handed_over"],
+      project_type: ["land_share", "apartment"],
     },
   },
 } as const

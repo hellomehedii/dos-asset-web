@@ -8,12 +8,14 @@ import { supabase } from "@/integrations/supabase/client";
 const statusColors: Record<string, string> = {
   upcoming: "bg-primary text-primary-foreground",
   ongoing: "bg-yellow-500 text-white",
+  ready_for_handover: "bg-amber-500 text-white",
   handed_over: "bg-green-500 text-white",
 };
 
 const statusLabels: Record<string, string> = {
   upcoming: "Upcoming",
-  ongoing: "On Going",
+  ongoing: "Ongoing",
+  ready_for_handover: "Ready for Handover",
   handed_over: "Handed Over",
 };
 
@@ -67,11 +69,14 @@ const FeaturedProjects = () => {
                 />
 
                 {/* Status Badge */}
-                <Badge
-                  className={`absolute top-4 left-4 ${statusColors[project.status]}`}
-                >
-                  {statusLabels[project.status]}
-                </Badge>
+                <div className="absolute left-4 top-4 flex flex-col items-start gap-2">
+                  <Badge className="bg-white text-slate-900">
+                    {(project.project_type ?? "apartment") === "land_share" ? "LAND SHARE" : "APARTMENT"}
+                  </Badge>
+                  <Badge className={statusColors[project.status] || statusColors.upcoming}>
+                    {statusLabels[project.status] || "Upcoming"}
+                  </Badge>
+                </div>
               </div>
 
               {/* Content */}

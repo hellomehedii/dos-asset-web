@@ -16,6 +16,22 @@ import type { Database } from "@/integrations/supabase/types";
 type Project = Database["public"]["Tables"]["projects"]["Row"];
 type ProjectInsert = Database["public"]["Tables"]["projects"]["Insert"];
 
+const projectTypeColumnExists = async (): Promise<boolean> => {
+  try {
+    const { error } = await supabase.from("projects").select("project_type").limit(1);
+    if (error) {
+      const message = error.message?.toLowerCase() || "";
+      if (message.includes("project_type") && message.includes("column")) {
+        return false;
+      }
+      throw error;
+    }
+    return true;
+  } catch {
+    return false;
+  }
+};
+
 const ProjectsManager = () => {
   const [open, setOpen] = useState(false);
   const [editingProject, setEditingProject] = useState<Project | null>(null);
@@ -38,7 +54,12 @@ const ProjectsManager = () => {
 
   const createMutation = useMutation({
     mutationFn: async (project: ProjectInsert) => {
-      const { error } = await supabase.from("projects").insert(project);
+      const payload: ProjectInsert = { ...project };
+      const hasProjectTypeColumn = await projectTypeColumnExists();
+      if (!hasProjectTypeColumn) {
+        delete payload.project_type;
+      }
+      const { error } = await supabase.from("projects").insert(payload);
       if (error) throw error;
     },
     onSuccess: () => {
@@ -56,7 +77,12 @@ const ProjectsManager = () => {
 
   const updateMutation = useMutation({
     mutationFn: async ({ id, ...project }: Partial<Project> & { id: string }) => {
-      const { error } = await supabase.from("projects").update(project).eq("id", id);
+      const payload: Partial<Project> = { ...project };
+      const hasProjectTypeColumn = await projectTypeColumnExists();
+      if (!hasProjectTypeColumn) {
+        delete payload.project_type;
+      }
+      const { error } = await supabase.from("projects").update(payload).eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {
@@ -89,14 +115,15 @@ const ProjectsManager = () => {
     },
   });
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const project = {
       name: formData.get("name") as string,
       slug: formData.get("slug") as string,
       location: formData.get("location") as string,
-      status: formData.get("status") as "upcoming" | "ongoing" | "handed_over",
+      project_type: formData.get("project_type") as Database["public"]["Enums"]["project_type"],
+      status: formData.get("status") as Database["public"]["Enums"]["project_status"],
       description: formData.get("description") as string,
       featured_image: featuredImage,
       gallery: galleryImages,
@@ -180,6 +207,18 @@ const ProjectsManager = () => {
                     <Input id="location" name="location" required defaultValue={editingProject?.location || ""} />
                   </div>
                   <div>
+                    <Label htmlFor="project_type">Project Type *</Label>
+                    <Select name="project_type" defaultValue={editingProject?.project_type || "apartment"}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="land_share">Land Share</SelectItem>
+                        <SelectItem value="apartment">Apartment</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
                     <Label htmlFor="status">Status *</Label>
                     <Select name="status" defaultValue={editingProject?.status || "upcoming"}>
                       <SelectTrigger>
@@ -188,6 +227,7 @@ const ProjectsManager = () => {
                       <SelectContent>
                         <SelectItem value="upcoming">Upcoming</SelectItem>
                         <SelectItem value="ongoing">Ongoing</SelectItem>
+                        <SelectItem value="ready_for_handover">Ready for Handover</SelectItem>
                         <SelectItem value="handed_over">Handed Over</SelectItem>
                       </SelectContent>
                     </Select>
@@ -333,6 +373,7 @@ const ProjectsManager = () => {
                 <TableHead>Image</TableHead>
                 <TableHead>Name</TableHead>
                 <TableHead>Location</TableHead>
+                <TableHead>Type</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead>Featured</TableHead>
                 <TableHead className="w-24">Actions</TableHead>
@@ -350,7 +391,15 @@ const ProjectsManager = () => {
                   </TableCell>
                   <TableCell className="font-medium">{project.name}</TableCell>
                   <TableCell>{project.location}</TableCell>
-                  <TableCell className="capitalize">{project.status.replace("_", " ")}</TableCell>
+                  <TableCell>{project.project_type === "land_share" ? "Land Share" : "Apartment"}</TableCell>
+                  <TableCell>
+                    {{
+                      upcoming: "Upcoming",
+                      ongoing: "Ongoing",
+                      ready_for_handover: "Ready for Handover",
+                      handed_over: "Handed Over",
+                    }[project.status]}
+                  </TableCell>
                   <TableCell>{project.is_featured ? "Yes" : "No"}</TableCell>
                   <TableCell>
                     <div className="flex gap-2">

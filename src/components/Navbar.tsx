@@ -42,7 +42,8 @@ const Navbar = () => {
         name: "Projects",
         dropdown: [
           { name: "Upcoming", path: "/projects/upcoming" },
-          { name: "On Going", path: "/projects/ongoing" },
+          { name: "Ongoing", path: "/projects/ongoing" },
+          { name: "Ready for Handover", path: "/projects/ready-for-handover" },
           { name: "Handed Over", path: "/projects/completed" },
         ],
       },
