@@ -230,7 +230,7 @@ const ProjectsManager = () => {
                         <SelectItem value="upcoming">Upcoming</SelectItem>
                         <SelectItem value="ongoing">Ongoing</SelectItem>
                         <SelectItem value="ready_for_handover">Sold Out</SelectItem>
-                        <SelectItem value="handed_over">Handed Over</SelectItem>
+                        <SelectItem value="handed_over">Handedover</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
