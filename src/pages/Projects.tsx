@@ -147,7 +147,7 @@ const Projects = () => {
                     aria-pressed={typeFilter === value}
                     onClick={() => setTypeFilter(value)}
                     className={typeFilter === value
-                      ? "rounded-full bg-primary px-4 text-primary-foreground shadow-lg shadow-primary/30 hover:bg-primary/90 text-xs sm:text-sm whitespace-nowrap"
+                      ? "rounded-full bg-[#0099ff] px-4 text-white shadow-lg shadow-[#0099ff]/30 hover:bg-[#0099ff]/90 text-xs sm:text-sm whitespace-nowrap"
                       : "rounded-full border border-white/15 bg-white/5 px-4 text-white/80 hover:bg-white/10 hover:text-white text-xs sm:text-sm whitespace-nowrap"}
                   >
                     {label}
@@ -162,7 +162,7 @@ const Projects = () => {
                   ["upcoming", "Upcoming"],
                   ["ongoing", "Ongoing"],
                   ["ready_for_handover", "Ready for Handover"],
-                  ["handed_over", "Handedover"],
+                  ["handed_over", "Handed Over"],
                 ] as [StatusFilter, string][]).map(([value, label]) => (
                   <Button
                     key={value}
@@ -170,7 +170,7 @@ const Projects = () => {
                     aria-pressed={statusFilter === value}
                     onClick={() => setStatusFilter(value)}
                     className={statusFilter === value
-                      ? "rounded-full bg-primary px-3 sm:px-4 text-primary-foreground hover:bg-primary/90 text-xs whitespace-nowrap"
+                      ? "rounded-full bg-[#10B981] px-3 sm:px-4 text-white shadow-lg shadow-[#10B981]/30 hover:bg-[#10B981]/90 text-xs whitespace-nowrap"
                       : "rounded-full border border-white/15 bg-white/5 px-3 sm:px-4 text-white/80 hover:bg-white/10 hover:text-white text-xs whitespace-nowrap"}
                   >
                     {label}
