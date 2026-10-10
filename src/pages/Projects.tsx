@@ -27,7 +27,7 @@ const statusMap: Record<string, ProjectStatus> = {
 const statusLabels: Record<string, string> = {
   upcoming: "Upcoming",
   ongoing: "Ongoing",
-  ready_for_handover: "Ready for Handover",
+  ready_for_handover: "Sold Out",
   handed_over: "Handed Over",
 };
 
@@ -161,7 +161,7 @@ const Projects = () => {
                   ["all", "All Status"],
                   ["upcoming", "Upcoming"],
                   ["ongoing", "Ongoing"],
-                  ["ready_for_handover", "Ready for Handover"],
+                  ["ready_for_handover", "Sold Out"],
                   ["handed_over", "Handed Over"],
                 ] as [StatusFilter, string][]).map(([value, label]) => (
                   <Button

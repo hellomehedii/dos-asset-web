@@ -229,7 +229,7 @@ const ProjectsManager = () => {
                       <SelectContent>
                         <SelectItem value="upcoming">Upcoming</SelectItem>
                         <SelectItem value="ongoing">Ongoing</SelectItem>
-                        <SelectItem value="ready_for_handover">Ready for Handover</SelectItem>
+                        <SelectItem value="ready_for_handover">Sold Out</SelectItem>
                         <SelectItem value="handed_over">Handed Over</SelectItem>
                       </SelectContent>
                     </Select>
@@ -398,7 +398,7 @@ const ProjectsManager = () => {
                     {{
                       upcoming: "Upcoming",
                       ongoing: "Ongoing",
-                      ready_for_handover: "Ready for Handover",
+                      ready_for_handover: "Sold Out",
                       handed_over: "Handed Over",
                     }[project.status]}
                   </TableCell>

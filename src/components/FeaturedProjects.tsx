@@ -15,7 +15,7 @@ const statusColors: Record<string, string> = {
 const statusLabels: Record<string, string> = {
   upcoming: "Upcoming",
   ongoing: "Ongoing",
-  ready_for_handover: "Ready for Handover",
+  ready_for_handover: "Sold Out",
   handed_over: "Handedover",
 };
 
