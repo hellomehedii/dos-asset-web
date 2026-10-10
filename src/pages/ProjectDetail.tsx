@@ -474,6 +474,7 @@ const ProjectDetail = () => {
               }}
             >
               <DialogContent className="p-0 bg-transparent">
+                <DialogTitle className="sr-only">Project image gallery</DialogTitle>
                 <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
                   <div className="relative bg-black rounded-xl p-4 max-w-[95vw] max-h-[95vh]">
                     <DialogClose className="absolute top-3 right-3 text-white bg-white/10 hover:bg-white/20 rounded-full p-2 z-50">
