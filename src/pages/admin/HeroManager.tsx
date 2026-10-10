@@ -163,7 +163,7 @@ const HeroManager = () => {
             <Input
               value={formData.primary_button_text}
               onChange={(e) => setFormData({ ...formData, primary_button_text: e.target.value })}
-              placeholder="Explore Projects"
+              placeholder="Explore Our Projects"
             />
           </div>
           <div>

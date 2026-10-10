@@ -218,7 +218,7 @@ const Hero = () => {
              hover:shadow-[#2a8fe2]/30
              transition-all duration-300"
                 >
-                  {heroContent?.primary_button_text || "Explore Projects"}
+                  {heroContent?.primary_button_text || "Explore Our Projects"}
                   <ArrowRight className="w-5 h-5 ml-1" />
                 </Button>
               </Link>

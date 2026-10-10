@@ -5,7 +5,7 @@ CREATE TABLE public.hero_content (
   headline text DEFAULT 'Your Trusted Partner in Real Estate Development',
   highlight_text text DEFAULT 'Real Estate',
   subtext text DEFAULT 'We transform visions into exceptional living spaces. Discover our portfolio of premium residential and commercial developments crafted with excellence.',
-  primary_button_text text DEFAULT 'Explore Projects',
+  primary_button_text text DEFAULT 'Explore Our Projects',
   primary_button_link text DEFAULT '/projects',
   banner_image text,
   stat_1_value text DEFAULT '25+',
