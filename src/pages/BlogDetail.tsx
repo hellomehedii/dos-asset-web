@@ -133,7 +133,7 @@ const BlogDetail = () => {
 
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_85%_20%,rgba(36,167,228,0.2),transparent_32%),radial-gradient(circle_at_10%_100%,rgba(255,255,255,0.06),transparent_30%)]" />
 
-            <div className="container-custom relative mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 md:py-16 lg:px-8">
+            <div className="container-custom relative mx-auto w-full px-4 py-10 sm:px-6 md:py-16 lg:px-0">
 
               {/* Back Button */}
               <Link
@@ -173,22 +173,22 @@ const BlogDetail = () => {
                 </h1>
 
                 {/* Excerpt */}
-                {post.excerpt && (
+                {/* {post.excerpt && (
                   <p className="mt-5 max-w-3xl font-bangla text-base leading-7 text-white/70 sm:mt-7 sm:text-lg sm:leading-8 md:text-xl">
                     {post.excerpt}
                   </p>
-                )}
+                )} */}
 
               </div>
             </div>
           </header>
 
           {/* ================= BLOG CONTENT ================= */}
-          <section className="container-custom mx-auto w-full px-3 py-4 sm:px-6 md:py-8 lg:px-8">
+          <section className="container-custom mx-auto w-full px-4 py-4 sm:px-6 md:py-8 lg:px-0">
 
             <div className="mx-auto w-full border border-[#62d0ff] bg-white px-4 py-7 shadow-lg sm:px-8 sm:py-10 md:px-10 md:py-14 lg:px-12 lg:py-16">
 
-              <div className="blog-content ql-editor !h-auto !min-h-0 !w-full !p-0 font-bangla text-base text-slate-700 md:text-lg">
+              <div className="blog-content ql-editor !h-auto !min-h-0 !w-full !p-0 text-base">
 
                 {post.content ? (
                   <div
@@ -211,165 +211,16 @@ const BlogDetail = () => {
         </article>
       </main>
 
-      {/* ================= RESPONSIVE BLOG CSS ================= */}
+      {/* Add readable paragraph separation and keep embedded media within the article. */}
       <style>{`
-        .blog-content.ql-editor {
-          white-space: pre-wrap;
-          overflow-wrap: anywhere;
-          word-break: break-word;
-          font-family: inherit;
-          line-height: 1.75;
+        .blog-content p:not(:last-child) {
+          margin-bottom: 0.75em;
+        }
+
+        .blog-content img,
+        .blog-content iframe,
+        .blog-content video {
           max-width: 100%;
-        }
-
-        .blog-content.ql-editor p,
-        .blog-content.ql-editor ol,
-        .blog-content.ql-editor ul,
-        .blog-content.ql-editor blockquote,
-        .blog-content.ql-editor pre {
-          margin-bottom: 0.5rem;
-          max-width: 100%;
-        }
-
-        .blog-content.ql-editor h1,
-        .blog-content.ql-editor h2,
-        .blog-content.ql-editor h3,
-        .blog-content.ql-editor h4,
-        .blog-content.ql-editor h5,
-        .blog-content.ql-editor h6 {
-          color: #172033;
-          font-family: inherit;
-          font-weight: 700;
-          line-height: 1.3;
-          margin: 1.5rem 0 0.75rem;
-          overflow-wrap: anywhere;
-          word-break: break-word;
-        }
-
-        .blog-content.ql-editor h1 {
-          font-size: 2rem;
-        }
-
-        .blog-content.ql-editor h2 {
-          font-size: 1.75rem;
-        }
-
-        .blog-content.ql-editor h3 {
-          font-size: 1.5rem;
-        }
-
-        .blog-content.ql-editor h4 {
-          font-size: 1.25rem;
-        }
-
-        .blog-content.ql-editor a {
-          color: #167bb5;
-          text-decoration: underline;
-          overflow-wrap: anywhere;
-          word-break: break-word;
-        }
-
-        .blog-content.ql-editor blockquote {
-          border-left: 4px solid #24a7e4;
-          color: #526174;
-          padding-left: 1rem;
-        }
-
-        .blog-content.ql-editor img {
-          display: block;
-          width: auto;
-          max-width: 100%;
-          height: auto;
-          margin: 1.25rem auto;
-          border-radius: 0.75rem;
-        }
-
-        .blog-content.ql-editor iframe,
-        .blog-content.ql-editor video {
-          display: block;
-          width: 100%;
-          max-width: 100%;
-          border-radius: 0.75rem;
-        }
-
-        .blog-content.ql-editor pre {
-          max-width: 100%;
-          overflow-x: auto;
-          white-space: pre;
-          -webkit-overflow-scrolling: touch;
-        }
-
-        .blog-content.ql-editor table {
-          display: block;
-          width: 100%;
-          max-width: 100%;
-          overflow-x: auto;
-          -webkit-overflow-scrolling: touch;
-        }
-
-        .blog-content.ql-editor td,
-        .blog-content.ql-editor th {
-          white-space: nowrap;
-        }
-
-        @media (max-width: 640px) {
-          .blog-content.ql-editor {
-            font-size: 16px;
-            line-height: 1.75;
-          }
-
-          .blog-content.ql-editor h1 {
-            font-size: 1.75rem;
-          }
-
-          .blog-content.ql-editor h2 {
-            font-size: 1.5rem;
-          }
-
-          .blog-content.ql-editor h3 {
-            font-size: 1.3rem;
-          }
-
-          .blog-content.ql-editor h4 {
-            font-size: 1.15rem;
-          }
-
-          .blog-content.ql-editor img {
-            width: 100%;
-            max-width: 100%;
-            height: auto;
-            margin: 1rem auto;
-            border-radius: 0.5rem;
-          }
-
-          .blog-content.ql-editor blockquote {
-            margin-left: 0;
-            margin-right: 0;
-            padding-left: 0.75rem;
-          }
-
-          .blog-content.ql-editor ul,
-          .blog-content.ql-editor ol {
-            padding-left: 1.5rem;
-          }
-        }
-
-        @media (max-width: 380px) {
-          .blog-content.ql-editor {
-            font-size: 15px;
-          }
-
-          .blog-content.ql-editor h1 {
-            font-size: 1.5rem;
-          }
-
-          .blog-content.ql-editor h2 {
-            font-size: 1.35rem;
-          }
-
-          .blog-content.ql-editor h3 {
-            font-size: 1.2rem;
-          }
         }
       `}</style>
 
