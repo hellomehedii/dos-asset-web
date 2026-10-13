@@ -13,6 +13,7 @@ import LazyLoadingIcon from "@/components/ui/lazy-loading-icon";
 import CustomCursor from "@/components/CustomCursor";
 import { initGoogleAnalytics, gaPageview, initFacebookPixel, fbPageview } from "./lib/analytics";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
+import { LanguageProvider } from "@/contexts/LanguageContext";
 
 // ===================== Lazy Loaded Pages =====================
 const Index = lazy(() => import("./pages/Index"));
@@ -25,6 +26,8 @@ const ProjectDetail = lazy(() => import("./pages/ProjectDetail"));
 const Blog = lazy(() => import("./pages/Blog"));
 const BlogDetail = lazy(() => import("./pages/BlogDetail"));
 const Contact = lazy(() => import("./pages/Contact"));
+const LandShareJourney = lazy(() => import("./pages/LandShareJourney"));
+const ApartmentJourney = lazy(() => import("./pages/ApartmentJourney"));
 
 // ===================== Lazy Loaded Admin Pages =====================
 const Dashboard = lazy(() => import("./pages/admin/Dashboard"));
@@ -103,6 +106,15 @@ const AppWrapper = () => {
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogDetail />} />
           <Route path="/contact" element={<Contact />} />
+          <Route
+            path="/land-share-to-handover"
+            element={
+              <LanguageProvider>
+                <LandShareJourney />
+              </LanguageProvider>
+            }
+          />
+          <Route path="/apartment-to-handover" element={<ApartmentJourney />} />
           <Route path="/admin" element={<Dashboard />}>
             <Route index element={<Overview />} />
             <Route path="projects" element={<ProjectsManager />} />

@@ -5,6 +5,13 @@ import { Button } from "@/components/ui/button";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 import { motion, AnimatePresence } from "framer-motion";
 
+type NavItem = { name: string; path: string };
+type NavLink =
+  | { name: string; path: string; dropdown?: undefined }
+  | { name: string; dropdown: NavItem[]; path?: undefined };
+
+const getNavId = (name: string) => name.toLowerCase().replace(/\s+/g, "-");
+
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -28,7 +35,7 @@ const Navbar = () => {
     setOpenDropdown(null);
   }, [location.pathname]);
 
-  const navLinks = useMemo(
+  const navLinks = useMemo<NavLink[]>(
     () => [
       { name: "Home", path: "/" },
       {
@@ -45,6 +52,14 @@ const Navbar = () => {
           { name: "Ongoing", path: "/projects/ongoing" },
           { name: "Sold Out", path: "/projects/ready-for-handover" },
           { name: "Handedover", path: "/projects/completed" },
+        ],
+      },
+      
+      {
+        name: "Booking To Handover",
+        dropdown: [
+          { name: "Land Share", path: "/land-share-to-handover" },
+          { name: "Apartment", path: "/apartment-to-handover" },
         ],
       },
       { name: "Blogs", path: "/blog" },
@@ -68,7 +83,7 @@ const Navbar = () => {
     ? "text-background/80"
     : "text-muted-foreground";
 
-const linkBaseClass = "text-gray-900 hover:text-[#00B2FF] transition-colors";
+  const linkBaseClass = "text-gray-900 hover:text-[#0075c9] transition-colors";
 
   const handleMobileDropdown = (name: string) => {
     setOpenDropdown((prev) => (prev === name ? null : name));
@@ -123,41 +138,86 @@ const linkBaseClass = "text-gray-900 hover:text-[#00B2FF] transition-colors";
                 key={link.name}
                 className="relative"
                 onMouseEnter={() => link.dropdown && setOpenDropdown(link.name)}
-                onMouseLeave={() => setOpenDropdown(null)}
+                onMouseLeave={(event) => {
+                  if (!event.currentTarget.contains(document.activeElement)) {
+                    setOpenDropdown(null);
+                  }
+                }}
+                onBlur={(event) => {
+                  if (!event.currentTarget.contains(event.relatedTarget)) {
+                    setOpenDropdown(null);
+                  }
+                }}
+                onKeyDown={(event) => {
+                  if (event.key === "Escape" && link.dropdown) {
+                    event.preventDefault();
+                    setOpenDropdown(null);
+                    event.currentTarget.querySelector("button")?.focus();
+                  }
+                }}
               >
-                <Link
-                  to={link.path}
-                  className={`flex items-center gap-1 py-2 font-medium transition-colors ${
-                    isActive(link.path) ? "text-primary" : linkBaseClass
-                  }`}
-                >
-                  {link.name}
-                  {link.dropdown && <ChevronDown className="w-4 h-4" />}
-                </Link>
-
-                {link.dropdown && openDropdown === link.name && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    className="absolute top-full left-0 pt-2 min-w-[220px]"
-                  >
-                    <div className="rounded-xl shadow-lg border border-border bg-popover overflow-hidden">
-                      {link.dropdown.map((item) => (
-                        <Link
-                          key={item.name}
-                          to={item.path}
-                          className={`block px-4 py-3 text-sm transition-colors ${
-                            isActive(item.path)
-                              ? "bg-secondary text-foreground"
-                              : "text-muted-foreground hover:bg-secondary hover:text-foreground"
-                          }`}
+                {link.dropdown ? (
+                  <>
+                    <button
+                      type="button"
+                      aria-expanded={openDropdown === link.name}
+                      aria-controls={`desktop-nav-${getNavId(link.name)}`}
+                      onClick={() =>
+                        setOpenDropdown((current) =>
+                          current === link.name ? null : link.name,
+                        )
+                      }
+                      className={`flex items-center gap-1 py-2 font-medium transition-colors ${
+                        link.dropdown.some((item) => isActive(item.path))
+                          ? "text-[#0075c9]"
+                          : linkBaseClass
+                      }`}
+                    >
+                      {link.name}
+                      <ChevronDown
+                        className={`h-4 w-4 transition-transform ${
+                          openDropdown === link.name ? "rotate-180" : ""
+                        }`}
+                        aria-hidden="true"
+                      />
+                    </button>
+                    <AnimatePresence>
+                      {openDropdown === link.name && (
+                        <motion.div
+                          id={`desktop-nav-${getNavId(link.name)}`}
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -10 }}
+                          className="absolute left-0 top-full min-w-[220px] pt-2"
                         >
-                          {item.name}
-                        </Link>
-                      ))}
-                    </div>
-                  </motion.div>
+                          <div className="overflow-hidden rounded-xl border border-border bg-popover shadow-lg">
+                            {link.dropdown.map((item) => (
+                              <Link
+                                key={item.name}
+                                to={item.path}
+                                className={`block px-4 py-3 text-sm transition-colors ${
+                                  isActive(item.path)
+                                    ? "bg-secondary text-foreground"
+                                    : "text-muted-foreground hover:bg-secondary hover:text-foreground"
+                                }`}
+                              >
+                                {item.name}
+                              </Link>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </>
+                ) : (
+                  <Link
+                    to={link.path}
+                    className={`flex items-center gap-1 py-2 font-medium transition-colors ${
+                      isActive(link.path) ? "text-primary" : linkBaseClass
+                    }`}
+                  >
+                    {link.name}
+                  </Link>
                 )}
               </div>
             ))}
@@ -276,12 +336,24 @@ const linkBaseClass = "text-gray-900 hover:text-[#00B2FF] transition-colors";
             >
               <div className="py-3 space-y-1">
                 {navLinks.map((link) => (
-                  <div key={link.name}>
+                  <div
+                    key={link.name}
+                    onKeyDown={(event) => {
+                      if (event.key === "Escape" && link.dropdown) {
+                        event.preventDefault();
+                        setOpenDropdown(null);
+                        event.currentTarget.querySelector("button")?.focus();
+                      }
+                    }}
+                  >
                     {link.dropdown ? (
                       <button
+                        type="button"
                         onClick={() => handleMobileDropdown(link.name)}
+                        aria-expanded={openDropdown === link.name}
+                        aria-controls={`mobile-nav-${getNavId(link.name)}`}
                         className={`w-full text-left flex justify-between items-center px-4 py-3 transition-colors ${
-                          isActive(link.path)
+                          link.dropdown.some((item) => isActive(item.path))
                             ? "text-primary bg-secondary"
                             : "text-foreground hover:bg-secondary"
                         }`}
@@ -310,6 +382,7 @@ const linkBaseClass = "text-gray-900 hover:text-[#00B2FF] transition-colors";
                       <AnimatePresence>
                         {openDropdown === link.name && (
                           <motion.div
+                            id={`mobile-nav-${getNavId(link.name)}`}
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: "auto" }}
                             exit={{ opacity: 0, height: 0 }}
