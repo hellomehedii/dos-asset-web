@@ -11,7 +11,7 @@
 }
 
 .journey-container {
-  width: min(100% - 48px, 1160px);
+  width: min(100% - 48px, 1280px);
   margin-inline: auto;
 }
 
