@@ -47,7 +47,7 @@ const journeySteps: {
     },
     description: {
       en: "Have qualified legal and land professionals review ownership, title deeds, land records, and other relevant documents before proceeding.",
-      bn: "এগিয়ে যাওয়ার আগে অভিজ্ঞ আইনজীবী ও ভূমি-সংক্রান্ত পেশাজীবীর সহায়তায় মালিকানার তথ্য, স্বত্বের দলিল, ভূমি রেকর্ড এবং অন্যান্য প্রাসঙ্গিক নথি যাচাই করুন।",
+      bn: "অভিজ্ঞ আইনজীবী ও ভূমি-সংক্রান্ত পেশাজীবীর সহায়তায় মালিকানার তথ্য, স্বত্বের দলিল, ভূমি রেকর্ড এবং অন্যান্য প্রাসঙ্গিক নথি যাচাই করুন।",
     },
   },
   {
@@ -102,7 +102,7 @@ const journeySteps: {
     },
     description: {
       en: "Stay informed through official project communications about land development, relevant approvals, and construction milestones as the work progresses.",
-      bn: "কাজ এগোনোর সঙ্গে সঙ্গে জমি উন্নয়ন, প্রাসঙ্গিক অনুমোদন এবং নির্মাণের বিভিন্ন পর্যায় সম্পর্কে প্রকল্প কর্তৃপক্ষের আনুষ্ঠানিক আপডেট জেনে রাখুন।",
+      bn: "কাজ এগোনোর সঙ্গে সঙ্গে প্রাসঙ্গিক অনুমোদন এবং নির্মাণের বিভিন্ন পর্যায় সম্পর্কে প্রকল্প কর্তৃপক্ষের আনুষ্ঠানিক আপডেট জেনে রাখুন।",
     },
   },
   {
@@ -113,7 +113,7 @@ const journeySteps: {
     },
     description: {
       en: "The flat is allocated using the method disclosed for the project and recorded in your signed agreement—for example, a lottery or an agreed selection process, where applicable.",
-      bn: "প্রকল্পের জন্য আগে থেকে জানানো এবং স্বাক্ষরিত চুক্তিতে উল্লেখিত পদ্ধতিতেই ফ্ল্যাট বরাদ্দ হবে। প্রযোজ্য ক্ষেত্রে এ পদ্ধতিতে লটারি বা পারস্পরিক সম্মতিতে নির্বাচন থাকতে পারে।",
+      bn: "প্রকল্পের জন্য আগে থেকে জানানো এবং স্বাক্ষরিত চুক্তিতে উল্লেখিত পদ্ধতিতেই ফ্ল্যাট বরাদ্দ হবে। লটারি এর মাধ্যমে ফ্ল্যাট ডিস্ট্রিবিউশন করা হবে ।",
     },
   },
   {
